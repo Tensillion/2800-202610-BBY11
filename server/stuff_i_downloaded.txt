@@ -1,0 +1,10 @@
+npm i vite@latest 
+
+specifcially client side:
+npm i react (i think this was the cmd) (this was in client ofc)
+npm i axios 
+
+specically server side:
+npm i express
+npm i nodemon -D (dev dependancy for updating code while running the server, instead of restarting everytime)
+
