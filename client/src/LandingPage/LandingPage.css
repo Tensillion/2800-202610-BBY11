@@ -1,0 +1,177 @@
+@import url('https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&display=swap');
+
+/* ── Tokens ── */
+:root {
+	--dur: 400ms;
+	--cherryBomb: 'Cherry Bomb One', cursive, system-ui;
+}
+
+/* ── Root shell ── */
+.lp-root {
+	display: flex;
+	flex-direction: column;
+
+	min-height: 100dvh; /* full viewport on mobile */
+
+	background: var(--cream);
+	overflow: hidden;
+}
+
+/* ── Header (title above the carousel) ── */
+.lp-header {
+	font-family: var(--cherryBomb);
+
+	padding: 52px 32px 28px;
+	background: var(--cream);
+
+	z-index: 2;
+}
+
+.lp-title {
+	font-family: var(--cherryBomb);
+	font-size: clamp(54px, 15vw, 84px);
+	font-weight: 700;
+	line-height: 1.1;
+	letter-spacing: -0.01em;
+	color: var(--bark);
+
+	margin: 0;
+}
+
+/* ── Carousel ── */
+.lp-carousel {
+	position: relative;
+	flex: 1; /* fills all remaining vertical space */
+	margin: 0 12px; /* slight side inset like a card */
+
+	overflow: hidden;
+	border-radius: var(--radius) var(--radius) 0 0;
+	box-shadow: 0 -4px 32px rgba(0, 0, 0, 0.1);
+
+	-webkit-user-select: none;
+	user-select: none;
+	cursor: grab;
+}
+
+.lp-carousel:active {
+	cursor: grabbing;
+}
+
+/* ── Individual slides ── */
+.lp-slide {
+	position: absolute;
+	inset: 0;
+	background-size: cover;
+	background-position: center;
+	opacity: 0;
+	transition: opacity var(--dur) ease;
+	pointer-events: none;
+}
+
+.lp-slide--active {
+	opacity: 1;
+	pointer-events: auto;
+}
+
+.lp-slide--fading {
+	opacity: 0;
+	pointer-events: none;
+}
+
+.lp-carousel::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(to bottom, transparent 55%, rgba(20, 30, 15, 0.55) 100%);
+	pointer-events: none;
+	z-index: 1;
+}
+
+.lp-slide-label {
+	position: absolute;
+	bottom: 20px;
+	left: 0;
+	right: 0;
+	text-align: center;
+	font-family: var(--cherryBomb);
+	font-size: 16px;
+	font-weight: 400;
+	letter-spacing: 0.03em;
+	color: rgba(255, 255, 255, 0.85);
+	z-index: 2;
+	padding: 0 24px;
+	transition: opacity var(--dur) ease;
+}
+
+.lp-slide-label--fading {
+	opacity: 0;
+}
+
+.lp-footer {
+	background: var(--cream);
+	padding: 20px 24px 40px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 20px;
+	border-radius: 0 0 var(--radius) var(--radius);
+	margin: 0px 12px;
+	margin-bottom: 12px;
+	box-shadow: 0 4px 32px rgba(0, 0, 0, 0.08);
+}
+
+.lp-dots {
+	display: flex;
+	gap: 10px;
+	align-items: center;
+	justify-content: center;
+}
+
+.lp-dot {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: var(--dot-off);
+	border: none;
+	padding: 0;
+	cursor: pointer;
+	transition:
+		background 0.3s ease,
+		width 0.3s ease,
+		border-radius 0.3s ease;
+}
+
+.lp-dot--active {
+	background: var(--dot-on);
+	width: 24px;
+	border-radius: 4px;
+}
+
+.lp-continue-link {
+	width: 100%;
+	text-decoration: none;
+}
+
+.lp-continue {
+	width: 100%;
+	padding: 17px 0;
+	border: none;
+	border-radius: 18px;
+	background: var(--forest);
+	color: var(--cream);
+	font-family: var(--cherryBomb);
+	font-size: 18px;
+	font-weight: 500;
+	letter-spacing: 0.01em;
+	cursor: pointer;
+	transition:
+		background 0.2s ease,
+		transform 0.12s ease;
+}
+
+.lp-continue:hover {
+	background: var(--moss);
+}
+.lp-continue:active {
+	transform: scale(0.98);
+}
