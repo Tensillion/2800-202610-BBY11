@@ -4,11 +4,12 @@ import { BrowserRouter } from "react-router-dom";
 import "./css/index.css";
 
 import App from "./App/App.tsx";
+import LandingPage from "./LandingPage/LandingPage.tsx";
 
 createRoot(document.getElementById("root")!).render(
-	<StrictMode>
-		<BrowserRouter>
-			<App />
-		</BrowserRouter>
-	</StrictMode>,
+  <StrictMode>
+    <BrowserRouter>
+      <LandingPage />
+    </BrowserRouter>
+  </StrictMode>,
 );
