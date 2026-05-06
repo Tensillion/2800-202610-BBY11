@@ -1,7 +1,13 @@
 npm i vite@latest 
 
-specifcially client side:
+specifcially client side 
+(Easy method:
+ cd client
+ npm i
+)
+
 npm i react (i think this was the cmd) (this was in client ofc)
+npm install react-router-dom
 npm i axios 
 
 specically server side:
