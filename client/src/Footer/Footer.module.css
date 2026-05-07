@@ -1,26 +1,23 @@
 .footer {
 	display: flex;
-	justify-content: space-around;
+	flex-direction: row;
+	justify-content: center;
 	align-items: center;
 
 	position: fixed;
 
-	padding: 12px;
-
 	background: #fff;
-	border-top: 1px solid #ddd;
+	padding-top: clamp(8px, 1vw, 12px);
 
 	bottom: 0;
+
 	width: 100%;
+	height: auto;
 }
 
-.navItem {
+.footer nav {
 	display: flex;
-	flex-direction: column;
-	align-items: center;
-}
-
-.icon {
-	width: 28px;
-	height: 28px;
+	flex-direction: row;
+	justify-content: space-around;
+	width: 90%;
 }
