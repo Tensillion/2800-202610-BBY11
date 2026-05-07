@@ -1,0 +1,82 @@
+:root {
+	background: var(--cream);
+}
+
+#CameraPage {
+	position: fixed;
+	inset: 0;
+	overflow: hidden;
+}
+
+.video-container {
+	position: absolute;
+	inset: 0;
+}
+
+#video {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
+
+#captured-image {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
+
+#take-photo {
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	bottom: clamp(80px, 6vh, 100px);
+	z-index: 2;
+
+	border-radius: 50%;
+
+	width: clamp(64px, 20vw, 92px);
+	height: clamp(64px, 20vw, 92px);
+
+	-webkit-backdrop-filter: blur(2px);
+	backdrop-filter: blur(2px);
+
+	background: #fff;
+	border: 5px solid #9b9b9b6b;
+
+	color: hsl(0, 92%, 56%);
+}
+
+/* Capture Options */
+
+#retake-photo {
+	/* This button should be an X icon in the top left corner of the page. */
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	z-index: 2;
+
+	border-radius: 50%;
+	width: clamp(32px, 6vw, 48px);
+	height: clamp(32px, 6vw, 48px);
+	background: #ffffff00;
+}
+
+#confirm-photo {
+	position: absolute;
+	bottom: 8vh;
+	z-index: 2;
+	transform: translateX(-50%);
+
+	width: clamp(150px, 50vw, 300px);
+	height: auto;
+	border-radius: 15px;
+
+	font-family: var(--cherryBomb);
+	font-size: clamp(16px, 10vw, 20px);
+	font-weight: 400;
+	text-align: center;
+}

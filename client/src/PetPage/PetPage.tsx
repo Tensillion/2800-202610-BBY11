@@ -1,12 +1,11 @@
-import Footer from "../Footer/Footer";
-import("../App/App.css");
+import Footer from '../Footer/Footer';
 
 function PetPage() {
-  return (
-    <>
-      <div>whatever pet page needs i guess</div>
-      <Footer />
-    </>
-  );
+	return (
+		<>
+			<div>whatever pet page needs i guess</div>
+			<Footer />
+		</>
+	);
 }
 export default PetPage;

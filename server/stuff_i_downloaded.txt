@@ -7,7 +7,8 @@ specifcially client side
 )
 
 npm i react (i think this was the cmd) (this was in client ofc)
-npm install react-router-dom
+npm i react-router-dom
+npm i react-webcam
 npm i axios 
 
 specically server side:
