@@ -1,0 +1,22 @@
+.guide-popup {
+	position: absolute;
+	padding: 10px 14px;
+	background: var(--cream);
+	color: var(--forest);
+	border-radius: 8px;
+	transition: all 0.5s ease;
+
+	font-size: clamp(12px, 2vw, 16px);
+}
+
+.guide-next-button {
+	margin-top: 10px;
+	background: var(--forest);
+	color: var(--cream);
+	border: none;
+	padding: 8px 16px;
+	cursor: pointer;
+
+	border-radius: 4px;
+	font-family: var(--cherryBomb);
+}

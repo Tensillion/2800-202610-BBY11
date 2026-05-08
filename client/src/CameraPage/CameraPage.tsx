@@ -3,6 +3,7 @@ import Webcam from 'react-webcam';
 import { useCallback, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './CameraPage.css';
+import PopUp from '../PopUp/PopUp';
 
 const videoConstraints = {
 	width: 640,
@@ -39,6 +40,10 @@ function CameraPage() {
 
 	return (
 		<>
+			<PopUp
+				title="Welcome to the Forage Page!"
+				message="Take a photo of the plant you want to identify!"
+			/>
 			<section id="CameraPage">
 				{image ?
 					<div className="image-container">
