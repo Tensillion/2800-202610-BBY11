@@ -4,6 +4,8 @@ function SignUpPage() {
   return (
     <>
       <div>whatever SignUpPage page needs i guess</div>
+      
+
       <Footer />
     </>
   );
