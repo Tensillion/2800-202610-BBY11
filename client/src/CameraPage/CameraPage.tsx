@@ -1,4 +1,3 @@
-import "../App/App.css";
 import Footer from "../Footer/Footer";
 function CameraPage() {
   return (

@@ -1,5 +1,4 @@
 import Footer from "../Footer/Footer";
-import("../App/App.css");
 
 function MapPage() {
   return (
