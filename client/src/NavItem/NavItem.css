@@ -1,0 +1,41 @@
+/* Center the images in the nav item */
+.nav-item-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+}
+
+.nav-item {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	justify-content: space-around;
+}
+
+.nav-item-link {
+	text-decoration: none;
+}
+
+.nav-item-image {
+	width: clamp(24px, 20vw, 40px);
+	height: auto;
+
+	margin-bottom: 0px;
+}
+
+.nav-item-label {
+	font-size: clamp(12px, 2vw, 16px);
+	transition: color 0.2s ease;
+
+	margin-top: 0px;
+	padding-top: 0px;
+}
+
+.nav-item-label.active {
+	color: #111111;
+}
+
+.nav-item-label.inactive {
+	color: #9ca3af;
+}

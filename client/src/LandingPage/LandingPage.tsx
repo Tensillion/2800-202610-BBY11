@@ -26,10 +26,11 @@ const DURATION = 4500;
 
 /**
  * Creates a landing page with a carousel of images and a title.
+ * Generated with the help of Claude Sonnet 4.6, edited + annotated by Tyson Nguyen.
  *
  * @returns Landing Page
  *
- * @authors Claude Code, Tyson Nguyen
+ * @authors https://claude.ai/chat, Tyson Nguyen
  */
 export default function LandingPage() {
   //Current slide index,
@@ -52,8 +53,9 @@ export default function LandingPage() {
     }, 400);
   }, []);
 
-  const next = useCallback(() => goTo(current + 1), [current, goTo]);
-  const prev = useCallback(() => goTo(current - 1), [current, goTo]);
+	//Saved functions for next and prev to use in timers and handlers without worrying about stale closures
+	const next = useCallback(() => goTo(current + 1), [current, goTo]);
+	const prev = useCallback(() => goTo(current - 1), [current, goTo]);
 
   //Automatic slide every DURATION ms, reset on manual navigation
   const resetTimer = useCallback(() => {
@@ -69,12 +71,13 @@ export default function LandingPage() {
     };
   }, [resetTimer]);
 
-  //Mouse handling, just grabs and checks the delta of x movement
-  const onPointerDown = (x: number) => {
-    dragStartX.current = x;
-    dragDelta.current = 0;
-    if (timerRef.current) clearTimeout(timerRef.current);
-  };
+	//Mouse handling, just grabs and checks the delta of x movement
+
+	const onPointerDown = (x: number) => {
+		dragStartX.current = x;
+		dragDelta.current = 0;
+		if (timerRef.current) clearTimeout(timerRef.current);
+	};
 
   const onPointerMove = (x: number) => {
     if (dragStartX.current === null) return;
