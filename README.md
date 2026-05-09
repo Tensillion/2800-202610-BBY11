@@ -27,3 +27,6 @@ Finders Keepers is a web app for the City of Vancouver Prompt of educating peopl
 
 - Icons in the footer from Iconoir
   https://iconoir.com/
+
+- CSS Animations from Animista
+  http://animista.net/license

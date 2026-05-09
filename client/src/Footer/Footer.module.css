@@ -6,7 +6,7 @@
 
 	position: fixed;
 
-	background: #fff;
+	background: var(--cream);
 	padding-top: clamp(8px, 1vw, 12px);
 
 	bottom: 0;

@@ -1,17 +1,18 @@
-@import url("https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&display=swap');
 
 :root {
 	--cream: #f8f5f0;
+	--dark-cream: #c8c0b4;
+	--dark-green: #2d4a2d;
 	--forest: #2d4a2d;
 	--moss: #5a7a4a;
 	--bark: #3e2c1c;
-	--dot-off: #c8c0b4;
-	--dot-on: #2d4a2d;
+
 	--radius: 28px;
 
-	--cherryBomb: "Cherry Bomb One", cursive, system-ui;
-	--sans: system-ui, "Segoe UI", Roboto, sans-serif;
-	--heading: system-ui, "Segoe UI", Roboto, sans-serif;
+	--cherryBomb: 'Cherry Bomb One', cursive, system-ui;
+	--sans: system-ui, 'Segoe UI', Roboto, sans-serif;
+	--heading: system-ui, 'Segoe UI', Roboto, sans-serif;
 	--mono: ui-monospace, Consolas, monospace;
 
 	font: 18px/145% var(--cherryBomb);
