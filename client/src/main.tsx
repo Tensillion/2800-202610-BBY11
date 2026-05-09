@@ -13,6 +13,7 @@ import LoginPage from "./LoginPage/LoginPage.tsx";
 import SignUpPage from "./SignUpPage/SignUpPage.tsx";
 import PetPage from "./PetPage/PetPage.tsx";
 import SettingsPage from "./SettingsPage/SettingsPage.tsx";
+import ItemPage from "./ItemPage/ItemPage.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -29,6 +30,7 @@ createRoot(document.getElementById("root")!).render(
         <Route path="/collection" element={<CollectionPage />} />
         <Route path="/camera" element={<CameraPage />} />
         <Route path="/settings" element={<SettingsPage />} />
+        <Route path="/item" element={<ItemPage />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
