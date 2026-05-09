@@ -1,0 +1,1497 @@
+{
+	"Rubus spectabilis": {
+		"edible": true,
+		"parts": ["berries", "young shoots"],
+		"warnings": "Young shoots best harvested before leaves fully unfurl. Berries tart but palatable raw or cooked.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q159069",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:728014-1",
+			"https://www.gbif.org/species/5333119",
+			"https://www.fs.usda.gov/database/feis/plants/shrub/rubspe/all.html"
+		]
+	},
+	"Rubus parviflorus": {
+		"edible": true,
+		"parts": ["berries", "young shoots", "leaves"],
+		"warnings": "Young peeled shoots edible raw or cooked. Leaves used for tea. Berries seedy but sweet.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q159079",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:728003-1",
+			"https://www.gbif.org/species/5333136",
+			"https://pfaf.org/user/Plant.aspx?LatinName=Rubus+parviflorus"
+		]
+	},
+	"Rubus idaeus": {
+		"edible": true,
+		"parts": ["berries", "young leaves"],
+		"warnings": "Leaves used for tea. Berries excellent raw or cooked.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q80015",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:727969-1",
+			"https://www.gbif.org/species/5333141"
+		]
+	},
+	"Rubus chamaemorus": {
+		"edible": true,
+		"parts": ["berries", "young leaves"],
+		"warnings": "Berries highly prized; tart when underripe, sweet when fully ripe (orange-yellow).",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q214544",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:728116-1",
+			"https://www.gbif.org/species/5333126"
+		]
+	},
+	"Rubus pedatus": {
+		"edible": true,
+		"parts": ["berries"],
+		"warnings": "Small berries, mildly flavored. Generally not abundant enough for large harvest.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q5393820",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:728002-1",
+			"https://www.gbif.org/species/5333067"
+		]
+	},
+	"Rubus ursinus": {
+		"edible": true,
+		"parts": ["berries", "young shoots"],
+		"warnings": "Native trailing blackberry. Berries small but flavorful.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q983820",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:728044-1",
+			"https://www.gbif.org/species/5333096"
+		]
+	},
+	"Vaccinium ovalifolium": {
+		"edible": true,
+		"parts": ["berries"],
+		"warnings": "Berries mild and sweet; excellent for jams, pies, or fresh eating.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q3531534",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:601568-1",
+			"https://www.gbif.org/species/2882868"
+		]
+	},
+	"Vaccinium myrtilloides": {
+		"edible": true,
+		"parts": ["berries"],
+		"warnings": "Velvet-leaf blueberry. Berries edible and sweet.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q5267226",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:601563-1",
+			"https://www.gbif.org/species/2882844"
+		]
+	},
+	"Vaccinium uliginosum": {
+		"edible": true,
+		"parts": ["berries"],
+		"warnings": "Bog blueberry. Edible but may cause mild intoxication or headache if consumed in large quantities; some people are sensitive.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q160565",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:601579-1",
+			"https://www.gbif.org/species/2882828"
+		]
+	},
+	"Vaccinium vitis-idaea": {
+		"edible": true,
+		"parts": ["berries", "leaves"],
+		"warnings": "Lingonberry / low-bush cranberry. Berries tart; best cooked with sugar. Leaves used medicinally but not for regular consumption.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q171131",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:601580-1",
+			"https://www.gbif.org/species/2882854"
+		]
+	},
+	"Vaccinium oxycoccos": {
+		"edible": true,
+		"parts": ["berries"],
+		"warnings": "Small cranberry. Berries very tart; best cooked with sweetener.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q159032",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:601567-1",
+			"https://www.gbif.org/species/2882870"
+		]
+	},
+	"Vaccinium membranaceum": {
+		"edible": true,
+		"parts": ["berries"],
+		"warnings": "Black mountain huckleberry. Large, flavorful berries prized by foragers and bears.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q3531519",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:601558-1",
+			"https://www.gbif.org/species/2882849"
+		]
+	},
+	"Vaccinium parvifolium": {
+		"edible": true,
+		"parts": ["berries"],
+		"warnings": "Red huckleberry. Berries bright red, tart, excellent for jams and pies.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q3531528",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:601565-1",
+			"https://www.gbif.org/species/2882860"
+		]
+	},
+	"Amelanchier alnifolia": {
+		"edible": true,
+		"parts": ["berries", "seeds"],
+		"warnings": "Saskatoon berry. Seeds contain trace cyanogenic glycosides; safe in normal quantities. One of BC's most important traditional food berries.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q3729820",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:724882-1",
+			"https://www.gbif.org/species/3023854"
+		]
+	},
+	"Rosa nutkana": {
+		"edible": true,
+		"parts": ["hips", "petals", "young leaves"],
+		"warnings": "Remove seeds and inner hairs from hips before eating (hairs irritate digestive tract). Hips high in vitamin C.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q7364946",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:727501-1",
+			"https://www.gbif.org/species/5334177"
+		]
+	},
+	"Rosa acicularis": {
+		"edible": true,
+		"parts": ["hips", "petals", "young leaves"],
+		"warnings": "Prickly rose. Same cautions as Rosa nutkana regarding seeds and inner hairs.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q1379834",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:727450-1",
+			"https://www.gbif.org/species/5334161"
+		]
+	},
+	"Fragaria vesca": {
+		"edible": true,
+		"parts": ["berries", "leaves"],
+		"warnings": "Wild strawberry. Berries small but intensely flavored. Leaves used for tea.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q170102",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:725882-1",
+			"https://www.gbif.org/species/5334316"
+		]
+	},
+	"Fragaria virginiana": {
+		"edible": true,
+		"parts": ["berries", "leaves"],
+		"warnings": "Wild strawberry. Berries excellent fresh. Leaves used for herbal tea.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q2119862",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:725894-1",
+			"https://www.gbif.org/species/5334309"
+		]
+	},
+	"Gaultheria shallon": {
+		"edible": true,
+		"parts": ["berries", "young leaves"],
+		"warnings": "Salal. Berries mealy with mild flavor, best in jams. One of BC coast's most abundant edible shrubs.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q1483024",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:831665-1",
+			"https://www.gbif.org/species/2882647"
+		]
+	},
+	"Gaultheria hispidula": {
+		"edible": true,
+		"parts": ["berries", "leaves"],
+		"warnings": "Creeping snowberry. Berries have wintergreen flavor. High in methyl salicylate; avoid excessive consumption (aspirin-like compound).",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q5526093",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:831659-1",
+			"https://www.gbif.org/species/2882657"
+		]
+	},
+	"Shepherdia canadensis": {
+		"edible": true,
+		"parts": ["berries"],
+		"warnings": "Soapberry / buffaloberry. Berries bitter and contain saponins; traditionally whipped into frothy 'Indian ice cream'. Do not eat large quantities raw. Avoid if prone to digestive sensitivity.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q2299453",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:77188295-1",
+			"https://www.gbif.org/species/3189524"
+		]
+	},
+	"Mahonia aquifolium": {
+		"edible": true,
+		"parts": ["berries"],
+		"warnings": "Oregon grape (tall). Berries tart and seedy; excellent for jellies. Contains berberine — do not consume large quantities.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q1392831",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:77164395-1",
+			"https://www.gbif.org/species/3033649"
+		]
+	},
+	"Mahonia nervosa": {
+		"edible": true,
+		"parts": ["berries"],
+		"warnings": "Dull Oregon grape (low). Same cautions as Mahonia aquifolium. Berries smaller.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q5271143",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:77164396-1",
+			"https://www.gbif.org/species/3033652"
+		]
+	},
+	"Sambucus racemosa": {
+		"edible": true,
+		"parts": ["cooked berries", "flowers"],
+		"warnings": "Red elderberry. Berries, bark, and leaves contain cyanogenic glycosides and are TOXIC RAW. Berries must be fully cooked before eating; seeds ideally removed. Flowers edible. Do not confuse with Actaea (baneberry).",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q2298625",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:30000463-2",
+			"https://www.gbif.org/species/5334567",
+			"https://www.canada.ca/en/health-canada/services/food-nutrition/food-safety/food-labelling/natural-health-products/elderberry.html"
+		]
+	},
+	"Sambucus nigra": {
+		"edible": true,
+		"parts": ["cooked berries", "flowers"],
+		"warnings": "Black / blue elderberry. Raw berries, bark, leaves, and seeds contain cyanogenic glycosides — TOXIC RAW. Cook berries thoroughly. Flowers edible raw (elderflower).",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q165137",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:30000462-2",
+			"https://www.gbif.org/species/5334568"
+		]
+	},
+	"Corylus cornuta": {
+		"edible": true,
+		"parts": ["nuts"],
+		"warnings": "Beaked hazelnut. Nuts edible raw or roasted. Harvest when husks begin to yellow.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q5172484",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:683059-1",
+			"https://www.gbif.org/species/2874411"
+		]
+	},
+	"Prunus virginiana": {
+		"edible": true,
+		"parts": ["berries"],
+		"warnings": "Chokecherry. Berries astringent but edible cooked (jams, jellies, wine). Seeds, leaves, and bark contain cyanogenic glycosides — do not crush or consume seeds. Avoid consuming large quantities of raw fruit.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q1194696",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:726787-1",
+			"https://www.gbif.org/species/5332859"
+		]
+	},
+	"Prunus emarginata": {
+		"edible": true,
+		"parts": ["berries"],
+		"warnings": "Bitter cherry. Very astringent and bitter; palatable only in small quantities or when cooked. Seeds contain cyanogenic glycosides.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q2746530",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:726773-1",
+			"https://www.gbif.org/species/5332845"
+		]
+	},
+	"Ribes bracteosum": {
+		"edible": true,
+		"parts": ["berries"],
+		"warnings": "Stink currant. Berries have strong musky odor; edible but unpalatable to many. Better cooked in preserves.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q5326069",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:717143-1",
+			"https://www.gbif.org/species/3188912"
+		]
+	},
+	"Ribes lacustre": {
+		"edible": true,
+		"parts": ["berries"],
+		"warnings": "Prickly currant. Berries small, somewhat glandular; edible fresh or cooked.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q2428028",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:717162-1",
+			"https://www.gbif.org/species/3188929"
+		]
+	},
+	"Ribes hudsonianum": {
+		"edible": true,
+		"parts": ["berries"],
+		"warnings": "Northern black currant. Berries edible but strongly scented; better cooked.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q2428022",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:717157-1",
+			"https://www.gbif.org/species/3188918"
+		]
+	},
+	"Ribes sanguineum": {
+		"edible": true,
+		"parts": ["berries"],
+		"warnings": "Red flowering currant. Berries edible but very bland; best used in preserves.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q2428026",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:717174-1",
+			"https://www.gbif.org/species/3188944"
+		]
+	},
+	"Camassia quamash": {
+		"edible": true,
+		"parts": ["bulbs"],
+		"warnings": "Common camas. Bulbs edible raw or slow-cooked. CRITICAL: Can be fatally confused with Zigadenus venenosus (death camas) — harvest ONLY when in flower (blue/violet) to confirm identity. Death camas has creamy-white flowers.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q1047006",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:527839-1",
+			"https://www.gbif.org/species/2768501",
+			"https://www.fs.usda.gov/wildflowers/plant-of-the-week/camassia_quamash.shtml"
+		]
+	},
+	"Camassia leichtlinii": {
+		"edible": true,
+		"parts": ["bulbs"],
+		"warnings": "Great camas. Same edibility and SAME DEADLY CONFUSION RISK with death camas as Camassia quamash. Harvest only in flower.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q5021038",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:527838-1",
+			"https://www.gbif.org/species/2768499"
+		]
+	},
+	"Chamerion angustifolium": {
+		"edible": true,
+		"parts": ["young shoots", "young leaves", "flowers", "pith"],
+		"warnings": "Fireweed. Young spring shoots edible raw or cooked (asparagus-like). Mature leaves astringent; best cooked. Flowers and stem pith edible. Do not confuse older plants with toxic species.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q1083861",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:565483-1",
+			"https://www.gbif.org/species/5362066",
+			"https://pfaf.org/user/Plant.aspx?LatinName=Epilobium+angustifolium"
+		]
+	},
+	"Urtica dioica": {
+		"edible": true,
+		"parts": ["young leaves", "young shoots"],
+		"warnings": "Stinging nettle. Cooked or dried leaves are edible and nutritious (stings destroyed by heat). Do NOT eat raw. Wear gloves when harvesting. Harvest only young spring growth before flowering.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q183319",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:685084-1",
+			"https://www.gbif.org/species/2984529"
+		]
+	},
+	"Allium cernuum": {
+		"edible": true,
+		"parts": ["bulbs", "leaves", "flowers"],
+		"warnings": "Nodding onion. All parts edible raw or cooked. Must be positively identified by onion smell before consuming — confirm odor to avoid confusion with toxic Zigadenus or Anticlea species.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q2824823",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:519640-1",
+			"https://www.gbif.org/species/2856697"
+		]
+	},
+	"Allium schoenoprasum": {
+		"edible": true,
+		"parts": ["leaves", "bulbs", "flowers"],
+		"warnings": "Wild chives. All parts edible. Distinctive onion scent confirms identity.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q160866",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:519800-1",
+			"https://www.gbif.org/species/2856648"
+		]
+	},
+	"Claytonia sibirica": {
+		"edible": true,
+		"parts": ["leaves", "stems", "flowers"],
+		"warnings": "Siberian miner's lettuce. Entire aboveground plant edible raw or lightly cooked. One of BC's safest and most reliable spring greens.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q3697474",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:697009-1",
+			"https://www.gbif.org/species/5372918"
+		]
+	},
+	"Claytonia perfoliata": {
+		"edible": true,
+		"parts": ["leaves", "stems", "roots"],
+		"warnings": "Miner's lettuce. Entire plant edible raw or cooked. Mild flavor, excellent salad green.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q157924",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:697007-1",
+			"https://www.gbif.org/species/5372917"
+		]
+	},
+	"Oxalis oregana": {
+		"edible": true,
+		"parts": ["leaves", "stems", "flowers"],
+		"warnings": "Wood sorrel. Leaves pleasantly sour (oxalic acid). Safe in small amounts as flavoring or salad accent. Do NOT eat in large quantities — oxalic acid can interfere with calcium absorption and is harmful to kidneys in excess. Avoid if prone to kidney stones.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q2734099",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:712501-1",
+			"https://www.gbif.org/species/5375066"
+		]
+	},
+	"Heracleum maximum": {
+		"edible": true,
+		"parts": ["young peeled stems", "young leaves", "seeds"],
+		"warnings": "Cow parsnip. Young spring stems (peeled) edible cooked. CRITICAL: All green parts contain furanocoumarins causing severe phototoxic burns upon skin contact in sunlight. Wear gloves, long sleeves, and eye protection when harvesting. Do NOT confuse with Conium maculatum (poison hemlock) or Cicuta douglasii (water hemlock) — both deadly. Confirm identity carefully.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q3730011",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:843052-1",
+			"https://www.gbif.org/species/7883020",
+			"https://www.health.gov.bc.ca/library/publications/year/2009/giant_hogweed.pdf"
+		]
+	},
+	"Osmorhiza longistylis": {
+		"edible": true,
+		"parts": ["roots", "leaves", "stems", "seeds"],
+		"warnings": "Smooth sweet cicely. Strong anise/licorice flavor. All parts edible. Roots used as flavoring. Must be distinguished from toxic carrot-family members (Conium, Cicuta) — sweet cicely has distinctly anise-scented roots.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q15456406",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:843625-1",
+			"https://www.gbif.org/species/5371918"
+		]
+	},
+	"Osmorhiza berteroi": {
+		"edible": true,
+		"parts": ["roots", "leaves", "seeds"],
+		"warnings": "Mountain sweet cicely. Same edibility and identification cautions as Osmorhiza longistylis.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q15456404",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:843621-1",
+			"https://www.gbif.org/species/5371914"
+		]
+	},
+	"Oplopanax horridus": {
+		"edible": true,
+		"parts": ["young shoots"],
+		"warnings": "Devil's club. Young spring shoots (before spines harden) edible cooked, used as traditional food among First Nations. Handle with heavy gloves — spines cause painful wounds and may cause infection. Do not eat mature plant parts.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q2047413",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:30046700-2",
+			"https://www.gbif.org/species/5331982"
+		]
+	},
+	"Pinus albicaulis": {
+		"edible": true,
+		"parts": ["seeds", "inner bark"],
+		"warnings": "Whitebark pine. Seeds (whitebark pine nuts) highly nutritious and edible. Inner bark edible in spring. Seeds typically harvested from Clark's nutcracker caches.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q623613",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:263508-1",
+			"https://www.gbif.org/species/5284932"
+		]
+	},
+	"Pinus contorta": {
+		"edible": true,
+		"parts": ["inner bark", "seeds", "young male cones"],
+		"warnings": "Lodgepole pine. Inner bark edible in spring (cambium layer). Seeds small but edible. Young pollen cones edible. Not a primary food source.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q210962",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:263489-1",
+			"https://www.gbif.org/species/5284804"
+		]
+	},
+	"Populus tremuloides": {
+		"edible": true,
+		"parts": ["inner bark", "catkins"],
+		"warnings": "Trembling aspen. Inner bark (cambium) edible raw or dried and ground as flour — traditional food. Bitter taste. Catkins edible in early spring.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q156940",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:775028-1",
+			"https://www.gbif.org/species/3189990"
+		]
+	},
+	"Streptopus amplexifolius": {
+		"edible": true,
+		"parts": ["young shoots", "berries"],
+		"warnings": "Twisted stalk / clasping twistedstalk. Young shoots edible in small amounts (cucumber-like flavor). Berries edible in small amounts. Consuming large quantities of berries may cause diarrhea.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q2429994",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:535087-1",
+			"https://www.gbif.org/species/2754395"
+		]
+	},
+	"Bistorta bistortoides": {
+		"edible": true,
+		"parts": ["young leaves", "roots"],
+		"warnings": "Mountain bistort. Young leaves edible cooked. Roots edible roasted — starchy. Contains oxalic acid; moderate consumption recommended.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q4916285",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:586706-1",
+			"https://www.gbif.org/species/5345406"
+		]
+	},
+	"Nuphar polysepala": {
+		"edible": true,
+		"parts": ["seeds", "roots"],
+		"warnings": "Yellow pond lily / wokas. Seeds edible roasted or ground into flour. Roots edible cooked (starchy). Raw roots and seeds may be irritating. Traditional First Nations food.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q15456544",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:586706-1",
+			"https://www.gbif.org/species/5703527"
+		]
+	},
+	"Lysichiton americanus": {
+		"edible": true,
+		"parts": ["roots", "young leaves"],
+		"warnings": "Skunk cabbage. ALL PARTS TOXIC RAW — contains calcium oxalate crystals causing severe burning and swelling of mouth and throat. Roots edible only after extensive drying (months) or prolonged cooking. Leaves used as traditional food wrappers. Not recommended for casual foragers.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q927843",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:315547-2",
+			"https://www.gbif.org/species/5144700"
+		]
+	},
+	"Maianthemum dilatatum": {
+		"edible": true,
+		"parts": ["young shoots", "berries"],
+		"warnings": "False lily of the valley / deerberry. Young shoots edible in small amounts. Berries used traditionally in small quantities. Do not eat large amounts — berries may have laxative effect and are mildly toxic in quantity.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q4487978",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:529843-1",
+			"https://www.gbif.org/species/2757048"
+		]
+	},
+	"Taraxacum officinale": {
+		"edible": true,
+		"parts": ["leaves", "flowers", "roots", "buds"],
+		"warnings": "Common dandelion (invasive). All parts edible. Young leaves less bitter; older leaves very bitter but edible cooked. Roots roasted as coffee substitute. Flowers edible raw or made into wine. Avoid plants from areas treated with pesticides or herbicides.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q26750",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:244019-2",
+			"https://www.gbif.org/species/5387272"
+		]
+	},
+	"Plantago major": {
+		"edible": true,
+		"parts": ["young leaves", "seeds"],
+		"warnings": "Broadleaf plantain (invasive). Young leaves edible raw or cooked — older leaves stringy. Seeds can be ground into flour. Avoid plants from roadsides or chemically treated areas.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q26810",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:320375-2",
+			"https://www.gbif.org/species/5330282"
+		]
+	},
+	"Stellaria media": {
+		"edible": true,
+		"parts": ["young stems", "leaves", "flowers"],
+		"warnings": "Chickweed (invasive). Mild-flavored; excellent raw in salads or lightly cooked. Very high in vitamins. Harvest before flowering for best flavor.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q155867",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:697765-1",
+			"https://www.gbif.org/species/5329010"
+		]
+	},
+	"Chenopodium album": {
+		"edible": true,
+		"parts": ["young leaves", "seeds"],
+		"warnings": "Lamb's quarters / fat hen (invasive). Young leaves excellent cooked like spinach. Contains oxalic acid — do not eat raw in large quantities; cooking reduces oxalates. Seeds ground into flour. Avoid plants from chemically treated soils.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q2823866",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:687826-1",
+			"https://www.gbif.org/species/5398070"
+		]
+	},
+	"Rumex crispus": {
+		"edible": true,
+		"parts": ["young leaves"],
+		"warnings": "Curly dock (invasive). Young leaves edible cooked (very sour). High in oxalic acid — blanch and discard water before eating. Avoid large raw quantities. Do not eat if prone to kidney stones or gout.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q161215",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:601004-1",
+			"https://www.gbif.org/species/5361097"
+		]
+	},
+	"Rumex obtusifolius": {
+		"edible": true,
+		"parts": ["young leaves"],
+		"warnings": "Broad-leaved dock (invasive). Same edibility and cautions as Rumex crispus. Cook and blanch to reduce oxalic acid.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q1424994",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:600996-1",
+			"https://www.gbif.org/species/5361127"
+		]
+	},
+	"Nasturtium officinale": {
+		"edible": true,
+		"parts": ["leaves", "stems", "flowers"],
+		"warnings": "Watercress (often invasive/naturalized). Peppery leaves excellent raw or cooked. CRITICAL: Wild watercress may harbor the liver fluke parasite (Fasciola hepatica) — harvest only from clean, cold, fast-moving water away from livestock. Cook if uncertain of water quality.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q15430",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:699296-1",
+			"https://www.gbif.org/species/5375128",
+			"https://www.healthlinkbc.ca/healthy-eating/watercress"
+		]
+	},
+	"Portulaca oleracea": {
+		"edible": true,
+		"parts": ["leaves", "stems", "seeds", "flowers"],
+		"warnings": "Purslane (invasive). Succulent leaves and stems excellent raw or cooked. Highest plant source of omega-3 fatty acids. Contains oxalic acid — avoid in very large quantities.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q161116",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:718068-1",
+			"https://www.gbif.org/species/5374951"
+		]
+	},
+	"Alliaria petiolata": {
+		"edible": true,
+		"parts": ["young leaves", "flowers", "seeds", "roots"],
+		"warnings": "Garlic mustard (highly invasive). Young leaves and flowers edible raw (garlic flavor); older leaves bitter. Seeds used as spice. Roots (first-year rosette) have horseradish flavor. Foraging is encouraged as it helps control this destructive invasive species.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q156560",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:699006-1",
+			"https://www.gbif.org/species/5375164",
+			"https://www2.gov.bc.ca/gov/content/environment/plants-animals-ecosystems/invasive-species/garlic-mustard"
+		]
+	},
+	"Aegopodium podagraria": {
+		"edible": true,
+		"parts": ["young leaves", "young stems"],
+		"warnings": "Goutweed / bishop's weed (invasive). Young spring leaves edible raw or cooked. Older leaves become bitter. CAUTION: In the carrot family — confirm identification carefully to distinguish from toxic members (Conium, Cicuta). Has a distinctive musky-parsley smell.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q161202",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:840777-1",
+			"https://www.gbif.org/species/5371782"
+		]
+	},
+	"Arctium lappa": {
+		"edible": true,
+		"parts": ["roots", "young stems", "young leaves"],
+		"warnings": "Greater burdock (invasive). First-year roots edible raw or cooked (gobo). Young peeled stems edible. Young leaves edible cooked. Harvest first-year plants (rosette stage) for best roots.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q164361",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:829898-1",
+			"https://www.gbif.org/species/5398403"
+		]
+	},
+	"Arctium minus": {
+		"edible": true,
+		"parts": ["roots", "young stems"],
+		"warnings": "Common burdock (invasive). Same edibility as Arctium lappa. First-year roots preferred. Burs attach to clothing and fur — handle carefully.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q1064735",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:829899-1",
+			"https://www.gbif.org/species/5398435"
+		]
+	},
+	"Barbarea vulgaris": {
+		"edible": true,
+		"parts": ["young leaves", "flowers", "young seed pods"],
+		"warnings": "Yellow rocket / winter cress (invasive). Young leaves very bitter but edible — best blanched. Flowers and young pods edible. Flavor milder in early spring before flowering.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q682694",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:699086-1",
+			"https://www.gbif.org/species/5375125"
+		]
+	},
+	"Foeniculum vulgare": {
+		"edible": true,
+		"parts": ["leaves", "stems", "seeds", "roots"],
+		"warnings": "Fennel (invasive/naturalized). All parts edible — distinctive anise flavor. Do NOT confuse with Conium maculatum (poison hemlock) or Cicuta douglasii — both in the same family and potentially fatal. Fennel has a strong anise smell; hemlock does not.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q26805",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:842539-1",
+			"https://www.gbif.org/species/5371906"
+		]
+	},
+	"Cicuta douglasii": {
+		"edible": false,
+		"parts": [],
+		"warnings": "Western water hemlock. EXTREMELY POISONOUS — considered one of North America's most toxic plants. All parts lethal, especially the roots (cicutoxin causes violent convulsions). Can be fatally confused with edible carrot-family plants (especially Osmorhiza, Angelica, wild parsnip). Do NOT handle. Keep children and pets away.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q3697543",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:840862-1",
+			"https://www.gbif.org/species/5372035",
+			"https://www.canada.ca/en/health-canada/services/first-aid-tips/poisonous-plants/water-hemlock.html"
+		]
+	},
+	"Cicuta virosa": {
+		"edible": false,
+		"parts": [],
+		"warnings": "European water hemlock / cowbane. Extremely poisonous — all parts toxic, especially the roots. Cicutoxin causes fatal convulsions. Similar appearance to edible carrot-family plants. Do NOT approach or handle.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q311563",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:840869-1",
+			"https://www.gbif.org/species/5372033"
+		]
+	},
+	"Conium maculatum": {
+		"edible": false,
+		"parts": [],
+		"warnings": "Poison hemlock (invasive). EXTREMELY POISONOUS — all parts lethal; contains coniine and related piperidine alkaloids causing respiratory failure. The plant used to execute Socrates. Commonly confused with edible carrot-family plants including wild carrot, angelica, cow parsnip, sweet cicely, and fennel. Identifiable by purple-blotched hollow stems and musty mousy odor. Do NOT touch — some people develop skin reactions.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q219667",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:840874-1",
+			"https://www.gbif.org/species/5372041",
+			"https://www2.gov.bc.ca/gov/content/environment/plants-animals-ecosystems/invasive-species/poison-hemlock"
+		]
+	},
+	"Aconitum columbianum": {
+		"edible": false,
+		"parts": [],
+		"warnings": "Columbia monkshood. All parts highly toxic — contains aconitine (cardiac and nerve toxin) causing rapid death. Even skin contact with the sap can cause numbness and toxicity. Blue-purple hooded flowers. Do NOT touch.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q4680157",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:681702-1",
+			"https://www.gbif.org/species/5418834"
+		]
+	},
+	"Actaea rubra": {
+		"edible": false,
+		"parts": [],
+		"warnings": "Red baneberry. All parts toxic, especially the shiny red (or white) berries — even a few berries can cause severe cardiac effects and death, particularly in children. The attractive berries are a serious hazard. Do NOT consume.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q2800882",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:681781-1",
+			"https://www.gbif.org/species/5418808",
+			"https://www.health.gov.bc.ca/library/publications/year/2014/baneberry.pdf"
+		]
+	},
+	"Veratrum viride": {
+		"edible": false,
+		"parts": [],
+		"warnings": "Green false hellebore / corn lily. Extremely poisonous — contains steroidal alkaloids (cyclopamine, jervine) causing birth defects, heart arrhythmia, and death. Commonly confused with corn, edible ramps, and Camassia when young — it lacks any onion smell. All parts toxic. Do NOT touch eyes after handling.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q2478440",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:536388-1",
+			"https://www.gbif.org/species/2754474",
+			"https://poisoncontrol.bc.ca/agents/veratrum/"
+		]
+	},
+	"Anticlea elegans": {
+		"edible": false,
+		"parts": [],
+		"warnings": "Mountain death camas / elegant death camas. All parts highly toxic — alkaloids cause nausea, vomiting, cardiac failure. Bulbs FATALLY confused with edible Camassia bulbs and wild onions. Has no onion smell (key distinction from Allium spp.). Creamy-white flowers.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q15450289",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:77150196-1",
+			"https://www.gbif.org/species/2754395"
+		]
+	},
+	"Zigadenus venenosus": {
+		"edible": false,
+		"parts": [],
+		"warnings": "Meadow death camas. Extremely toxic — all parts contain zygacine and related alkaloids. Bulbs commonly confused with Camassia (camas) and wild onions; lacks any onion smell. Frequently causes livestock deaths and human poisonings. Do NOT consume.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q7472940",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:536460-1",
+			"https://www.gbif.org/species/2754414",
+			"https://poisoncontrol.bc.ca/agents/zigadenus-death-camas/"
+		]
+	},
+	"Toxicodendron radicans": {
+		"edible": false,
+		"parts": [],
+		"warnings": "Poison ivy. NOT edible. All parts contain urushiol causing severe allergic contact dermatitis in most people. Burning the plant releases toxic urushiol particles into the air. Do NOT touch.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q160791",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:685037-1",
+			"https://www.gbif.org/species/3189792"
+		]
+	},
+	"Taxus brevifolia": {
+		"edible": false,
+		"parts": [],
+		"warnings": "Pacific yew. All parts TOXIC except the red fleshy aril (seed coat) — however the seed inside the aril is extremely toxic (taxine alkaloids causing cardiac arrest). The aril is technically edible but because the seed is so deadly if bitten, consumption is strongly discouraged. Bark, leaves, and seeds all lethal.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q1034028",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:263730-1",
+			"https://www.gbif.org/species/2686171"
+		]
+	},
+	"Daphne laureola": {
+		"edible": false,
+		"parts": [],
+		"warnings": "Spurge laurel (invasive). All parts toxic — berries, leaves, and bark contain daphnin and mezerein causing severe burns to mouth and digestive tract, skin blistering, and potentially death. Attractive black berries are a danger to children. Do NOT touch — sap causes skin irritation.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q1173636",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:694082-1",
+			"https://www.gbif.org/species/3189346",
+			"https://www2.gov.bc.ca/gov/content/environment/plants-animals-ecosystems/invasive-species/spurge-laurel"
+		]
+	},
+	"Digitalis purpurea": {
+		"edible": false,
+		"parts": [],
+		"warnings": "Foxglove (invasive/naturalized). All parts highly toxic — contains cardiac glycosides (digitalis, digitoxin) causing fatal heart arrhythmia. Attractive bell-shaped purple flowers. Commonly confused with mullein (Verbascum) rosettes. Do NOT consume.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q130018",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:319869-2",
+			"https://www.gbif.org/species/5416670",
+			"https://poisoncontrol.bc.ca/agents/digitalis/"
+		]
+	},
+	"Solanum dulcamara": {
+		"edible": false,
+		"parts": [],
+		"warnings": "Bittersweet nightshade (invasive). All parts toxic — berries (red when unripe, darker when ripe) contain solanine and solanidine. Particularly dangerous to children attracted to the colorful berries. Do NOT consume.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q155716",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:613914-1",
+			"https://www.gbif.org/species/5413883"
+		]
+	},
+	"Solanum nigrum": {
+		"edible": false,
+		"parts": [],
+		"warnings": "Black nightshade. Berries and all green parts toxic — contain solanine. Unripe berries especially dangerous. Some traditional uses of cooked ripe berries exist in other cultures but risk is high and not recommended in BC foraging context.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q157879",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:613883-1",
+			"https://www.gbif.org/species/5413937"
+		]
+	},
+	"Kalmia polifolia": {
+		"edible": false,
+		"parts": [],
+		"warnings": "Bog laurel / pale laurel. All parts toxic — grayanotoxins in leaves cause nausea, low blood pressure, cardiac effects. Even honey made from its flowers can cause 'mad honey disease'. Do NOT consume.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q1747163",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:834015-1",
+			"https://www.gbif.org/species/2882613"
+		]
+	},
+	"Kalmia microphylla": {
+		"edible": false,
+		"parts": [],
+		"warnings": "Alpine laurel / western bog laurel. All parts toxic (grayanotoxins). Same cautions as Kalmia polifolia.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q2654534",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:834014-1",
+			"https://www.gbif.org/species/2882601"
+		]
+	},
+	"Rhododendron macrophyllum": {
+		"edible": false,
+		"parts": [],
+		"warnings": "Pacific rhododendron (BC provincial flower). All parts toxic — grayanotoxins cause vomiting, hypotension, and cardiac effects. Honey from its flowers toxic. Do NOT consume.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q2138022",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:331789-2",
+			"https://www.gbif.org/species/5374087"
+		]
+	},
+	"Lupinus polyphyllus": {
+		"edible": false,
+		"parts": [],
+		"warnings": "Large-leaved lupine. Seeds and pods contain quinolizidine alkaloids (lupinine, sparteine) toxic to humans and livestock. Attractive to children. Do NOT consume.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q161285",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:503490-1",
+			"https://www.gbif.org/species/5356779"
+		]
+	},
+	"Cytisus scoparius": {
+		"edible": false,
+		"parts": [],
+		"warnings": "Scotch broom (invasive). All parts toxic — seeds and flowers contain quinolizidine alkaloids and sparteine causing cardiac arrhythmia and paralysis. A serious BC invasive weed. Do NOT consume.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q161225",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:503280-1",
+			"https://www.gbif.org/species/5361028",
+			"https://www2.gov.bc.ca/gov/content/environment/plants-animals-ecosystems/invasive-species/scotch-broom"
+		]
+	},
+	"Iris pseudacorus": {
+		"edible": false,
+		"parts": [],
+		"warnings": "Yellow flag iris (invasive). All parts toxic — rhizomes, leaves, and seeds contain irisin and other glycosides causing severe gastrointestinal irritation, skin burns from sap. Do NOT consume.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q742503",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:436413-1",
+			"https://www.gbif.org/species/2760588"
+		]
+	},
+	"Iris setosa": {
+		"edible": false,
+		"parts": [],
+		"warnings": "Arctic iris / bristle-pointed iris. Rhizomes highly toxic — contain irisin and terpenes causing severe vomiting, skin and mucous membrane irritation. Do NOT consume.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q2082023",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:436375-1",
+			"https://www.gbif.org/species/2760572"
+		]
+	},
+	"Tanacetum vulgare": {
+		"edible": false,
+		"parts": [],
+		"warnings": "Common tansy (invasive/naturalized). All parts toxic in any significant amount — contains thujone causing liver damage, convulsions, and organ failure. Historically used as abortifacient (dangerous). DO NOT consume internally.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q161244",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:242781-2",
+			"https://www.gbif.org/species/5401046"
+		]
+	},
+	"Oenanthe sarmentosa": {
+		"edible": false,
+		"parts": [],
+		"warnings": "Pacific water parsley. All parts toxic — related to water hemlock; contains oenanthotoxin and other toxic polyacetylenes. Can be confused with edible aquatic plants. Do NOT consume.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q7079476",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:843634-1",
+			"https://www.gbif.org/species/7880781"
+		]
+	},
+	"Hyoscyamus niger": {
+		"edible": false,
+		"parts": [],
+		"warnings": "Black henbane (invasive). Extremely poisonous — all parts contain tropane alkaloids (hyoscyamine, scopolamine) causing delirium, hallucinations, tachycardia, and death. Do NOT consume or handle excessively.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q156596",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:613581-1",
+			"https://www.gbif.org/species/5413715"
+		]
+	},
+	"Hypericum perforatum": {
+		"edible": false,
+		"parts": [],
+		"warnings": "St. John's wort (invasive). Not a food plant. Contains hypericin causing severe phototoxic reactions (burns, blistering) upon sunlight exposure after ingestion or skin contact. Interacts dangerously with many medications. Do NOT consume as food.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q155918",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:439026-1",
+			"https://www.gbif.org/species/5375753"
+		]
+	},
+	"Lathyrus latifolius": {
+		"edible": false,
+		"parts": [],
+		"warnings": "Everlasting pea (invasive). Seeds toxic — contain beta-aminopropionitrile and other neurotoxic amino acids causing lathyrism (paralysis) with prolonged consumption. Not edible.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q1812052",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:503449-1",
+			"https://www.gbif.org/species/5358047"
+		]
+	},
+	"Euphorbia esula": {
+		"edible": false,
+		"parts": [],
+		"warnings": "Leafy spurge (invasive). Milky sap extremely toxic and caustic — causes severe skin and eye irritation, blistering, and blindness. Internal consumption causes violent vomiting and diarrhea. Do NOT touch sap.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q2743261",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:157714-1",
+			"https://www.gbif.org/species/5359890"
+		]
+	},
+	"Lythrum salicaria": {
+		"edible": false,
+		"parts": [],
+		"warnings": "Purple loosestrife (invasive). Not a traditional or recognized food plant. Not established as safe for consumption. Primarily a concern as a wetland-destroying invasive species.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q156528",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:556696-1",
+			"https://www.gbif.org/species/5336466"
+		]
+	},
+	"Heracleum mantegazzianum": {
+		"edible": false,
+		"parts": [],
+		"warnings": "Giant hogweed (invasive — regulated noxious weed in BC). All green parts contain extreme concentrations of furanocoumarins causing third-degree burns, permanent scarring, and blindness upon skin contact in sunlight. Report sightings to the Invasive Species Council of BC. Do NOT touch.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q161161",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:843051-1",
+			"https://www.gbif.org/species/7883017",
+			"https://www2.gov.bc.ca/gov/content/environment/plants-animals-ecosystems/invasive-species/giant-hogweed"
+		]
+	},
+	"Arum italicum": {
+		"edible": false,
+		"parts": [],
+		"warnings": "Italian lords-and-ladies (invasive on southern BC coast). All parts toxic — calcium oxalate crystals cause extreme burning of mouth and throat. Red berries attractive to children. Do NOT consume.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q1348012",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:84455-1",
+			"https://www.gbif.org/species/5144584"
+		]
+	},
+	"Angelica genuflexa": {
+		"edible": true,
+		"parts": ["young peeled stems", "young leaves"],
+		"warnings": "Kneeling angelica. Young stems edible when peeled and cooked — used traditionally. CRITICAL RISK: In the carrot family — can be confused with deadly Conium maculatum and Cicuta douglasii. Confirm identity by sweet-celery-like scent and large compound umbel. Contains furanocoumarins; avoid prolonged skin contact in sun.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q4748200",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:840803-1",
+			"https://www.gbif.org/species/7951021"
+		]
+	},
+	"Angelica lucida": {
+		"edible": true,
+		"parts": ["young peeled stems"],
+		"warnings": "Sea-watch / seacoast angelica. Same edibility and cautions as Angelica genuflexa. Carrot-family confusion risk with toxic species is serious.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q2832698",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:840810-1",
+			"https://www.gbif.org/species/7951017"
+		]
+	},
+	"Fritillaria camschatcensis": {
+		"edible": true,
+		"parts": ["bulbs"],
+		"warnings": "Kamchatka fritillary / black lily. Bulbs traditionally eaten by coastal First Nations, cooked or dried. Bitter flavor. Must be distinguished from other Fritillaria and toxic bulb-forming plants. Not recommended without expert identification and traditional preparation knowledge.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q2049449",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:527952-1",
+			"https://www.gbif.org/species/2756948"
+		]
+	},
+	"Trifolium pratense": {
+		"edible": true,
+		"parts": ["flowers", "young leaves", "seeds"],
+		"warnings": "Red clover (common invasive/naturalized). Flowers excellent in salads or dried for tea. Young leaves edible in small amounts cooked (raw leaves hard to digest). Contains phytoestrogens — avoid large quantities especially during pregnancy.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q156364",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:506090-1",
+			"https://www.gbif.org/species/5358846"
+		]
+	},
+	"Trifolium repens": {
+		"edible": true,
+		"parts": ["flowers", "young leaves"],
+		"warnings": "White clover (invasive/naturalized). Flowers and young leaves edible; flowers excellent in tea. Same phytoestrogen cautions as Trifolium pratense. Dried leaves can release small amounts of cyanogenic compounds — best eaten fresh in small quantities.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q47083",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:506091-1",
+			"https://www.gbif.org/species/5358838"
+		]
+	},
+	"Medicago sativa": {
+		"edible": true,
+		"parts": ["young shoots", "sprouts", "seeds"],
+		"warnings": "Alfalfa (naturalized). Young shoots and sprouts edible. Seeds sprouted widely consumed. Contains canavanine — avoid consuming large quantities of seeds or sprouts if you have lupus or autoimmune conditions.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q156898",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:503546-1",
+			"https://www.gbif.org/species/5357042"
+		]
+	},
+	"Epilobium ciliatum": {
+		"edible": true,
+		"parts": ["young shoots", "young leaves"],
+		"warnings": "Fringed willowherb. Young spring shoots edible; not as palatable as Chamerion angustifolium. Mild flavor.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q3734609",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:565487-1",
+			"https://www.gbif.org/species/5362068"
+		]
+	},
+	"Typha latifolia": {
+		"edible": true,
+		"parts": ["young shoots", "pollen", "roots", "immature flower spikes"],
+		"warnings": "Common cattail / broadleaf cattail. One of the most versatile wild foods. Young spring shoots edible raw or cooked. Pollen (yellow, abundant in early summer) used as flour supplement. Starchy roots edible in fall/winter. Immature green flower spikes edible like corn. Avoid harvesting from polluted water.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q156841",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:419467-1",
+			"https://www.gbif.org/species/2737866"
+		]
+	},
+	"Sagittaria latifolia": {
+		"edible": true,
+		"parts": ["tubers"],
+		"warnings": "Broadleaf arrowhead / wapato. Starchy tubers edible cooked (boiled or roasted). Important traditional food. Harvest from shallow water in fall. Avoid polluted water sources. Tubers float free when dislodged by feet in mud.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q1302748",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:419312-1",
+			"https://www.gbif.org/species/2737907"
+		]
+	},
+	"Epilobium angustifolium": {
+		"edible": true,
+		"parts": ["young shoots", "young leaves", "flowers", "pith"],
+		"warnings": "Fireweed (synonym of Chamerion angustifolium). Young spring shoots edible raw or cooked (asparagus-like). Older stems: pith edible raw. Flowers edible. Mature leaves astringent — best lightly cooked.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q1083861",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:565481-1",
+			"https://www.gbif.org/species/5362048"
+		]
+	},
+	"Lomatium dissectum": {
+		"edible": true,
+		"parts": ["roots", "seeds", "young leaves"],
+		"warnings": "Fernleaf biscuitroot / toza. Roots and seeds were important traditional food of Interior First Nations. CRITICAL: Carrot family — must be distinguished from Conium maculatum and Cicuta douglasii. Confirm identity with expert before consuming. Young growth may be confused with poison hemlock.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q6674649",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:843348-1",
+			"https://www.gbif.org/species/7883104"
+		]
+	},
+	"Lomatium nudicaule": {
+		"edible": true,
+		"parts": ["roots", "seeds", "young leaves", "stems"],
+		"warnings": "Barestem biscuitroot / Indian celery. All parts edible and widely used as traditional food by BC First Nations. Same carrot-family confusion cautions as Lomatium dissectum.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q6674663",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:843352-1",
+			"https://www.gbif.org/species/7883106"
+		]
+	},
+	"Polygonum aviculare": {
+		"edible": true,
+		"parts": ["young leaves", "seeds"],
+		"warnings": "Knotgrass / prostrate knotweed (invasive). Young leaves edible cooked. Seeds edible ground into flour. Contains oxalic acid — moderate consumption.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q161175",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:586767-1",
+			"https://www.gbif.org/species/5345382"
+		]
+	},
+	"Fallopia japonica": {
+		"edible": true,
+		"parts": ["young shoots"],
+		"warnings": "Japanese knotweed (invasive — listed noxious weed in BC). Young spring shoots (under 30 cm) edible cooked — sour rhubarb-like flavor. High in oxalic acid — avoid if prone to kidney stones. Foraging encouraged as it helps suppress this destructive invasive.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q856705",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:586727-1",
+			"https://www.gbif.org/species/5345209",
+			"https://www2.gov.bc.ca/gov/content/environment/plants-animals-ecosystems/invasive-species/japanese-knotweed"
+		]
+	},
+	"Picea sitchensis": {
+		"edible": true,
+		"parts": ["young tips", "inner bark"],
+		"warnings": "Sitka spruce. Young spring tips (bright green, soft) edible raw — citrusy, high in vitamin C. Inner bark edible in spring. Traditional food along BC coast.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q212940",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:263277-1",
+			"https://www.gbif.org/species/5285766"
+		]
+	},
+	"Abies lasiocarpa": {
+		"edible": true,
+		"parts": ["young tips", "inner bark", "seeds"],
+		"warnings": "Subalpine fir. Young tips edible in small amounts. Inner bark and seeds edible. Resin used traditionally for flavoring.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q1061668",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:261680-1",
+			"https://www.gbif.org/species/2685827"
+		]
+	},
+	"Athyrium filix-femina": {
+		"edible": true,
+		"parts": ["fiddleheads"],
+		"warnings": "Lady fern. Fiddleheads (young coiled fronds) edible cooked — must be thoroughly cooked; raw fern contains thiaminase (destroys vitamin B1) and possible carcinogens. Harvest only the tightly coiled, silvery-hairy fiddleheads in spring. Do not confuse with bracken fern.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q160825",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:17450-1",
+			"https://www.gbif.org/species/2651390"
+		]
+	},
+	"Pteridium aquilinum": {
+		"edible": false,
+		"parts": [],
+		"warnings": "Bracken fern. Young fiddleheads consumed historically but now considered TOXIC — contains ptaquiloside, a potent carcinogen and bone marrow suppressant. Also contains thiaminase. IARC classifies bracken as possibly carcinogenic to humans (Group 2B). Do NOT consume.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q157058",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:17589-1",
+			"https://www.gbif.org/species/2652671",
+			"https://www.canada.ca/en/health-canada/services/food-nutrition/food-safety/chemical-contaminants/environmental-contaminants/bracken-fern.html"
+		]
+	},
+	"Matteuccia struthiopteris": {
+		"edible": true,
+		"parts": ["fiddleheads"],
+		"warnings": "Ostrich fern. The most reliably edible fiddlehead fern. Must be FULLY COOKED — raw ostrich fern fiddleheads have caused gastrointestinal illness outbreaks. Boil at least 15 minutes or steam thoroughly. Identify by smooth brown papery sheath and deep groove on inside of stem. Health Canada advises thorough cooking.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q311618",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:17538-1",
+			"https://www.gbif.org/species/2651457",
+			"https://www.canada.ca/en/health-canada/services/food-nutrition/food-safety/fiddleheads.html"
+		]
+	},
+	"Polypodium glycyrrhiza": {
+		"edible": true,
+		"parts": ["rhizomes"],
+		"warnings": "Licorice fern. Rhizomes have pleasant licorice flavor; traditionally chewed by First Nations peoples. Best used as flavoring in small amounts, not consumed in large quantities.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q3402087",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:17580-1",
+			"https://www.gbif.org/species/2651429"
+		]
+	},
+	"Dryopteris expansa": {
+		"edible": "unknown",
+		"parts": [],
+		"warnings": "Spreading wood fern. No established traditional edibility in BC. Most Dryopteris species are not considered edible; some contain toxic phloroglucinol derivatives. Do not consume without expert verification.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q15451069",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:17499-1",
+			"https://www.gbif.org/species/2651438"
+		]
+	},
+	"Trillium ovatum": {
+		"edible": false,
+		"parts": [],
+		"warnings": "Western white trillium. Not edible — all parts contain saponins and steroidal compounds. Additionally, it is illegal to pick trilliums in BC (protected under the Wildlife Act). Leave undisturbed.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q2476946",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:535132-1",
+			"https://www.gbif.org/species/2758088",
+			"https://www2.gov.bc.ca/gov/content/environment/plants-animals-ecosystems/plants/rare-plants-ecosystems"
+		]
+	},
+	"Lindera benzoin": {
+		"edible": "unknown",
+		"parts": [],
+		"warnings": "Spicebush. Not native to BC; occasionally planted. Berries used as allspice substitute in eastern North America. Insufficient data for BC context.",
+		"sources": ["https://www.wikidata.org/wiki/Q1548038", "https://www.gbif.org/species/3034012"]
+	},
+	"Symphoricarpos albus": {
+		"edible": false,
+		"parts": [],
+		"warnings": "Common snowberry. White waxy berries toxic — contain saponins (chelidonic acid, others) causing nausea, vomiting, mild sedation, and dizziness. Historically used medicinally in very small doses by First Nations but not as food. Do NOT consume.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q756038",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:329625-2",
+			"https://www.gbif.org/species/5335130"
+		]
+	},
+	"Lonicera involucrata": {
+		"edible": false,
+		"parts": [],
+		"warnings": "Black twinberry. Shiny black berries paired with distinctive red bracts — toxic to humans, causing nausea, vomiting, and diarrhea. Despite being eaten by birds, do NOT consume.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q2374175",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:329605-2",
+			"https://www.gbif.org/species/5335192"
+		]
+	},
+	"Lonicera ciliosa": {
+		"edible": false,
+		"parts": [],
+		"warnings": "Orange honeysuckle. Berries toxic to humans — cause nausea and vomiting. Do NOT consume.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q2374165",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:329599-2",
+			"https://www.gbif.org/species/5335199"
+		]
+	},
+	"Mentha arvensis": {
+		"edible": true,
+		"parts": ["leaves", "stems", "flowers"],
+		"warnings": "Wild mint / field mint. Leaves and stems excellent for tea, flavoring, and fresh use. Contains menthol — avoid consuming pure extracted oil. Peppermint-like flavor.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q161174",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:443434-1",
+			"https://www.gbif.org/species/3172126"
+		]
+	},
+	"Monarda fistulosa": {
+		"edible": true,
+		"parts": ["leaves", "flowers"],
+		"warnings": "Wild bergamot / bee balm. Leaves and flowers edible as seasoning or tea (oregano-like flavor). Contains thymol — avoid large medicinal doses.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q756043",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:443536-1",
+			"https://www.gbif.org/species/3172162"
+		]
+	},
+	"Achillea millefolium": {
+		"edible": true,
+		"parts": ["young leaves", "flowers"],
+		"warnings": "Yarrow (common). Young leaves very bitter but used as flavoring in small amounts and herbal tea. Contains thujone and camphor — do NOT consume large quantities. Avoid during pregnancy. Can cause contact dermatitis in sensitive individuals.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q155843",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:224257-2",
+			"https://www.gbif.org/species/5400598"
+		]
+	},
+	"Caltha palustris": {
+		"edible": false,
+		"parts": [],
+		"warnings": "Marsh marigold / cowslip. All parts toxic raw — contains protoanemonin (a blistering agent) and other irritants. Leaves have been eaten after extensive boiling in multiple changes of water in some traditions, but this is not recommended — risk of toxicity remains.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q163214",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:681832-1",
+			"https://www.gbif.org/species/5418853"
+		]
+	},
+	"Ranunculus acris": {
+		"edible": false,
+		"parts": [],
+		"warnings": "Tall buttercup (invasive). All parts toxic raw — contains protoanemonin causing blistering of mouth and GI tract. Do NOT consume.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q156352",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:713524-1",
+			"https://www.gbif.org/species/5418982"
+		]
+	},
+	"Ranunculus sceleratus": {
+		"edible": false,
+		"parts": [],
+		"warnings": "Celery-leaved buttercup. One of the most toxic buttercups — very high concentrations of protoanemonin causing severe burns, blistering throughout digestive tract. Do NOT consume.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q161158",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:713534-1",
+			"https://www.gbif.org/species/5419029"
+		]
+	},
+	"Populus balsamifera": {
+		"edible": true,
+		"parts": ["inner bark", "catkins", "leaf buds"],
+		"warnings": "Black cottonwood / balsam poplar. Inner bark (cambium) edible in spring — sweet and starchy. Leaf buds resinous and aromatic, used as traditional flavoring. Young catkins edible.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q1067453",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:775007-1",
+			"https://www.gbif.org/species/3190018"
+		]
+	},
+	"Salix lucida": {
+		"edible": true,
+		"parts": ["inner bark", "catkins"],
+		"warnings": "Shining willow. Inner bark contains salicin (related to aspirin) — edible in small amounts traditionally. Do not consume large quantities (salicin can irritate stomach). Catkins edible in very early spring.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q7406706",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:775259-1",
+			"https://www.gbif.org/species/8285813"
+		]
+	},
+	"Betula papyrifera": {
+		"edible": true,
+		"parts": ["sap", "inner bark", "catkins"],
+		"warnings": "Paper birch. Sap drinkable fresh or boiled into syrup (birch syrup). Inner bark edible dried and ground as flour. Young leaves edible. Sustainable tapping required — do not over-harvest sap.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q163025",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:682843-1",
+			"https://www.gbif.org/species/2875800"
+		]
+	},
+	"Alnus rubra": {
+		"edible": "unknown",
+		"parts": [],
+		"warnings": "Red alder. Inner bark and catkins have been used medicinally by First Nations but are not typically consumed as food. Bark contains tannins and salicin derivatives. Insufficient data for food use; not recommended.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q3723843",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:682729-1",
+			"https://www.gbif.org/species/2874323"
+		]
+	},
+	"Arctostaphylos uva-ursi": {
+		"edible": true,
+		"parts": ["berries"],
+		"warnings": "Kinnikinnick / bearberry. Berries edible but mealy and bland — best cooked, mixed with fat (as pemmican), or used as flavoring. Do not eat in large quantities — contains arbutin which can irritate kidneys in excess.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q156811",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:834232-1",
+			"https://www.gbif.org/species/2882569"
+		]
+	},
+	"Sorbus sitchensis": {
+		"edible": true,
+		"parts": ["berries"],
+		"warnings": "Sitka mountain ash. Berries edible cooked — very bitter and astringent raw (tannins), much improved by frost or cooking. High in vitamin C. Used in jams and jellies.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q3939396",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:726867-1",
+			"https://www.gbif.org/species/5334247"
+		]
+	},
+	"Sorbus scopulina": {
+		"edible": true,
+		"parts": ["berries"],
+		"warnings": "Western mountain ash. Same edibility and cautions as Sorbus sitchensis. Berries best after frost.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q5574459",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:726865-1",
+			"https://www.gbif.org/species/5334218"
+		]
+	},
+	"Pyrus malus": {
+		"edible": true,
+		"parts": ["fruit"],
+		"warnings": "Wild/crab apple (naturalized). Fruit edible — often very tart; excellent for jelly, cider, and cooking. Seeds contain cyanogenic glycosides — do not eat in large quantities.",
+		"sources": ["https://www.wikidata.org/wiki/Q28", "https://www.gbif.org/species/5334130"]
+	},
+	"Crataegus douglasii": {
+		"edible": true,
+		"parts": ["berries", "young leaves", "flowers"],
+		"warnings": "Black hawthorn. Berries (haws) edible fresh or in preserves — mealy, mild flavor. Seeds contain cyanogenic compounds — do not eat in large quantities. Young leaves and flowers edible.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q3697541",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:725672-1",
+			"https://www.gbif.org/species/5334050"
+		]
+	},
+	"Crataegus monogyna": {
+		"edible": true,
+		"parts": ["berries", "young leaves", "flowers"],
+		"warnings": "Common hawthorn (invasive). Berries (haws) edible raw or cooked. Young spring leaves edible — called 'bread and cheese' in UK tradition. Same seed cautions as Crataegus douglasii.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q156386",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:725674-1",
+			"https://www.gbif.org/species/5334068"
+		]
+	},
+	"Brassica rapa": {
+		"edible": true,
+		"parts": ["young leaves", "flowers", "seeds"],
+		"warnings": "Field mustard / wild turnip (invasive/naturalized). Young leaves, flowers, and young seed pods all edible with peppery mustard flavor. Seeds ground into mustard. One of BC's most common edible weeds.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q156755",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:699141-1",
+			"https://www.gbif.org/species/3042723"
+		]
+	},
+	"Brassica napus": {
+		"edible": true,
+		"parts": ["young leaves", "flowers", "seeds"],
+		"warnings": "Wild canola / rape (naturalized/invasive). Same edibility as Brassica rapa. Seeds pressed for oil.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q128285",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:699130-1",
+			"https://www.gbif.org/species/5361075"
+		]
+	},
+	"Capsella bursa-pastoris": {
+		"edible": true,
+		"parts": ["young leaves", "seeds", "roots"],
+		"warnings": "Shepherd's purse (invasive/common weed). Young leaves edible raw or cooked — peppery. Seeds used as condiment. Avoid during pregnancy — can stimulate uterine contractions.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q157260",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:699172-1",
+			"https://www.gbif.org/species/5375250"
+		]
+	},
+	"Cardamine pratensis": {
+		"edible": true,
+		"parts": ["young leaves", "flowers"],
+		"warnings": "Cuckoo flower / lady's smock. Young leaves edible with mild watercress-like flavor. Flowers edible as garnish.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q156396",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:699165-1",
+			"https://www.gbif.org/species/5375253"
+		]
+	},
+	"Cardamine oligosperma": {
+		"edible": true,
+		"parts": ["leaves", "flowers"],
+		"warnings": "Few-seeded bittercress. Small-leaved native bittercress; peppery watercress-like flavor. Entire plant edible raw in small amounts.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q5036003",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:699197-1",
+			"https://www.gbif.org/species/5375257"
+		]
+	},
+	"Allium tricoccum": {
+		"edible": true,
+		"parts": ["bulbs", "leaves"],
+		"warnings": "Ramps / wild leek. Both leaves and bulbs edible — intense garlic-leek flavor. Must confirm with garlic smell. Can be confused with Veratrum or Allium lookalikes — always check for the onion odor.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q2824862",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:519837-1",
+			"https://www.gbif.org/species/2856710"
+		]
+	},
+	"Menyanthes trifoliata": {
+		"edible": "unknown",
+		"parts": [],
+		"warnings": "Buckbean / bogbean. Leaves used medicinally in small amounts; very bitter (menyanthin). Not considered a safe food plant — can cause severe diarrhea and vomiting in larger doses. Not recommended for consumption.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q156531",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:323455-2",
+			"https://www.gbif.org/species/5413618"
+		]
+	},
+	"Equisetum arvense": {
+		"edible": false,
+		"parts": [],
+		"warnings": "Common horsetail. NOT edible — contains thiaminase (destroys vitamin B1), palustrine (a neurotoxin), and silica. Raw horsetail consumption has caused fatal poisoning in livestock and illness in humans. Fiddleheads of true ferns (not horsetails) are the correct foraging target.",
+		"sources": [
+			"https://www.wikidata.org/wiki/Q161173",
+			"https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:14163-1",
+			"https://www.gbif.org/species/2651296"
+		]
+	},
+	"Lobaria pulmonaria": {
+		"edible": "unknown",
+		"parts": [],
+		"warnings": "Lungwort lichen (not a plant). Has been used as a flavoring in traditional Scottish brewing. Not commonly consumed as food; insufficient safety data. Not recommended.",
+		"sources": ["https://www.wikidata.org/wiki/Q311581", "https://www.gbif.org/species/2609349"]
+	},
+	"Coprinus comatus": {
+		"edible": "unknown",
+		"parts": [],
+		"warnings": "Shaggy mane mushroom (not a plant). Technically a fungus; included here for forager reference. Edible when young and white, but causes severe reaction ('coprine syndrome') when consumed with alcohol. Must be eaten very fresh — auto-digests within hours of picking.",
+		"sources": ["https://www.wikidata.org/wiki/Q311509", "https://www.gbif.org/species/5954522"]
+	}
+}
