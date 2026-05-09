@@ -12,7 +12,8 @@ import './GuidePopUp.css';
 export default function GuidePopUp(props: {
 	steps: { x: string | number; y: string | number; title: string; message: string }[];
 }) {
-	const storageKey = 'popup-dismissed?' + props.steps[0]?.title;
+	const storageKey =
+		'popup-dismissed?' + props.steps[0]?.title + props.steps[0]?.message.substring(0, 10);
 
 	const [index, setIndex] = useState(0);
 
@@ -42,11 +43,13 @@ export default function GuidePopUp(props: {
 				top: y,
 			}}
 		>
-			<h2>{title}</h2>
-			<p>{message}</p>
-			<button onClick={handleNext} className="guide-next-button">
-				Next
-			</button>
+			<div className="guide-popup-content">
+				<p className="guide-popup-title">{title}</p>
+				<p>{message}</p>
+				<button onClick={handleNext} className="guide-next-button">
+					Next
+				</button>
+			</div>
 		</div>
 	);
 }

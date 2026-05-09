@@ -27,7 +27,9 @@ export default function PopUp({
 	message,
 	steps = [], // default value ensures safe usage
 }: PopUpProps) {
-	const storageKey = 'popup-dismissed?' + title;
+	const storageKey = 'popup-dismissed?' + title + message.substring(0, 10); // unique key for this pop-up based on title and message
+
+	const [wantTutorial, setWantTutorial] = useState(true);
 
 	const [isOpen, setIsOpen] = useState(() => {
 		if (typeof window === 'undefined') return true;
@@ -39,6 +41,16 @@ export default function PopUp({
 		sessionStorage.setItem(storageKey, 'true');
 	};
 
+	const handleCloseNoTutorial = () => {
+		setIsOpen(false);
+		sessionStorage.setItem(storageKey, 'true');
+		sessionStorage.setItem(
+			'popup-dismissed?' + steps[0]?.title + steps[0]?.message.substring(0, 10),
+			'true'
+		);
+		setWantTutorial(false);
+	};
+
 	return (
 		isOpen ?
 			<div className="popup">
@@ -47,11 +59,14 @@ export default function PopUp({
 					<p className="popup-message">{message}</p>
 
 					<button className="popup-close" onClick={handleClose}>
-						Close
+						Get Started
+					</button>
+					<button className="popup-close-skip" onClick={handleCloseNoTutorial}>
+						Skip Tutorial
 					</button>
 				</div>
 			</div>
-		: steps.length > 0 ? <GuidePopUp steps={steps} />
+		: wantTutorial && steps.length > 0 ? <GuidePopUp steps={steps} />
 		: null
 	);
 }

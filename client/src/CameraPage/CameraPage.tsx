@@ -5,6 +5,29 @@ import { useNavigate } from 'react-router-dom';
 import './CameraPage.css';
 import PopUp from '../PopUp/PopUp';
 
+const guideSteps = [
+	{
+		x: '50%',
+		y: 300,
+		title: 'Take a Photo!',
+		message: 'This is where you can take a photo of the plant you want to identify.',
+	},
+	{
+		x: '70%',
+		y: 150,
+		title: 'Use Your Photos!',
+		message:
+			"Open your photo library to view and manage the photos you've taken. You can use these photos to identify plants and add them to your collection!",
+	},
+	{
+		x: '50%',
+		y: 120,
+		title: 'View Your Results!',
+		message:
+			'After taking a photo, you can view the results of the plant identification. This will show you information about the plant and help you learn more about it!',
+	},
+];
+
 const videoConstraints = {
 	width: 640,
 	height: 480,
@@ -43,6 +66,7 @@ function CameraPage() {
 			<PopUp
 				title="Welcome to the Forage Page!"
 				message="Take a photo of the plant you want to identify!"
+				steps={guideSteps}
 			/>
 			<section id="CameraPage">
 				{image ?

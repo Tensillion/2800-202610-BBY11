@@ -131,7 +131,7 @@
 	width: 8px;
 	height: 8px;
 	border-radius: 50%;
-	background: var(--dot-off);
+	background: var(--dark-cream);
 	border: none;
 	padding: 0;
 	cursor: pointer;
@@ -142,7 +142,7 @@
 }
 
 .lp-dot--active {
-	background: var(--dot-on);
+	background: var(--dark-green);
 	width: 24px;
 	border-radius: 4px;
 }
