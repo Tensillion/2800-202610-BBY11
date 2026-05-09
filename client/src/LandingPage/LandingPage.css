@@ -21,21 +21,25 @@
 .lp-header {
 	font-family: var(--cherryBomb);
 
-	padding: 52px 32px 28px;
+	padding: 20px;
 	background: var(--cream);
 
 	z-index: 2;
+	justify-content: center;
+	align-items: center;
+	display: flex;
 }
 
-.lp-title {
-	font-family: var(--cherryBomb);
-	font-size: clamp(54px, 15vw, 84px);
-	font-weight: 700;
-	line-height: 1.1;
-	letter-spacing: -0.01em;
-	color: var(--bark);
+.lp-logo {
+	display: flex;
+	align-self: center;
 
-	margin: 0;
+	width: 100%;
+	max-width: 400px;
+	height: auto;
+
+	padding: 12px;
+	border-radius: var(--radius);
 }
 
 /* ── Carousel ── */

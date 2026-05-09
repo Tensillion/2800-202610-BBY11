@@ -1,32 +1,23 @@
-import Footer from "../Footer/Footer";
-import { useNavigate } from "react-router-dom";
-import type { SyntheticEvent } from "react";
+import { useNavigate } from 'react-router-dom';
+import type { SyntheticEvent } from 'react';
 
 function SignUpPage() {
-  const navigate = useNavigate();
-  function handleSubmit(e: SyntheticEvent<HTMLFormElement>) 
-  {
-  e.preventDefault();
-  navigate("/pet");
-  }
-  
-  return (
-    <>
-      <div>whatever SignUpPage page needs i guess</div>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Name:
-        <input type="text" name="username" placeholder="username"/>
-        </label>
-        <label>
-          password:
-        <input type="password" name="password" />
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
+	const navigate = useNavigate();
+	function handleSubmit(e: SyntheticEvent<HTMLFormElement>) {
+		e.preventDefault();
+		navigate('/pet');
+	}
 
-      <Footer />
-    </>
-  );
+	return (
+		<>
+			<h1>Sign Up</h1>
+			<form onSubmit={handleSubmit}>
+				<input type="text" name="username" placeholder="Username" />
+				<input type="email" name="email" placeholder="Email" />
+				<input type="password" name="password" placeholder="Password" />
+				<input type="submit" value="Submit" />
+			</form>
+		</>
+	);
 }
 export default SignUpPage;
