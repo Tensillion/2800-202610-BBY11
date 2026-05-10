@@ -15,31 +15,111 @@ import SettingsPage from "./SettingsPage/SettingsPage.tsx";
 import ItemPage from "./ItemPage/ItemPage.tsx";
 import CameraResultPage from "./CameraPage/ResultPage/CameraResultPage.tsx";
 
+import GuestRoute from "./components/GuestRoute.tsx";
+import ProtectedRoute from "./components/ProtectedRoute.tsx";
+
+import { AuthProvider } from "./context/AuthProvider.tsx";
+
 createRoot(document.getElementById("root")!).render(
 	<StrictMode>
-		<BrowserRouter>
-			{/* //landing page doesn't have footer/ auth based rendering of footer */}
-			<Routes>
-				{/* Landing page */}
-				<Route path="/" element={<LandingPage />} />
+		<AuthProvider>
+			<BrowserRouter>
+				<Routes>
+					{/* Guest-only */}
+					<Route
+						path="/"
+						element={
+							<GuestRoute>
+								<LandingPage />
+							</GuestRoute>
+						}
+					/>
 
-				{/* Auth based pages */}
-				<Route path="/signup" element={<SignUpPage />} />
-				<Route path="/login" element={<LoginPage />} />
+					<Route
+						path="/signup"
+						element={
+							<GuestRoute>
+								<SignUpPage />
+							</GuestRoute>
+						}
+					/>
+					<Route
+						path="/login"
+						element={
+							<GuestRoute>
+								<LoginPage />
+							</GuestRoute>
+						}
+					/>
 
-				{/* Main app pages */}
-				<Route path="/pet" element={<PetPage />} />
-				<Route path="/profile" element={<ProfilePage />} />
-				<Route path="/map" element={<MapPage />} />
-				<Route path="/collection" element={<CollectionPage />} />
-				<Route path="/camera">
-					<Route index element={<CameraPage />} />
-					<Route path="result" element={<CameraResultPage />} />
-				</Route>
+					{/* Protected */}
+					<Route
+						path="/map"
+						element={
+							<ProtectedRoute>
+								<MapPage />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path="/profile"
+						element={
+							<ProtectedRoute>
+								<ProfilePage />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path="/pet"
+						element={
+							<ProtectedRoute>
+								<PetPage />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path="/collection"
+						element={
+							<ProtectedRoute>
+								<CollectionPage />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path="/settings"
+						element={
+							<ProtectedRoute>
+								<SettingsPage />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path="/item"
+						element={
+							<ProtectedRoute>
+								<ItemPage />
+							</ProtectedRoute>
+						}
+					/>
 
-				<Route path="/settings" element={<SettingsPage />} />
-				<Route path="/item" element={<ItemPage />} />
-			</Routes>
-		</BrowserRouter>
+					<Route
+						path="/camera"
+						element={
+							<ProtectedRoute>
+								<CameraPage />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path="/camera/result"
+						element={
+							<ProtectedRoute>
+								<CameraResultPage />
+							</ProtectedRoute>
+						}
+					/>
+				</Routes>
+			</BrowserRouter>
+		</AuthProvider>
 	</StrictMode>
 );

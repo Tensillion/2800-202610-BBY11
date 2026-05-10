@@ -13,5 +13,14 @@ npm i axios
 
 specically server side:
 npm i express
+npm i express-session
+npm i express-rate-limit
+npm i jsonwebtoken
+
+npm i mongodb
+npm i connect-mongo
+npm i bcrypt
+npm i joi
+
 npm i nodemon -D (dev dependancy for updating code while running the server, instead of restarting everytime)
 
