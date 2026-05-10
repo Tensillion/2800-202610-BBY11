@@ -1,24 +1,24 @@
-require('dotenv').config();
+require("dotenv").config();
 
 //PlantNet API Imports
-const fs = require('fs');
-const FormData = require('form-data');
-const axios = require('axios');
+const fs = require("fs");
+const FormData = require("form-data");
+const axios = require("axios");
 
 // server.js
-const express = require('express');
-const path = require('path');
-const cors = require('cors');
+const express = require("express");
+const path = require("path");
+const cors = require("cors");
 const app = express();
 const port = process.env.PORT || 3000;
-const frontendPath = path.join(__dirname, '../COMP-2800/dist');
+const frontendPath = path.join(__dirname, "../COMP-2800/dist");
 
 //SECRETS
 const PLANTNET_API_KEY = process.env.PLANTNET_API_KEY;
 //END OF SECRETS
 
 const corsOptions = {
-	origin: ['http://localhost:5173'],
+	origin: ["http://localhost:5173"],
 };
 
 app.use(cors(corsOptions));
@@ -27,25 +27,31 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // multer for handling file uploads for PlantNet API
-const multer = require('multer');
-const upload = multer({ dest: 'uploads/' });
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
 
-app.get('/api', (req, res) => {
-	res.json({ fruits: ['mango', 'apple'] });
+app.get("/api", (req, res) => {
+	res.json({ fruits: ["mango", "apple"] });
+});
+
+app.get("/plantData", (req, res) => {
+	res.json(
+		JSON.parse(fs.readFileSync(path.join(__dirname, "uploads/bc_plant_edibility.json"), "utf-8"))
+	);
 });
 
 // accept a single image file upload (field name: "image")
-app.post('/plantIdentification', upload.single('image'), async (req, res) => {
+app.post("/plantIdentification", upload.single("image"), async (req, res) => {
 	if (!req.file) {
 		return res.status(400).json({ error: 'No file uploaded (field name must be "image")' });
 	}
 
 	const filePath = req.file.path;
 	const formData = new FormData();
-	formData.append('organs', 'auto');
-	formData.append('images', fs.createReadStream(filePath));
+	formData.append("organs", "auto");
+	formData.append("images", fs.createReadStream(filePath));
 
-	const project = 'all';
+	const project = "all";
 	try {
 		const headers = formData.getHeaders ? formData.getHeaders() : {};
 		const response = await axios.post(
@@ -58,17 +64,17 @@ app.post('/plantIdentification', upload.single('image'), async (req, res) => {
 
 		// cleanup uploaded file
 		fs.unlink(filePath, err => {
-			if (err) console.warn('Failed to remove temp upload:', err.message);
+			if (err) console.warn("Failed to remove temp upload:", err.message);
 		});
 
 		return res.json(json);
 	} catch (error) {
-		console.error('Error calling PlantNet API:', error);
+		console.error("Error calling PlantNet API:", error);
 		// cleanup uploaded file
 		fs.unlink(filePath, err => {
-			if (err) console.warn('Failed to remove temp upload:', err.message);
+			if (err) console.warn("Failed to remove temp upload:", err.message);
 		});
-		return res.status(500).json({ error: 'Identification failed' });
+		return res.status(500).json({ error: "Identification failed" });
 	}
 });
 

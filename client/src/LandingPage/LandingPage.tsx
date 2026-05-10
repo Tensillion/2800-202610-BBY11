@@ -1,23 +1,23 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { Link } from 'react-router-dom';
-import './LandingPage.css';
+import { useState, useEffect, useRef, useCallback } from "react";
+import { Link } from "react-router-dom";
+import "./LandingPage.css";
 
 const SLIDES = [
 	{
-		bg: 'https://images.unsplash.com/photo-1448375240586-882707db888b?w=1200&q=80',
-		label: 'Forage for wild edibles in Vancouver',
+		bg: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=1200&q=80",
+		label: "Forage for wild edibles in Vancouver",
 	},
 	{
-		bg: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80',
+		bg: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80",
 		label: "Scan plants with our plant identifier to find out if they're edible",
 	},
 	{
-		bg: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1200&q=80',
-		label: 'Feed your pet with your finds and watch them grow',
+		bg: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1200&q=80",
+		label: "Feed your pet with your finds and watch them grow",
 	},
 	{
-		bg: 'https://s1.zerochan.net/Seele.%28Honkai.Star.Rail%29.600.3949005.jpg',
-		label: 'Share your finds with the community',
+		bg: "https://s1.zerochan.net/Seele.%28Honkai.Star.Rail%29.600.3949005.jpg",
+		label: "Share your finds with the community",
 	},
 ];
 
@@ -114,16 +114,16 @@ export default function LandingPage() {
 						key={i}
 						className={`lp-slide ${
 							i === current ?
-								fading ? 'lp-slide--fading'
-								:	'lp-slide--active'
-							:	''
+								fading ? "lp-slide--fading"
+								:	"lp-slide--active"
+							:	""
 						}`}
 						style={{ backgroundImage: `url(${slide.bg})` }}
 					/>
 				))}
 
 				{/* Slide label overlaid at bottom of image */}
-				<p className={`lp-slide-label ${fading ? 'lp-slide-label--fading' : ''}`}>
+				<p className={`lp-slide-label ${fading ? "lp-slide-label--fading" : ""}`}>
 					{SLIDES[current].label}
 				</p>
 			</div>
@@ -134,7 +134,7 @@ export default function LandingPage() {
 					{SLIDES.map((_, i) => (
 						<button
 							key={i}
-							className={`lp-dot ${i === current ? 'lp-dot--active' : ''}`}
+							className={`lp-dot ${i === current ? "lp-dot--active" : ""}`}
 							onClick={() => goTo(i)}
 							aria-label={`Go to slide ${i + 1}`}
 						/>
@@ -142,7 +142,7 @@ export default function LandingPage() {
 				</div>
 
 				{/* Continue button, leads to signup page*/}
-				<Link to="/SignUp" className="lp-continue-link">
+				<Link to="/login" className="lp-continue-link">
 					<button className="lp-continue">Get Started!</button>
 				</Link>
 			</footer>

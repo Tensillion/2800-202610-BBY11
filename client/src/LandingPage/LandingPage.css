@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&display=swap");
 
 /* ── Tokens ── */
 :root {
 	--dur: 400ms;
-	--cherryBomb: 'Cherry Bomb One', cursive, system-ui;
+	--cherryBomb: "Cherry Bomb One", cursive, system-ui;
 }
 
 /* ── Root shell ── */
@@ -83,7 +83,7 @@
 }
 
 .lp-carousel::after {
-	content: '';
+	content: "";
 	position: absolute;
 	inset: 0;
 	background: linear-gradient(to bottom, transparent 55%, rgba(20, 30, 15, 0.55) 100%);
