@@ -1,5 +1,13 @@
 import "./ResultCard.css";
 
+/**
+ * Component for displaying the result of a plant identification, including scientific name, common names, family, edibility, and warnings.
+ *
+ * @param plantData - The data for the plant to display in the result card
+ * @returns A card displaying the plant data, including scientific name, common names, family, edibility, and warnings
+ *
+ * @author Tyson Nguyen
+ */
 export default function ResultCard(props: {
 	score: number;
 	scientificName: string;

@@ -71,6 +71,10 @@ h1 {
 	color: var(--bark);
 }
 
+::-ms-reveal {
+	filter: invert(100%);
+}
+
 .auth-input:focus {
 	border-color: var(--moss);
 	outline: none;
