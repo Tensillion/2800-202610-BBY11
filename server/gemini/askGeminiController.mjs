@@ -28,11 +28,21 @@ function validateAskGeminiBody(body) {
 		return { error: "plantInfo.name is required" };
 	}
 
+	const parts =
+		Array.isArray(plantInfo.parts) ?
+			plantInfo.parts.filter(part => typeof part === "string" && part.trim().length > 0)
+		:	[];
+	const sources =
+		Array.isArray(plantInfo.sources) ?
+			plantInfo.sources.filter(source => typeof source === "string" && source.trim().length > 0)
+		:	[];
+
 	const normalizedInfo = {
 		name: plantInfo.name.trim(),
-		description: typeof plantInfo.description === "string" ? plantInfo.description.trim() : "",
-		season: typeof plantInfo.season === "string" ? plantInfo.season.trim() : "",
-		location: typeof plantInfo.location === "string" ? plantInfo.location.trim() : "",
+		edible: typeof plantInfo.edible === "boolean" ? plantInfo.edible : undefined,
+		parts,
+		warnings: typeof plantInfo.warnings === "string" ? plantInfo.warnings.trim() : "",
+		sources,
 	};
 
 	return { question: question.trim(), plantInfo: normalizedInfo };

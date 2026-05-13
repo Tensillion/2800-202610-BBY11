@@ -14,18 +14,23 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 function buildPrompt(question, plantInfo) {
 	const infoLines = [
 		`Name: ${plantInfo.name}`,
-		plantInfo.description ? `Description: ${plantInfo.description}` : null,
-		plantInfo.season ? `Season: ${plantInfo.season}` : null,
-		plantInfo.location ? `Location: ${plantInfo.location}` : null,
+		typeof plantInfo.edible === "boolean" ? `Edible: ${plantInfo.edible ? "Yes" : "No"}` : null,
+		Array.isArray(plantInfo.parts) && plantInfo.parts.length > 0 ?
+			`Edible parts: ${plantInfo.parts.join(", ")}`
+		:	null,
+		plantInfo.warnings ? `Warnings: ${plantInfo.warnings}` : null,
+		Array.isArray(plantInfo.sources) && plantInfo.sources.length > 0 ?
+			`Sources: ${plantInfo.sources.slice(0, 3).join(", ")}`
+		:	null,
 	].filter(Boolean);
 
 	return [
-		"You are a foraging safety assistant.",
+		"You are a foraging safety assistant for the citizens of Vancouver, British Columbia.",
 		"Prioritize safety over identification or edibility claims.",
 		"Rules:",
-		"- Never guarantee a plant or mushroom is safe to eat.",
+		"- Don't guarantee a plant or mushroom is safe to eat if you're unsure.",
 		"- Warn about dangerous lookalikes and common misidentification risks.",
-		"- Encourage expert verification and multiple sources before consumption.",
+		"- If needed, encourage expert verification and multiple sources before consumption.",
 		"- Give concise, beginner-friendly answers.",
 		"- Avoid hallucinated or overly specific claims.",
 		"- Focus on safety-first guidance.",
