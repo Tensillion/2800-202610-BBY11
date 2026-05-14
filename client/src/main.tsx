@@ -22,7 +22,7 @@ import { AuthProvider } from "./context/AuthProvider.tsx";
 
 createRoot(document.getElementById("root")!).render(
 	<StrictMode>
-		<AuthProvider>
+		{/* <AuthProvider> */}
 			<BrowserRouter>
 				<Routes>
 					{/* Guest-only */}
@@ -80,9 +80,9 @@ createRoot(document.getElementById("root")!).render(
 					<Route
 						path="/collection"
 						element={
-							<ProtectedRoute>
+							// <ProtectedRoute>
 								<CollectionPage />
-							</ProtectedRoute>
+							// </ProtectedRoute>
 						}
 					/>
 					<Route
@@ -120,6 +120,6 @@ createRoot(document.getElementById("root")!).render(
 					/>
 				</Routes>
 			</BrowserRouter>
-		</AuthProvider>
+		{/* </AuthProvider> */}
 	</StrictMode>
 );

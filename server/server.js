@@ -13,7 +13,8 @@ const rateLimit = require("express-rate-limit");
 const jwt = require("jsonwebtoken");
 
 const { MongoClient } = require("mongodb");
-const { MongoStore } = require("connect-mongo");
+const MongoStore = require("connect-mongo");
+
 const bcrypt = require("bcrypt");
 const Joi = require("joi");
 

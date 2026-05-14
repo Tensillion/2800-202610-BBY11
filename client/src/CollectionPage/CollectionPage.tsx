@@ -1,6 +1,6 @@
 import Footer from '../Footer/Footer';
 import PopUp from '../PopUp/PopUp';
-
+import SearchComponent from './SearchComponent';
 const guideSteps = [
 	{
 		x: '50%',
@@ -25,7 +25,9 @@ function CollectionPage() {
 				message="View all the plants you've identified and collected here."
 				steps={guideSteps}
 			/>
-			<div>whatever collection page needs i guess</div>
+			<div>
+				<SearchComponent />
+			</div>
 			<Footer />
 		</>
 	);

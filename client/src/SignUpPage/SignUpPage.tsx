@@ -42,7 +42,7 @@ function SignUpPage() {
 	return (
 		<>
 			<div className="authentication-header">
-				<img className="logo" src="../public/Logo.png" alt="Logo" />
+				<img className="logo" src="/Logo.png" alt="Logo" />
 				<Link className="nav-link" to="/login">
 					<button className="other-page-btn">Log in</button>
 				</Link>
@@ -94,3 +94,4 @@ function SignUpPage() {
 	);
 }
 export default SignUpPage;
+	
