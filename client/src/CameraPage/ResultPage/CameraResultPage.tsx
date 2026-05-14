@@ -56,6 +56,7 @@ export default function CameraResultPage() {
 	type ResultWithLookup = PlantIdentificationResult["results"][number] & {
 		lookupKey: string | null;
 		edibility: EdibilityEntry | null;
+		_searchCandidates?: string[];
 	};
 	//END OF TYPE DEFINITIONS
 
@@ -73,58 +74,27 @@ export default function CameraResultPage() {
 	const [error, setError] = useState<string | null>(null);
 	//END OF STATE DEFINITIONS
 
-	//Helper function to normalize text for lookup, removes punctuation, converts to lowercase, etc.
-	const normalizeText = (value: string) =>
-		value
-			.toLowerCase()
-			.replace(/×/g, "x")
-			.replace(/[^a-z0-9\s-]/g, " ")
-			.replace(/\s+/g, " ")
-			.trim();
-
-	//Preprocess the edibility lookup data into a normalized form for easier matching
-	const normalizedLookup = useMemo(() => {
-		return Object.entries(edibilityLookup).reduce<
-			Record<string, { key: string; value: EdibilityEntry }>
-		>((accumulator, [key, value]) => {
-			accumulator[normalizeText(key)] = { key, value };
-			return accumulator;
-		}, {});
-	}, [edibilityLookup]);
-
-	//Merge the plant identification results with the edibility lookup data,
-	//matching by scientific name, genus, or scientific name without author, in that order of priority.
+	//Merge plant identification results with edibility data from server
 	const mergedResults = useMemo<ResultWithLookup[]>(() => {
 		const scannedResults = result?.results ?? [];
 
-		return [...scannedResults]
-			.sort((left, right) => right.score - left.score)
-			.map(item => {
-				const candidates = [
-					item.species.scientificNameWithoutAuthor,
-					item.species.scientificName,
-					item.species.genus.scientificName,
-				].filter(Boolean);
+		return scannedResults.map(item => {
+			// Extract candidates for server search
+			const candidates = [
+				item.species.scientificNameWithoutAuthor,
+				item.species.scientificName,
+				item.species.genus.scientificName,
+			].filter(Boolean);
 
-				let lookupKey: string | null = null;
-				let edibility: EdibilityEntry | null = null;
-
-				for (const candidate of candidates) {
-					const match = normalizedLookup[normalizeText(candidate)];
-					if (match) {
-						lookupKey = match.key;
-						edibility = match.value;
-						break;
-					}
-				}
-
-				return {
-					...item,
-					lookupKey,
-					edibility,
-				};
-			});
-	}, [normalizedLookup, result]);
+			// Store the candidates to be sent to server
+			return {
+				...item,
+				lookupKey: null,
+				edibility: null,
+				_searchCandidates: candidates, // temporary property for server search
+			};
+		});
+	}, [result]);
 
 	//Gets the plant identification result from the backend with Pl@ntNet API
 	useEffect(() => {
@@ -175,22 +145,50 @@ export default function CameraResultPage() {
 		return () => controller.abort();
 	}, [imageBlob, navigate, result]);
 
-	//Looks up at our data base for plants
+	//Fetch edibility data from server using plant search endpoint
 	useEffect(() => {
 		let cancelled = false;
 
-		async function loadPlantReferenceData() {
+		async function loadPlantEdibilityData() {
 			try {
-				//Replace URL with backend endpoint when ready, this is just for testing
-				const response = await fetch(`${BACKEND_URL}/plantData`);
-
-				if (!response.ok) {
-					throw new Error(`Failed to load plant reference data: ${response.status}`);
+				if (mergedResults.length === 0) {
+					setEdibilityLookup({});
+					return;
 				}
 
-				const json = (await response.json()) as EdibilityLookup;
+				// Collect all candidate names from the results
+				const candidateNames = mergedResults.flatMap(item => item._searchCandidates);
+
+				// Call the new search endpoint with parameters
+				const response = await fetch(`${BACKEND_URL}/plants/search`, {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({
+						names: candidateNames,
+						limit: 50,
+						sortField: "name",
+						sortOrder: 1,
+					}),
+				});
+
+				if (!response.ok) {
+					throw new Error(`Failed to search plants: ${response.status}`);
+				}
+
+				const plants = (await response.json()) as Array<EdibilityEntry & { name: string }>;
+
+				// Map results by name for quick lookup
 				if (!cancelled) {
-					setEdibilityLookup(json);
+					const lookup = plants.reduce<EdibilityLookup>((acc, plant) => {
+						acc[plant.name] = {
+							edible: plant.edible,
+							parts: plant.parts,
+							warnings: plant.warnings,
+							sources: plant.sources,
+						};
+						return acc;
+					}, {});
+					setEdibilityLookup(lookup);
 				}
 			} catch (fetchError) {
 				if (!cancelled) {
@@ -200,12 +198,46 @@ export default function CameraResultPage() {
 			}
 		}
 
-		loadPlantReferenceData();
+		loadPlantEdibilityData();
 
 		return () => {
 			cancelled = true;
 		};
-	}, []);
+	}, [mergedResults]);
+
+	//Match results with edibility data (already sorted by server)
+	const finalResults = useMemo<ResultWithLookup[]>(() => {
+		return mergedResults.map(item => {
+			const candidates = item._searchCandidates;
+			let lookupKey: string | null = null;
+			let edibility: EdibilityEntry | null = null;
+
+			// If no candidates, return as is
+			if (!candidates) {
+				return { ...item, lookupKey, edibility };
+			}
+
+			// Find first matching plant name in edibility lookup
+			for (const candidate of candidates) {
+				if (edibilityLookup[candidate]) {
+					lookupKey = candidate;
+					edibility = {
+						edible: edibilityLookup[candidate].edible,
+						parts: edibilityLookup[candidate].parts,
+						warnings: edibilityLookup[candidate].warnings,
+						sources: edibilityLookup[candidate].sources,
+					};
+					break;
+				}
+			}
+
+			return {
+				...item,
+				lookupKey,
+				edibility,
+			};
+		});
+	}, [mergedResults, edibilityLookup]);
 
 	//Error/Loading States
 	if (error) {
@@ -246,8 +278,8 @@ export default function CameraResultPage() {
 			)}
 
 			<div className="results-grid">
-				{mergedResults.length > 0 ?
-					mergedResults.map((item, index) => (
+				{finalResults.length > 0 ?
+					finalResults.map((item, index) => (
 						<ResultCard
 							key={index}
 							score={item.score}
