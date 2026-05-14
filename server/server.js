@@ -7,18 +7,14 @@ const axios = require("axios");
 
 // server.js
 const express = require("express");
-const session = require("express-session");
 const rateLimit = require("express-rate-limit");
-
 const jwt = require("jsonwebtoken");
 
 const { MongoClient } = require("mongodb");
-const { MongoStore } = require("connect-mongo");
+
 const bcrypt = require("bcrypt");
 const Joi = require("joi");
-
 const saltRoundsCount = 12;
-const expireTime = 1000 * 60 * 60 * 24 * 7; // 1 week
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -29,13 +25,10 @@ const frontendPath = path.join(__dirname, "../COMP-2800/dist");
 
 //SECRETS
 const PLANTNET_API_KEY = process.env.PLANTNET_API_KEY;
-
-const MONGO_URL = process.env.MONGO_URL;
 const MONGO_ATLAS_URL = process.env.MONGO_ATLAS_URL;
-const MONGO_USERS_DB = process.env.MONGO_USERS_DB;
-const MONGO_SESSION_SECRET = process.env.MONGO_SESSION_SECRET;
 
-const NODE_SESSION_SECRET = process.env.NODE_SESSION_SECRET;
+const MONGO_USERS_DB = process.env.MONGO_USERS_DB;
+const MONGO_PLANTS_DB = process.env.MONGO_PLANTS_DB;
 
 const JWT_SECRET = process.env.JWT_SECRET || "dev-secret-change-me";
 //END OF SECRETS
@@ -43,28 +36,8 @@ const JWT_SECRET = process.env.JWT_SECRET || "dev-secret-change-me";
 //DB STUFF
 const database = new MongoClient(MONGO_ATLAS_URL, {});
 const userCollection = database.db(MONGO_USERS_DB).collection("users");
-
-var mongoStore = MongoStore.create({
-	mongoUrl: MONGO_URL,
-	crypto: {
-		secret: MONGO_SESSION_SECRET,
-	},
-});
-
-app.use(
-	session({
-		secret: NODE_SESSION_SECRET,
-		store: mongoStore,
-		resave: false,
-		saveUninitialized: false,
-		cookie: {
-			httpOnly: true,
-			secure: false, // Set to true if using HTTPS
-			sameSite: "lax",
-			maxAge: expireTime,
-		},
-	})
-);
+const plantCollection = database.db(MONGO_PLANTS_DB).collection("plants");
+const petCollection = database.db(MONGO_USERS_DB).collection("pets");
 
 const corsOptions = {
 	origin: ["http://localhost:5173"],
@@ -85,10 +58,50 @@ app.get("/api", (req, res) => {
 });
 
 //Plant Data Endpoint
-app.get("/plantData", (req, res) => {
-	res.json(
-		JSON.parse(fs.readFileSync(path.join(__dirname, "uploads/bc_plant_edibility.json"), "utf-8"))
-	);
+app.get("/plantData", async (req, res) => {
+	let results = await plantCollection.find({}).toArray();
+
+	res.json(results);
+});
+
+//Plant Search Endpoint, reusable for search bar and plant identification results
+app.post("/plants/search", async (req, res) => {
+	try {
+		const { names = [], limit = 50, sortField = "name", sortOrder = 1 } = req.body;
+
+		if (!Array.isArray(names) || names.length === 0) {
+			return res.status(400).json({ error: "names must be a non-empty array" });
+		}
+
+		// Normalize names for case-insensitive matching
+		const normalizedNames = names.map(n =>
+			n
+				.toLowerCase()
+				.replace(/×/g, "x")
+				.replace(/[^a-z0-9\s-]/g, " ")
+				.replace(/\s+/g, " ")
+				.trim()
+		);
+
+		// Build regex patterns for case-insensitive search (with escaping for special chars)
+		const regexPatterns = normalizedNames.map(
+			n => new RegExp(`^${n.replace(/[-\/\\^$*+?.()| [\\]{}]/g, "\\$&")}$`, "i")
+		);
+
+		// Search for plants matching any of the names
+		const plants = await plantCollection
+			.find({
+				name: { $in: regexPatterns },
+			})
+			.sort({ [sortField]: sortOrder })
+			.limit(limit)
+			.toArray();
+
+		res.json(plants);
+	} catch (error) {
+		console.error("Error searching plants:", error);
+		res.status(500).json({ error: "Failed to search plants" });
+	}
 });
 
 // accept a single image file upload (field name: "image")
@@ -145,6 +158,12 @@ app.post("/authentication/signup", blockIfAuthenticated, async (req, res) => {
 	const { error } = schema.validate({ username, email, password });
 	if (error) {
 		return res.status(400).json({ error: error.details[0].message });
+	}
+
+	//Checks if email is already in use
+	const user = await userCollection.findOne({ email }, { projection: { password: 0 } });
+	if (user) {
+		return res.status(409).json({ error: "Email is already in use" });
 	}
 
 	const saltRounds = bcrypt.genSaltSync(saltRoundsCount);
@@ -211,6 +230,77 @@ app.get("/authentication/status", authRequired, (req, res) => {
 			userType: req.user.userType,
 		},
 	});
+});
+
+//---------------User Endpoints------------------
+
+app.post("/users/getUserData", authRequired, async (req, res) => {
+	const user = await userCollection.findOne(
+		{ _id: new MongoClient.ObjectId(req.user.userId) },
+		{ projection: { password: 0 } }
+	);
+
+	if (!user) {
+		return res.status(404).json({ error: "User not found" });
+	}
+	return res.json({ user });
+});
+
+//---------------Pet Endpoints------------------
+
+const petTypes = ["Acorn", "Mushroom", "Berry"];
+
+app.get("/petAPI/hasPet", authRequired, async (req, res) => {
+	const pet = await petCollection.findOne({
+		ownerId: new MongoClient.ObjectId(req.user.userId),
+	});
+	return res.json({ hasPet: !!pet });
+});
+
+app.get("/petAPI/getPet", authRequired, async (req, res) => {
+	try {
+		const pet = await petCollection.findOne({
+			ownerId: req.user.userId,
+		});
+		return res.json({ pet });
+	} catch (error) {
+		console.error("Error fetching pet:", error);
+		return res.status(500).json({ error: "Failed to fetch pet" });
+	}
+});
+
+app.post("/petAPI/addPet", authRequired, async (req, res) => {
+	const { name, type } = req.body;
+
+	const schema = Joi.object({
+		name: Joi.string().min(1).max(20).required(),
+		type: Joi.string()
+			.valid(...petTypes)
+			.required(),
+	});
+	const { error } = schema.validate({ name, type });
+	if (error) {
+		return res.status(400).json({ error: error.details[0].message });
+	}
+
+	// Check if user already has a pet
+	const existingPet = await petCollection.findOne({
+		ownerId: req.user.userId,
+	});
+
+	if (existingPet) {
+		return res.status(400).json({ error: "User already has a pet" });
+	}
+
+	const pet = {
+		name,
+		type,
+		ownerId: req.user.userId,
+	};
+
+	await petCollection.insertOne(pet);
+
+	return res.json({ message: "Pet added successfully" });
 });
 
 //used specifically for backend.
