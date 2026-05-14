@@ -10,8 +10,7 @@ const express = require("express");
 const rateLimit = require("express-rate-limit");
 const jwt = require("jsonwebtoken");
 
-const { MongoClient } = require("mongodb");
-
+const { MongoClient, ObjectId } = require("mongodb");
 const bcrypt = require("bcrypt");
 const Joi = require("joi");
 const saltRoundsCount = 12;
@@ -36,6 +35,7 @@ const JWT_SECRET = process.env.JWT_SECRET || "dev-secret-change-me";
 //DB STUFF
 const database = new MongoClient(MONGO_ATLAS_URL, {});
 const userCollection = database.db(MONGO_USERS_DB).collection("users");
+const markerCollection = database.db(MONGO_USERS_DB).collection("markers");
 const plantCollection = database.db(MONGO_PLANTS_DB).collection("plants");
 const petCollection = database.db(MONGO_USERS_DB).collection("pets");
 
@@ -317,6 +317,58 @@ app.post("/petAPI/addPet", authRequired, async (req, res) => {
 	await petCollection.insertOne(pet);
 
 	return res.json({ message: "Pet added successfully" });
+});
+
+//Markers Endpoints
+app.get("/markers", async (req, res) => {
+	try {
+		const markers = await markerCollection.find({}).toArray();
+		res.json(markers);
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ error: "Failed to load markers" });
+	}
+});
+
+app.post("/markers", async (req, res) => {
+	try {
+		const { lat, lng } = req.body;
+
+		if (lat == null || lng == null) {
+			return res.status(400).json({ error: "lat and lng required" });
+		}
+
+		const newMarker = {
+			lat,
+			lng,
+			createdAt: new Date(),
+		};
+
+		const result = await markerCollection.insertOne(newMarker);
+
+		res.json({
+			_id: result.insertedId,
+			...newMarker,
+		});
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ error: "Failed to save marker" });
+	}
+});
+
+app.delete("/markers/:id", async (req, res) => {
+	try {
+		const id = req.params.id;
+
+		await markerCollection.deleteOne({
+			_id: new ObjectId(id),
+		});
+
+		res.json({ message: "Marker deleted" });
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ error: "Failed to delete marker" });
+	}
 });
 
 //used specifically for backend.
