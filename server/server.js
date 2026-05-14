@@ -49,9 +49,25 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+//------------------ Gemini Route ------------------
+async function registerGeminiRoutes() {
+	const { default: askGeminiRouter } = await import("./gemini/askGeminiRoute.mjs");
+	app.use(askGeminiRouter);
+}
+
+//------------------Pl@ntNet API------------------
+
 // multer for handling file uploads for PlantNet API
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
+
+const plantCaptureLimiter = rateLimit({
+	windowMs: 60 * 1000, // 1 minute
+	max: 5, // 5 attempts per minute
+	message: { error: "Too many captures attempts. Try again later." },
+	standardHeaders: true,
+	legacyHeaders: false,
+});
 
 app.get("/api", (req, res) => {
 	res.json({ fruits: ["mango", "apple"] });
@@ -105,7 +121,7 @@ app.post("/plants/search", async (req, res) => {
 });
 
 // accept a single image file upload (field name: "image")
-app.post("/plantIdentification", upload.single("image"), async (req, res) => {
+app.post("/plantIdentification", plantCaptureLimiter, upload.single("image"), async (req, res) => {
 	if (!req.file) {
 		return res.status(400).json({ error: 'No file uploaded (field name must be "image")' });
 	}
@@ -146,6 +162,14 @@ app.post("/plantIdentification", upload.single("image"), async (req, res) => {
 const authRequired = require("./Middleware/authMiddleware");
 const blockIfAuthenticated = require("./Middleware/blockIfAuthenticated");
 
+const loginLimiter = rateLimit({
+	windowMs: 60 * 1000, // 1 minute
+	max: 5, // 5 attempts per minute
+	message: { error: "Too many login attempts. Try again later." },
+	standardHeaders: true,
+	legacyHeaders: false,
+});
+
 app.post("/authentication/signup", blockIfAuthenticated, async (req, res) => {
 	let { username, email, password } = req.body;
 
@@ -178,14 +202,6 @@ app.post("/authentication/signup", blockIfAuthenticated, async (req, res) => {
 	});
 
 	return res.json({ message: "User created and logged in successfully", token });
-});
-
-const loginLimiter = rateLimit({
-	windowMs: 60 * 1000, // 1 minute
-	max: 5, // 5 attempts per minute
-	message: { error: "Too many login attempts. Try again later." },
-	standardHeaders: true,
-	legacyHeaders: false,
 });
 
 app.post("/authentication/login", loginLimiter, blockIfAuthenticated, async (req, res) => {
@@ -304,6 +320,16 @@ app.post("/petAPI/addPet", authRequired, async (req, res) => {
 });
 
 //used specifically for backend.
-app.listen(port, () => {
-	console.log(`Backend running on http://localhost:${port}`);
-});
+async function startServer() {
+	try {
+		await registerGeminiRoutes();
+	} catch (error) {
+		console.error("Failed to register Gemini routes:", error);
+	}
+
+	app.listen(port, () => {
+		console.log(`Backend running on http://localhost:${port}`);
+	});
+}
+
+startServer();
