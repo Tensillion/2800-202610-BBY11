@@ -51,21 +51,23 @@ createRoot(document.getElementById("root")!).render(
 							</GuestRoute>
 						}
 					/>
+					
 
 					{/* Protected */}
-					<Route
-						path="/map"
-						element={
-							<ProtectedRoute>
-								<MapPage />
-							</ProtectedRoute>
-						}
-					/>
+				
 					<Route
 						path="/profile"
 						element={
 							<ProtectedRoute>
 								<ProfilePage />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path="/map"
+						element={
+							<ProtectedRoute>
+								<MapPage />
 							</ProtectedRoute>
 						}
 					/>

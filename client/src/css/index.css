@@ -3,10 +3,18 @@
 :root {
 	--cream: #f8f5f0;
 	--dark-cream: #c8c0b4;
+	--darker-cream: #a89e8e;
+
 	--dark-green: #2d4a2d;
 	--forest: #2d4a2d;
 	--moss: #5a7a4a;
+
+	--light-bark: #5f432b;
 	--bark: #3e2c1c;
+	--dark-bark: #2b1f14;
+
+	--black-text: #1c1c1c;
+	--white-text: #f8f5f0;
 
 	--radius: 28px;
 
@@ -30,6 +38,8 @@
 	@media (max-width: 1024px) {
 		font-size: 16px;
 	}
+
+	overflow-x: hidden; /* Hide horizontal scrollbar */
 }
 
 #root {
