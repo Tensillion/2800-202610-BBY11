@@ -38,6 +38,8 @@
 	@media (max-width: 1024px) {
 		font-size: 16px;
 	}
+
+	overflow-x: hidden; /* Hide horizontal scrollbar */
 }
 
 #root {

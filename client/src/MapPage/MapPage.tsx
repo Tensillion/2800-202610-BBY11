@@ -1,190 +1,188 @@
-import PopUp from '../PopUp/PopUp';
-import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import L, { Map as LeafletMap, Marker, LatLng } from 'leaflet';
+import PopUp from "../PopUp/PopUp";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import L, { Map as LeafletMap, Marker, LatLng } from "leaflet";
 
-import 'leaflet/dist/leaflet.css';
+import "leaflet/dist/leaflet.css";
 
-import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
-import markerIcon from 'leaflet/dist/images/marker-icon.png';
-import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
+import markerIcon from "leaflet/dist/images/marker-icon.png";
+import markerShadow from "leaflet/dist/images/marker-shadow.png";
 
-import Footer from '../Footer/Footer';
+import Footer from "../Footer/Footer";
+
+type PlantMarker = Marker & { dbId?: string };
 
 delete (
-  L.Icon.Default.prototype as Partial<L.Icon.Default> & {
-    _getIconUrl?: string;
-  }
+	L.Icon.Default.prototype as Partial<L.Icon.Default> & {
+		_getIconUrl?: string;
+	}
 )._getIconUrl;
 
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl: markerIcon2x,
-  iconUrl: markerIcon,
-  shadowUrl: markerShadow,
+	iconRetinaUrl: markerIcon2x,
+	iconUrl: markerIcon,
+	shadowUrl: markerShadow,
 });
 
 const guideSteps = [
-  {
-    x: '50%',
-    y: 300,
-    title: 'Scan Your Area!',
-    message: 'This is where you can explore the map and find plants in your area.',
-  },
-  {
-    x: '70%',
-    y: 150,
-    title: 'Sort for Plants!',
-    message:
-      'Use the filters to sort for different types of plants and find the ones you are interested in!',
-  },
-  {
-    x: '50%',
-    y: 120,
-    title: 'Share your finds!',
-    message:
-      'Share your plant discoveries with the community and help others find great forage locations!',
-  },
+	{
+		x: "50%",
+		y: 300,
+		title: "Scan Your Area!",
+		message: "This is where you can explore the map and find plants in your area.",
+	},
+	{
+		x: "70%",
+		y: 150,
+		title: "Sort for Plants!",
+		message:
+			"Use the filters to sort for different types of plants and find the ones you are interested in!",
+	},
+	{
+		x: "50%",
+		y: 120,
+		title: "Share your finds!",
+		message:
+			"Share your plant discoveries with the community and help others find great forage locations!",
+	},
 ];
 
 function MapPage() {
-  const navigate = useNavigate();
-  const mapRef = useRef<LeafletMap | null>(null);
-  const markersRef = useRef<Marker[]>([]);
-  const pendingMarkerRef = useRef<Marker | null>(null);
+	const navigate = useNavigate();
+	const mapRef = useRef<LeafletMap | null>(null);
+	const markersRef = useRef<Marker[]>([]);
+	const pendingMarkerRef = useRef<Marker | null>(null);
 
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [pendingLatLng, setPendingLatLng] = useState<LatLng | null>(null);
-  const [plantName, setPlantName] = useState('');
+	const [sidebarOpen, setSidebarOpen] = useState(false);
+	const [pendingLatLng, setPendingLatLng] = useState<LatLng | null>(null);
+	const [plantName, setPlantName] = useState("");
 
-  const closeSidebar = () => {
-    pendingMarkerRef.current?.remove();
-    pendingMarkerRef.current = null;
-    setSidebarOpen(false);
-    setPendingLatLng(null);
-    setPlantName('');
-  };
+	const closeSidebar = () => {
+		pendingMarkerRef.current?.remove();
+		pendingMarkerRef.current = null;
+		setSidebarOpen(false);
+		setPendingLatLng(null);
+		setPlantName("");
+	};
 
-  const confirmMarker = async () => {
-    if (!pendingLatLng || !plantName.trim()) return;
+	const confirmMarker = async () => {
+		if (!pendingLatLng || !plantName.trim()) return;
 
-    try {
-      const response = await fetch('http://localhost:3000/markers', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          lat: pendingLatLng.lat,
-          lng: pendingLatLng.lng,
-          plantName: plantName.trim(),
-        }),
-      });
+		try {
+			const response = await fetch("http://localhost:3000/markers", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					lat: pendingLatLng.lat,
+					lng: pendingLatLng.lng,
+					plantName: plantName.trim(),
+				}),
+			});
 
-      if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
+			if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
 
-      const savedMarker = await response.json();
+			const savedMarker = await response.json();
 
-      pendingMarkerRef.current?.remove();
-      pendingMarkerRef.current = null;
+			pendingMarkerRef.current?.remove();
+			pendingMarkerRef.current = null;
 
-      const marker = L.marker([savedMarker.lat, savedMarker.lng]).addTo(mapRef.current!);
-      (marker as any).dbId = savedMarker._id;
-      markersRef.current.push(marker);
-      addPopup(marker, savedMarker._id);
+			const marker = L.marker([savedMarker.lat, savedMarker.lng]).addTo(mapRef.current!);
+			(marker as PlantMarker).dbId = savedMarker._id;
+			markersRef.current.push(marker);
+			addPopup(marker, savedMarker._id);
 
-      closeSidebar();
-    } catch (err) {
-      console.error('Failed to save marker:', err);
-    }
-  };
+			closeSidebar();
+		} catch (err) {
+			console.error("Failed to save marker:", err);
+		}
+	};
 
-  const addPopup = (marker: Marker, markerId: string) => {
-    marker.bindPopup(`
+	const addPopup = (marker: Marker, markerId: string) => {
+		marker.bindPopup(`
       <div style="display: flex; flex-direction: column; gap: 8px;">
         <button id="open-btn-${markerId}">Open Item</button>
         <button id="delete-btn-${markerId}">Delete Marker</button>
       </div>
     `);
 
-    marker.on('popupopen', () => {
-      const openBtn = document.getElementById(`open-btn-${markerId}`);
-      const deleteBtn = document.getElementById(`delete-btn-${markerId}`);
+		marker.on("popupopen", () => {
+			const openBtn = document.getElementById(`open-btn-${markerId}`);
+			const deleteBtn = document.getElementById(`delete-btn-${markerId}`);
 
-      openBtn?.addEventListener('click', () => {
-        navigate('/ItemPage');
-      });
+			openBtn?.addEventListener("click", () => {
+				navigate("/ItemPage");
+			});
 
-      deleteBtn?.addEventListener('click', async () => {
-        try {
-          await fetch(`http://localhost:3000/markers/${markerId}`, { method: 'DELETE' });
-          marker.remove();
-          markersRef.current = markersRef.current.filter(m => m !== marker);
-        } catch (err) {
-          console.error('Failed to delete marker:', err);
-        }
-      });
-    });
-  };
+			deleteBtn?.addEventListener("click", async () => {
+				try {
+					await fetch(`http://localhost:3000/markers/${markerId}`, { method: "DELETE" });
+					marker.remove();
+					markersRef.current = markersRef.current.filter(m => m !== marker);
+				} catch (err) {
+					console.error("Failed to delete marker:", err);
+				}
+			});
+		});
+	};
 
-  useEffect(() => {
-    const map = L.map('map', { doubleClickZoom: false }).setView([49.2827, -123.1207], 14);
-    mapRef.current = map;
+	useEffect(() => {
+		const map = L.map("map", { doubleClickZoom: false }).setView([49.2827, -123.1207], 14);
+		mapRef.current = map;
 
-    L.tileLayer(
-      `https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=gDkxVYMhRLP8Cdndhy8P`,
-      {
-        attribution:
-          '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
-      }
-    ).addTo(map);
+		L.tileLayer(`https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=gDkxVYMhRLP8Cdndhy8P`, {
+			attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+		}).addTo(map);
 
-    fetch('http://localhost:3000/markers')
-      .then(res => {
-        if (!res.ok) throw new Error(`HTTP error: ${res.status}`);
-        return res.json();
-      })
-      .then((savedMarkers: { _id: string; lat: number; lng: number }[]) => {
-        savedMarkers.forEach(savedMarker => {
-          const marker = L.marker([savedMarker.lat, savedMarker.lng]).addTo(map);
-          (marker as any).dbId = savedMarker._id;
-          markersRef.current.push(marker);
-          addPopup(marker, savedMarker._id);
-        });
-      })
-      .catch(err => console.error('Failed to load markers:', err));
+		fetch("http://localhost:3000/markers")
+			.then(res => {
+				if (!res.ok) throw new Error(`HTTP error: ${res.status}`);
+				return res.json();
+			})
+			.then((savedMarkers: { _id: string; lat: number; lng: number }[]) => {
+				savedMarkers.forEach(savedMarker => {
+					const marker: PlantMarker = L.marker([savedMarker.lat, savedMarker.lng]).addTo(map);
+					marker.dbId = savedMarker._id;
+					markersRef.current.push(marker);
+					addPopup(marker, savedMarker._id);
+				});
+			})
+			.catch(err => console.error("Failed to load markers:", err));
 
-    map.on('dblclick', e => {
-      pendingMarkerRef.current?.remove();
+		map.on("dblclick", e => {
+			pendingMarkerRef.current?.remove();
 
-      const ghostIcon = L.icon({
-        iconUrl: markerIcon,
-        iconRetinaUrl: markerIcon2x,
-        shadowUrl: markerShadow,
-        iconSize: [25, 41],
-        iconAnchor: [12, 41],
-        className: 'ghost-marker',
-      });
+			const ghostIcon = L.icon({
+				iconUrl: markerIcon,
+				iconRetinaUrl: markerIcon2x,
+				shadowUrl: markerShadow,
+				iconSize: [25, 41],
+				iconAnchor: [12, 41],
+				className: "ghost-marker",
+			});
 
-      const ghost = L.marker([e.latlng.lat, e.latlng.lng], { icon: ghostIcon }).addTo(map);
-      pendingMarkerRef.current = ghost;
-      setPendingLatLng(e.latlng);
-      setSidebarOpen(true);
-    });
+			const ghost = L.marker([e.latlng.lat, e.latlng.lng], { icon: ghostIcon }).addTo(map);
+			pendingMarkerRef.current = ghost;
+			setPendingLatLng(e.latlng);
+			setSidebarOpen(true);
+		});
 
-    return () => {
-      map.remove();
-      mapRef.current = null;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [navigate]);
+		return () => {
+			map.remove();
+			mapRef.current = null;
+		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [navigate]);
 
-  return (
-    <>
-      <PopUp
-        title="Welcome to the Map Page!"
-        message="Explore the map to find plants in your area."
-        steps={guideSteps}
-      />
+	return (
+		<>
+			<PopUp
+				title="Welcome to the Map Page!"
+				message="Explore the map to find plants in your area."
+				steps={guideSteps}
+			/>
 
-      <style>{`
+			<style>{`
         .ghost-marker { opacity: 0.5; }
 
         .plant-sidebar {
@@ -291,44 +289,42 @@ function MapPage() {
         }
       `}</style>
 
-      <div id="map" style={{ height: '1020px', width: '100%' }} />
+			<div id="map" style={{ height: "100vh", width: "100vw" }} />
 
-      <div className={`plant-sidebar ${sidebarOpen ? 'open' : ''}`}>
-        <div className="sidebar-header">
-          <h2>New Plant Marker</h2>
-          <button className="sidebar-close" onClick={closeSidebar}>✕</button>
-        </div>
+			<div className={`plant-sidebar ${sidebarOpen ? "open" : ""}`}>
+				<div className="sidebar-header">
+					<h2>New Plant Marker</h2>
+					<button className="sidebar-close" onClick={closeSidebar}>
+						✕
+					</button>
+				</div>
 
-        <div className="sidebar-body">
-          <label htmlFor="plant-name-input">Plant Name</label>
-          <input
-            id="plant-name-input"
-            type="text"
-            placeholder="e.g. Salmon Berry"
-            value={plantName}
-            onChange={e => setPlantName(e.target.value)}
-            onKeyDown={e => e.key === 'Enter' && confirmMarker()}
-            autoFocus
-          />
-        </div>
+				<div className="sidebar-body">
+					<label htmlFor="plant-name-input">Plant Name</label>
+					<input
+						id="plant-name-input"
+						type="text"
+						placeholder="e.g. Salmon Berry"
+						value={plantName}
+						onChange={e => setPlantName(e.target.value)}
+						onKeyDown={e => e.key === "Enter" && confirmMarker()}
+						autoFocus
+					/>
+				</div>
 
-        <div className="sidebar-footer">
-          <button className="btn-cancel" onClick={closeSidebar}>
-            Cancel
-          </button>
-          <button
-            className="btn-confirm"
-            disabled={!plantName.trim()}
-            onClick={confirmMarker}
-          >
-            Place Marker
-          </button>
-        </div>
-      </div>
+				<div className="sidebar-footer">
+					<button className="btn-cancel" onClick={closeSidebar}>
+						Cancel
+					</button>
+					<button className="btn-confirm" disabled={!plantName.trim()} onClick={confirmMarker}>
+						Place Marker
+					</button>
+				</div>
+			</div>
 
-      <Footer />
-    </>
-  );
+			<Footer />
+		</>
+	);
 }
 
 export default MapPage;
