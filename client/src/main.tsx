@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import "./css/index.css";
+import Footer from "./Footer/Footer.tsx";
 import LandingPage from "./LandingPage/LandingPage.tsx";
 import CollectionPage from "./CollectionPage/CollectionPage.tsx";
 import CameraPage from "./CameraPage/CameraPage.tsx";
@@ -59,6 +60,7 @@ createRoot(document.getElementById("root")!).render(
 						element={
 							<ProtectedRoute>
 								<ProfilePage />
+								<Footer />
 							</ProtectedRoute>
 						}
 					/>
@@ -67,6 +69,7 @@ createRoot(document.getElementById("root")!).render(
 						element={
 							<ProtectedRoute>
 								<MapPage />
+								<Footer />
 							</ProtectedRoute>
 						}
 					/>
@@ -75,6 +78,7 @@ createRoot(document.getElementById("root")!).render(
 						element={
 							<ProtectedRoute>
 								<PetPage />
+								<Footer />
 							</ProtectedRoute>
 						}
 					/>
@@ -83,6 +87,7 @@ createRoot(document.getElementById("root")!).render(
 						element={
 							<ProtectedRoute>
 								<CollectionPage />
+								<Footer />
 							</ProtectedRoute>
 						}
 					/>
@@ -91,6 +96,7 @@ createRoot(document.getElementById("root")!).render(
 						element={
 							<ProtectedRoute>
 								<SettingsPage />
+								<Footer />
 							</ProtectedRoute>
 						}
 					/>
@@ -99,6 +105,7 @@ createRoot(document.getElementById("root")!).render(
 						element={
 							<ProtectedRoute>
 								<ItemPage />
+								<Footer />
 							</ProtectedRoute>
 						}
 					/>
@@ -108,6 +115,7 @@ createRoot(document.getElementById("root")!).render(
 						element={
 							<ProtectedRoute>
 								<CameraPage />
+								<Footer />
 							</ProtectedRoute>
 						}
 					/>
@@ -116,6 +124,7 @@ createRoot(document.getElementById("root")!).render(
 						element={
 							<ProtectedRoute>
 								<CameraResultPage />
+								<Footer />
 							</ProtectedRoute>
 						}
 					/>

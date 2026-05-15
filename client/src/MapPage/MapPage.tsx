@@ -9,8 +9,6 @@ import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
 
-import Footer from "../Footer/Footer";
-
 type PlantMarker = Marker & { dbId?: string };
 
 delete (
@@ -321,8 +319,6 @@ function MapPage() {
 					</button>
 				</div>
 			</div>
-
-			<Footer />
 		</>
 	);
 }

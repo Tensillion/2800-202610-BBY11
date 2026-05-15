@@ -1,5 +1,4 @@
 import { useState, useEffect, useContext, useCallback } from "react";
-import Footer from "../Footer/Footer";
 import PopUp from "../PopUp/PopUp";
 import PetOnboardingFlow from "./PetOnboardingFlow";
 import { AuthContext } from "../context/AuthContext";
@@ -10,20 +9,13 @@ import Pet from "./Pet/Pet";
 const guideSteps = [
 	{
 		x: "50%",
-		y: 300,
+		y: "80%",
 		title: "Feed Your Pet",
 		message: "This is where you use the food to feed your pet.",
 	},
 	{
-		x: "70%",
-		y: 150,
-		title: "Shop for Accessories",
-		message:
-			"Staying active and taking care of your pet will earn you credits that you can use to customize your pet!",
-	},
-	{
 		x: "50%",
-		y: 120,
+		y: "30%",
 		title: "Keep Your Pet Healthy",
 		message:
 			"Make sure to feed your pet regularly and take care of it to keep it happy and healthy.",
@@ -186,7 +178,6 @@ function PetPage() {
 					<div className="spinner" />
 					<p>Loading...</p>
 				</div>
-				<Footer />
 			</>
 		);
 	}
@@ -198,7 +189,6 @@ function PetPage() {
 					<p>Error: {error}</p>
 					<button onClick={() => checkIfUserHasPet()}>Try Again</button>
 				</div>
-				<Footer />
 			</>
 		);
 	}
@@ -207,7 +197,6 @@ function PetPage() {
 		return (
 			<>
 				<PetOnboardingFlow onComplete={handleOnboardingComplete} />
-				<Footer />
 			</>
 		);
 	}
@@ -229,11 +218,6 @@ function PetPage() {
 
 			<div className="pet-scene">
 				<Pet imageUrl={`/assets/pets/${pet.type}-pet-sitting.png`} />
-			</div>
-
-			{/* Footer lives inside the fixed section, pinned to bottom */}
-			<div className="pet-footer">
-				<Footer />
 			</div>
 		</section>
 	);

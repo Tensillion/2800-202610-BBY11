@@ -16,6 +16,8 @@
 	align-items: center;
 
 	justify-content: space-around;
+	-webkit-user-select: none;
+	user-select: none;
 }
 
 .nav-item-link {
@@ -31,7 +33,7 @@
 
 .nav-item-label {
 	font-size: clamp(12px, 2vw, 16px);
-	transition: color 1s ease;
+	transition: all 0.5s ease;
 
 	margin-top: 0px;
 	padding-top: 0px;
