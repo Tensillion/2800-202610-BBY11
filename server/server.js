@@ -268,7 +268,7 @@ const petTypes = ["Acorn", "Mushroom", "Berry"];
 
 app.get("/petAPI/hasPet", authRequired, async (req, res) => {
 	const pet = await petCollection.findOne({
-		ownerId: new ObjectId(req.user.userId),
+		ownerId: req.user.userId,
 	});
 	return res.json({ hasPet: !!pet });
 });
@@ -276,7 +276,7 @@ app.get("/petAPI/hasPet", authRequired, async (req, res) => {
 app.get("/petAPI/getPet", authRequired, async (req, res) => {
 	try {
 		const pet = await petCollection.findOne({
-			ownerId: new ObjectId(req.user.userId),
+			ownerId: req.user.userId,
 		});
 		return res.json({ pet });
 	} catch (error) {
@@ -301,7 +301,7 @@ app.post("/petAPI/addPet", authRequired, async (req, res) => {
 
 	// Check if user already has a pet
 	const existingPet = await petCollection.findOne({
-		ownerId: new ObjectId(req.user.userId),
+		ownerId: req.user.userId,
 	});
 
 	if (existingPet) {
@@ -316,7 +316,7 @@ app.post("/petAPI/addPet", authRequired, async (req, res) => {
 		happiness: 100,
 		lastupdate: Date.now() / 1000,
 		decayrate: 0.001,
-		ownerId: new ObjectId(req.user.userId),
+		ownerId: req.user.userId,
 	};
 
 	await petCollection.insertOne(pet);
@@ -326,7 +326,7 @@ app.post("/petAPI/addPet", authRequired, async (req, res) => {
 
 app.post("/petAPI/updatePet", authRequired, async (req, res) => {
 	const pet = await petCollection.findOne({
-		ownerId: new ObjectId(req.user.userId),
+		ownerId: req.user.userId,
 	});
 
 	if (!pet) {
@@ -390,7 +390,7 @@ app.get("/markers", async (req, res) => {
 app.post("/markers", authRequired, async (req, res) => {
 	try {
 		const { lat, lng, plantName } = req.body;
-	    const userId = req.user.userId.toString();
+		const userId = req.user.userId.toString();
 
 		if (lat == null || lng == null) {
 			return res.status(400).json({ error: "lat and lng required" });
