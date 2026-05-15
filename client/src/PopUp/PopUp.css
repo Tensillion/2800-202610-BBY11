@@ -23,9 +23,11 @@
 }
 .popup-title {
 	margin-top: 0;
+	font-size: clamp(18px, 3vw, 24px);
 }
 .popup-message {
 	margin-bottom: 20px;
+	font-size: clamp(14px, 2vw, 18px);
 }
 .popup-close {
 	background: var(--forest);
