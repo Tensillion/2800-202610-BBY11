@@ -12,7 +12,6 @@ import markerShadow from "leaflet/dist/images/marker-shadow.png";
 import Footer from "../Footer/Footer";
 
 type PlantMarker = Marker & { dbId?: string };
-
 delete (
 	L.Icon.Default.prototype as Partial<L.Icon.Default> & {
 		_getIconUrl?: string;
@@ -23,6 +22,13 @@ L.Icon.Default.mergeOptions({
 	iconRetinaUrl: markerIcon2x,
 	iconUrl: markerIcon,
 	shadowUrl: markerShadow,
+});
+
+const customIcon = L.icon({
+	iconUrl: "/public/leaf.png", 
+	iconSize: [40, 70],
+	iconAnchor: [20, 40],     
+	popupAnchor: [0, -40],
 });
 
 const guideSteps = [
@@ -58,6 +64,8 @@ function MapPage() {
 	const [pendingLatLng, setPendingLatLng] = useState<LatLng | null>(null);
 	const [plantName, setPlantName] = useState("");
 
+	const token = localStorage.getItem("token");
+	const currentUserId = token ? JSON.parse(atob(token.split(".")[1])).userId : "";
 	const closeSidebar = () => {
 		pendingMarkerRef.current?.remove();
 		pendingMarkerRef.current = null;
@@ -72,7 +80,9 @@ function MapPage() {
 		try {
 			const response = await fetch("http://localhost:3000/markers", {
 				method: "POST",
-				headers: { "Content-Type": "application/json" },
+				headers: { "Content-Type": "application/json",
+					       "Authorization": `Bearer ${localStorage.getItem("token")}`, 
+						 },
 				body: JSON.stringify({
 					lat: pendingLatLng.lat,
 					lng: pendingLatLng.lng,
@@ -87,10 +97,10 @@ function MapPage() {
 			pendingMarkerRef.current?.remove();
 			pendingMarkerRef.current = null;
 
-			const marker = L.marker([savedMarker.lat, savedMarker.lng]).addTo(mapRef.current!);
+			const marker = L.marker([savedMarker.lat, savedMarker.lng], { icon: customIcon }).addTo(mapRef.current!);
 			(marker as PlantMarker).dbId = savedMarker._id;
 			markersRef.current.push(marker);
-			addPopup(marker, savedMarker._id);
+			addPopup(marker, savedMarker._id, savedMarker.userId);
 
 			closeSidebar();
 		} catch (err) {
@@ -98,25 +108,30 @@ function MapPage() {
 		}
 	};
 
-	const addPopup = (marker: Marker, markerId: string) => {
+	const addPopup = (marker: Marker, markerId: string, markerUserId: string) => {
+		const isOwner = currentUserId === markerUserId;
+
 		marker.bindPopup(`
-      <div style="display: flex; flex-direction: column; gap: 8px;">
-        <button id="open-btn-${markerId}">Open Item</button>
-        <button id="delete-btn-${markerId}">Delete Marker</button>
-      </div>
-    `);
+			<div style="display: flex; flex-direction: column; gap: 8px;">
+				<button id="open-btn-${markerId}">Open Item</button>
+				${isOwner ? `<button id="delete-btn-${markerId}">Delete Marker</button>` : ""}
+			</div>
+		`);
 
 		marker.on("popupopen", () => {
 			const openBtn = document.getElementById(`open-btn-${markerId}`);
 			const deleteBtn = document.getElementById(`delete-btn-${markerId}`);
 
-			openBtn?.addEventListener("click", () => {
-				navigate("/ItemPage");
-			});
+			openBtn?.addEventListener("click", () => { navigate("/ItemPage"); });
 
 			deleteBtn?.addEventListener("click", async () => {
 				try {
-					await fetch(`http://localhost:3000/markers/${markerId}`, { method: "DELETE" });
+					await fetch(`http://localhost:3000/markers/${markerId}`, {
+						method: "DELETE",
+						headers: { 
+							"Authorization": `Bearer ${localStorage.getItem("token")}`, 
+						},
+					});
 					marker.remove();
 					markersRef.current = markersRef.current.filter(m => m !== marker);
 				} catch (err) {
@@ -127,7 +142,18 @@ function MapPage() {
 	};
 
 	useEffect(() => {
-		const map = L.map("map", { doubleClickZoom: false }).setView([49.2827, -123.1207], 14);
+		const vancouverBounds = L.latLngBounds(
+			[49.19, -123.3], // Southwest Coordinates
+			[49.4, -123.0]   // Northeast Coordinates
+		);
+
+		const map = L.map("map", {
+			doubleClickZoom: false,
+			maxBounds: vancouverBounds,
+			maxBoundsViscosity: 1.0,
+			minZoom: 10,
+		}).setView([49.2827, -123.1207], 14);
+
 		mapRef.current = map;
 
 		L.tileLayer(`https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=gDkxVYMhRLP8Cdndhy8P`, {
@@ -139,12 +165,12 @@ function MapPage() {
 				if (!res.ok) throw new Error(`HTTP error: ${res.status}`);
 				return res.json();
 			})
-			.then((savedMarkers: { _id: string; lat: number; lng: number }[]) => {
+			.then((savedMarkers: { _id: string; lat: number; lng: number; userId: string }[]) => {
 				savedMarkers.forEach(savedMarker => {
-					const marker: PlantMarker = L.marker([savedMarker.lat, savedMarker.lng]).addTo(map);
+					const marker: PlantMarker = L.marker([savedMarker.lat, savedMarker.lng], { icon: customIcon }).addTo(map);
 					marker.dbId = savedMarker._id;
 					markersRef.current.push(marker);
-					addPopup(marker, savedMarker._id);
+					addPopup(marker, savedMarker._id, savedMarker.userId);
 				});
 			})
 			.catch(err => console.error("Failed to load markers:", err));
@@ -152,16 +178,7 @@ function MapPage() {
 		map.on("dblclick", e => {
 			pendingMarkerRef.current?.remove();
 
-			const ghostIcon = L.icon({
-				iconUrl: markerIcon,
-				iconRetinaUrl: markerIcon2x,
-				shadowUrl: markerShadow,
-				iconSize: [25, 41],
-				iconAnchor: [12, 41],
-				className: "ghost-marker",
-			});
-
-			const ghost = L.marker([e.latlng.lat, e.latlng.lng], { icon: ghostIcon }).addTo(map);
+			const ghost = L.marker([e.latlng.lat, e.latlng.lng], { icon: customIcon }).addTo(map);
 			pendingMarkerRef.current = ghost;
 			setPendingLatLng(e.latlng);
 			setSidebarOpen(true);
@@ -171,7 +188,7 @@ function MapPage() {
 			map.remove();
 			mapRef.current = null;
 		};
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+		
 	}, [navigate]);
 
 	return (
@@ -198,6 +215,8 @@ function MapPage() {
           flex-direction: column;
           transform: translateX(100%);
           transition: transform 0.3s ease;
+		  max-height: 100dvh;
+  		  overflow-y: auto;
         }
         .plant-sidebar.open {
           transform: translateX(0);
@@ -224,12 +243,13 @@ function MapPage() {
           line-height: 1;
         }
         .sidebar-body {
-          flex: 1;
-          padding: 24px 16px;
-          display: flex;
-          flex-direction: column;
-          gap: 8px;
-        }
+  		flex: 1;
+  		padding: 24px 16px;
+  		display: flex;
+  		flex-direction: column;
+  		gap: 8px;
+  		flex: unset;
+		}
         .sidebar-body label {
           font-size: 0.9rem;
           font-weight: 500;
@@ -253,6 +273,9 @@ function MapPage() {
           border-top: 1px solid #e5e7eb;
           display: flex;
           gap: 10px;
+		  position: sticky;
+  		  bottom: 0;
+ 		  background: #fff;
         }
         .btn-confirm {
           flex: 1;
@@ -294,11 +317,8 @@ function MapPage() {
 			<div className={`plant-sidebar ${sidebarOpen ? "open" : ""}`}>
 				<div className="sidebar-header">
 					<h2>New Plant Marker</h2>
-					<button className="sidebar-close" onClick={closeSidebar}>
-						✕
-					</button>
+					<button className="sidebar-close" onClick={closeSidebar}>✕</button>
 				</div>
-
 				<div className="sidebar-body">
 					<label htmlFor="plant-name-input">Plant Name</label>
 					<input
@@ -311,11 +331,8 @@ function MapPage() {
 						autoFocus
 					/>
 				</div>
-
 				<div className="sidebar-footer">
-					<button className="btn-cancel" onClick={closeSidebar}>
-						Cancel
-					</button>
+					<button className="btn-cancel" onClick={closeSidebar}>Cancel</button>
 					<button className="btn-confirm" disabled={!plantName.trim()} onClick={confirmMarker}>
 						Place Marker
 					</button>

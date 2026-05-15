@@ -387,9 +387,10 @@ app.get("/markers", async (req, res) => {
 	}
 });
 
-app.post("/markers", async (req, res) => {
+app.post("/markers", authRequired, async (req, res) => {
 	try {
-		const { lat, lng } = req.body;
+		const { lat, lng, plantName } = req.body;
+	    const userId = req.user.userId.toString();
 
 		if (lat == null || lng == null) {
 			return res.status(400).json({ error: "lat and lng required" });
@@ -398,6 +399,8 @@ app.post("/markers", async (req, res) => {
 		const newMarker = {
 			lat,
 			lng,
+			plantName,
+			userId,
 			createdAt: new Date(),
 		};
 
@@ -416,6 +419,7 @@ app.post("/markers", async (req, res) => {
 app.delete("/markers/:id", async (req, res) => {
 	try {
 		const id = req.params.id;
+		const requestingUserId = req.user.userId;
 
 		await markerCollection.deleteOne({
 			_id: new ObjectId(id),
