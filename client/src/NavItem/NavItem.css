@@ -31,7 +31,7 @@
 
 .nav-item-label {
 	font-size: clamp(12px, 2vw, 16px);
-	transition: color 0.2s ease;
+	transition: color 1s ease;
 
 	margin-top: 0px;
 	padding-top: 0px;

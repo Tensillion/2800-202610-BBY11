@@ -1,6 +1,6 @@
-import { CameraIcon, CollectionIcon, MapIcon, PetIcon, ProfileIcon } from '../components/Icons';
-import NavItem from '../NavItem/NavItem';
-import styles from './Footer.module.css';
+import { CameraIcon, CollectionIcon, MapIcon, PetIcon, ProfileIcon } from "../components/Icons";
+import NavItem from "../NavItem/NavItem";
+import styles from "./Footer.module.css";
 
 /**
  * Footer component for the main elements for the application.
