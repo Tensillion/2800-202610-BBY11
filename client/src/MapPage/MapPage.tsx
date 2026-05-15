@@ -80,10 +80,9 @@ function MapPage() {
 		try {
 			const response = await fetch(`${BACKEND_URL}/markers`, {
 				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${localStorage.getItem("token")}`,
-				},
+				headers: { "Content-Type": "application/json",
+					       "Authorization": `Bearer ${localStorage.getItem("token")}`, 
+						 },
 				body: JSON.stringify({
 					lat: pendingLatLng.lat,
 					lng: pendingLatLng.lng,
@@ -125,16 +124,14 @@ function MapPage() {
 			const openBtn = document.getElementById(`open-btn-${markerId}`);
 			const deleteBtn = document.getElementById(`delete-btn-${markerId}`);
 
-			openBtn?.addEventListener("click", () => {
-				navigate("/ItemPage");
-			});
+			openBtn?.addEventListener("click", () => { navigate("/ItemPage"); });
 
 			deleteBtn?.addEventListener("click", async () => {
 				try {
-					await fetch(`${BACKEND_URL}/markers/${markerId}`, {
+					await fetch(`http://localhost:3000/markers/${markerId}`, {
 						method: "DELETE",
-						headers: {
-							Authorization: `Bearer ${localStorage.getItem("token")}`,
+						headers: { 
+							"Authorization": `Bearer ${localStorage.getItem("token")}`, 
 						},
 					});
 					marker.remove();
@@ -149,7 +146,7 @@ function MapPage() {
 	useEffect(() => {
 		const vancouverBounds = L.latLngBounds(
 			[49.19, -123.3], // Southwest Coordinates
-			[49.4, -123.0] // Northeast Coordinates
+			[49.4, -123.0]   // Northeast Coordinates
 		);
 
 		const map = L.map("map", {
@@ -323,9 +320,7 @@ function MapPage() {
 			<div className={`plant-sidebar ${sidebarOpen ? "open" : ""}`}>
 				<div className="sidebar-header">
 					<h2>New Plant Marker</h2>
-					<button className="sidebar-close" onClick={closeSidebar}>
-						✕
-					</button>
+					<button className="sidebar-close" onClick={closeSidebar}>✕</button>
 				</div>
 				<div className="sidebar-body">
 					<label htmlFor="plant-name-input">Plant Name</label>
@@ -340,9 +335,7 @@ function MapPage() {
 					/>
 				</div>
 				<div className="sidebar-footer">
-					<button className="btn-cancel" onClick={closeSidebar}>
-						Cancel
-					</button>
+					<button className="btn-cancel" onClick={closeSidebar}>Cancel</button>
 					<button className="btn-confirm" disabled={!plantName.trim()} onClick={confirmMarker}>
 						Place Marker
 					</button>
