@@ -3,13 +3,9 @@ import Footer from "../Footer/Footer";
 import PopUp from "../PopUp/PopUp";
 import PetOnboardingFlow from "./PetOnboardingFlow";
 import { AuthContext } from "../context/AuthContext";
-
-interface Pet {
-	_id: string;
-	name: string;
-	type: string;
-	ownerId: string;
-}
+import PetStatDisplay from "./PetStatDisplay/PetStatDisplay";
+import "./PetPage.css";
+import Pet from "./Pet/Pet";
 
 const guideSteps = [
 	{
@@ -36,8 +32,23 @@ const guideSteps = [
 
 const BACKEND_URL = "http://localhost:3000";
 
+interface PetUpdatePayload {
+	xp?: number;
+	happiness?: number;
+}
+
+interface Pet {
+	id?: string;
+	name: string;
+	type: string;
+	xp: number;
+	level: number;
+	happiness: number;
+}
+
 function PetPage() {
 	const { token } = useContext(AuthContext);
+	const [hasPet, setHasPet] = useState<boolean | null>(null);
 	const [pet, setPet] = useState<Pet | null>(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
@@ -50,71 +61,91 @@ function PetPage() {
 		[token]
 	);
 
-	//Refetch pet data function for retrying after error
-	const fetchPetData = async () => {
+	const updatePetStats = useCallback(
+		async (updates: PetUpdatePayload = {}) => {
+			const response = await fetch(`${BACKEND_URL}/petAPI/updatePet`, {
+				method: "POST",
+				headers: getAuthHeaders(),
+				body: JSON.stringify(updates),
+			});
+
+			if (!response.ok) {
+				let errorMessage = "Failed to update pet";
+				try {
+					const errorData = await response.json();
+					errorMessage = errorData.error || errorMessage;
+				} catch (parseErr) {
+					console.error("Could not parse pet update error response:", parseErr);
+				}
+				throw new Error(errorMessage);
+			}
+
+			const data = await response.json();
+			// If the update endpoint returns the updated pet, keep it in state
+			const returnedPet = data?.pet ?? data?.updatedPet ?? data?.petData;
+			if (returnedPet) setPet(returnedPet);
+			return data;
+		},
+		[getAuthHeaders]
+	);
+
+	const loadPet = useCallback(async () => {
 		try {
-			setLoading(true);
 			const response = await fetch(`${BACKEND_URL}/petAPI/getPet`, {
 				method: "GET",
 				headers: getAuthHeaders(),
 			});
 
+			if (!response.ok) throw new Error("Failed to load pet");
+
+			const data = await response.json();
+			const petData = data?.pet ?? data;
+			setPet(petData ?? null);
+			return petData;
+		} catch (err) {
+			console.error("Error loading pet:", err);
+			setPet(null);
+			throw err;
+		}
+	}, [getAuthHeaders]);
+
+	const checkIfUserHasPet = useCallback(async () => {
+		try {
+			setLoading(true);
+			const response = await fetch(`${BACKEND_URL}/petAPI/hasPet`, {
+				method: "GET",
+				headers: getAuthHeaders(),
+			});
+
 			if (!response.ok) {
-				throw new Error("Failed to fetch pet data");
+				throw new Error("Failed to check pet status");
 			}
 
 			const data = await response.json();
-			setPet(data.pet || null);
+			const petExists = Boolean(data.hasPet);
+			if (petExists) {
+				await updatePetStats();
+				// Ensure we load the full pet for client use
+				await loadPet();
+			}
+			setHasPet(petExists);
 			setError(null);
 		} catch (err) {
 			console.error("Error fetching pet:", err);
 			setError(err instanceof Error ? err.message : "An error occurred");
-			setPet(null);
+			setHasPet(null);
 		} finally {
 			setLoading(false);
 		}
-	};
+	}, [getAuthHeaders, updatePetStats, loadPet]);
 
-	// Load pet data on component mount
 	useEffect(() => {
-		let isMounted = true;
-
-		const loadPet = async () => {
-			try {
-				setLoading(true);
-				const response = await fetch(`${BACKEND_URL}/petAPI/getPet`, {
-					method: "GET",
-					headers: getAuthHeaders(),
-				});
-
-				if (!response.ok) {
-					throw new Error("Failed to fetch pet data");
-				}
-
-				const data = await response.json();
-				if (isMounted) {
-					setPet(data.pet || null);
-					setError(null);
-				}
-			} catch (err) {
-				if (isMounted) {
-					console.error("Error fetching pet:", err);
-					setError(err instanceof Error ? err.message : "An error occurred");
-					setPet(null);
-				}
-			} finally {
-				if (isMounted) {
-					setLoading(false);
-				}
-			}
+		const loadPetStatus = async () => {
+			await checkIfUserHasPet();
 		};
 
-		loadPet();
-
-		return () => {
-			isMounted = false;
-		};
-	}, [token, getAuthHeaders]);
+		void loadPetStatus();
+	}, [checkIfUserHasPet, token]);
 
 	const handleOnboardingComplete = async (petName: string, petType: string) => {
 		try {
@@ -136,17 +167,11 @@ function PetPage() {
 				throw new Error(errorMessage);
 			}
 
-			// Refresh pet data after successful creation
-			const petResponse = await fetch(`${BACKEND_URL}/petAPI/getPet`, {
-				method: "GET",
-				headers: getAuthHeaders(),
-			});
-
-			if (petResponse.ok) {
-				const data = await petResponse.json();
-				setPet(data.pet || null);
-				setError(null);
-			}
+			const data = await response.json();
+			const petData = data?.pet ?? data;
+			if (petData) setPet(petData);
+			setHasPet(true);
+			setError(null);
 		} catch (err) {
 			const message = err instanceof Error ? err.message : "Failed to create pet";
 			setError(message);
@@ -158,17 +183,9 @@ function PetPage() {
 		return (
 			<>
 				<div style={{ textAlign: "center", padding: "2rem" }}>
+					<div className="spinner" />
 					<p>Loading...</p>
 				</div>
-				<Footer />
-			</>
-		);
-	}
-
-	if (!pet) {
-		return (
-			<>
-				<PetOnboardingFlow onComplete={handleOnboardingComplete} />
 				<Footer />
 			</>
 		);
@@ -179,22 +196,46 @@ function PetPage() {
 			<>
 				<div style={{ textAlign: "center", padding: "2rem", color: "#c33" }}>
 					<p>Error: {error}</p>
-					<button onClick={() => fetchPetData()}>Try Again</button>
+					<button onClick={() => checkIfUserHasPet()}>Try Again</button>
 				</div>
 				<Footer />
 			</>
 		);
 	}
 
+	if (hasPet === false || pet === null) {
+		return (
+			<>
+				<PetOnboardingFlow onComplete={handleOnboardingComplete} />
+				<Footer />
+			</>
+		);
+	}
+
 	return (
-		<>
+		<section id="PetPage">
 			<PopUp
 				title="Welcome to the Pet Page!"
 				message="Feed your pet and take care of it to keep it happy and healthy."
 				steps={guideSteps}
 			/>
-			<Footer />
-		</>
+
+			<PetStatDisplay
+				name={pet.name}
+				xp={pet.xp}
+				level={pet.level}
+				happiness={Math.round(pet.happiness)}
+			/>
+
+			<div className="pet-scene">
+				<Pet imageUrl={`/assets/pets/${pet.type}-pet-sitting.png`} />
+			</div>
+
+			{/* Footer lives inside the fixed section, pinned to bottom */}
+			<div className="pet-footer">
+				<Footer />
+			</div>
+		</section>
 	);
 }
 

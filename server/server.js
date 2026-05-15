@@ -252,7 +252,7 @@ app.get("/authentication/status", authRequired, (req, res) => {
 
 app.post("/users/getUserData", authRequired, async (req, res) => {
 	const user = await userCollection.findOne(
-		{ _id: new MongoClient.ObjectId(req.user.userId) },
+		{ _id: new ObjectId(req.user.userId) },
 		{ projection: { password: 0 } }
 	);
 
@@ -268,7 +268,7 @@ const petTypes = ["Acorn", "Mushroom", "Berry"];
 
 app.get("/petAPI/hasPet", authRequired, async (req, res) => {
 	const pet = await petCollection.findOne({
-		ownerId: new MongoClient.ObjectId(req.user.userId),
+		ownerId: new ObjectId(req.user.userId),
 	});
 	return res.json({ hasPet: !!pet });
 });
@@ -276,7 +276,7 @@ app.get("/petAPI/hasPet", authRequired, async (req, res) => {
 app.get("/petAPI/getPet", authRequired, async (req, res) => {
 	try {
 		const pet = await petCollection.findOne({
-			ownerId: req.user.userId,
+			ownerId: new ObjectId(req.user.userId),
 		});
 		return res.json({ pet });
 	} catch (error) {
@@ -301,7 +301,7 @@ app.post("/petAPI/addPet", authRequired, async (req, res) => {
 
 	// Check if user already has a pet
 	const existingPet = await petCollection.findOne({
-		ownerId: req.user.userId,
+		ownerId: new ObjectId(req.user.userId),
 	});
 
 	if (existingPet) {
@@ -311,7 +311,12 @@ app.post("/petAPI/addPet", authRequired, async (req, res) => {
 	const pet = {
 		name,
 		type,
-		ownerId: req.user.userId,
+		xp: 0,
+		level: 1,
+		happiness: 100,
+		lastupdate: Date.now() / 1000,
+		decayrate: 0.001,
+		ownerId: new ObjectId(req.user.userId),
 	};
 
 	await petCollection.insertOne(pet);
@@ -319,7 +324,59 @@ app.post("/petAPI/addPet", authRequired, async (req, res) => {
 	return res.json({ message: "Pet added successfully" });
 });
 
-//Markers Endpoints
+app.post("/petAPI/updatePet", authRequired, async (req, res) => {
+	const pet = await petCollection.findOne({
+		ownerId: new ObjectId(req.user.userId),
+	});
+
+	if (!pet) {
+		return res.status(404).json({ error: "Pet not found" });
+	}
+
+	const { xp = 0, happiness = 0 } = req.body;
+
+	const now = Date.now() / 1000;
+	const elapsed = now - pet.lastupdate;
+
+	let decayedHappiness = pet.happiness - elapsed * pet.decayrate;
+	decayedHappiness = Math.max(0, Math.min(decayedHappiness, 100));
+
+	let finalHappiness = decayedHappiness + happiness;
+	finalHappiness = Math.max(0, Math.min(finalHappiness, 100));
+
+	let newXP = pet.xp + xp;
+	let newLevel = pet.level;
+
+	if (newXP >= 100) {
+		newLevel += Math.floor(newXP / 100);
+		newXP = newXP % 100;
+	}
+
+	await petCollection.updateOne(
+		{ _id: pet._id },
+		{
+			$set: {
+				happiness: finalHappiness,
+				xp: newXP,
+				level: newLevel,
+				lastupdate: now,
+			},
+		}
+	);
+
+	return res.json({
+		message: "Pet updated successfully",
+		pet: {
+			...pet,
+			happiness: finalHappiness,
+			xp: newXP,
+			level: newLevel,
+			lastupdate: now,
+		},
+	});
+});
+
+//---------------- Markers Endpoints ----------------
 app.get("/markers", async (req, res) => {
 	try {
 		const markers = await markerCollection.find({}).toArray();
