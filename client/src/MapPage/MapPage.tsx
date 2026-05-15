@@ -25,9 +25,9 @@ L.Icon.Default.mergeOptions({
 });
 
 const customIcon = L.icon({
-	iconUrl: "/public/leaf.png",
+	iconUrl: "/public/leaf.png", 
 	iconSize: [40, 70],
-	iconAnchor: [20, 40],
+	iconAnchor: [20, 40],     
 	popupAnchor: [0, -40],
 });
 
@@ -97,9 +97,7 @@ function MapPage() {
 			pendingMarkerRef.current?.remove();
 			pendingMarkerRef.current = null;
 
-			const marker = L.marker([savedMarker.lat, savedMarker.lng], { icon: customIcon }).addTo(
-				mapRef.current!
-			);
+			const marker = L.marker([savedMarker.lat, savedMarker.lng], { icon: customIcon }).addTo(mapRef.current!);
 			(marker as PlantMarker).dbId = savedMarker._id;
 			markersRef.current.push(marker);
 			addPopup(marker, savedMarker._id, savedMarker.userId);
@@ -169,9 +167,7 @@ function MapPage() {
 			})
 			.then((savedMarkers: { _id: string; lat: number; lng: number; userId: string }[]) => {
 				savedMarkers.forEach(savedMarker => {
-					const marker: PlantMarker = L.marker([savedMarker.lat, savedMarker.lng], {
-						icon: customIcon,
-					}).addTo(map);
+					const marker: PlantMarker = L.marker([savedMarker.lat, savedMarker.lng], { icon: customIcon }).addTo(map);
 					marker.dbId = savedMarker._id;
 					markersRef.current.push(marker);
 					addPopup(marker, savedMarker._id, savedMarker.userId);
@@ -192,6 +188,7 @@ function MapPage() {
 			map.remove();
 			mapRef.current = null;
 		};
+		
 	}, [navigate]);
 
 	return (
