@@ -1,6 +1,7 @@
 import Footer from "../../Footer/Footer";
 import PopUp from "../../PopUp/PopUp";
 import AskAIPopUp from "../AskAIPopUp/AskAIPopUp";
+import FoodList from "../FoodList/FoodList";
 import Search from '../Search';
 import './CollectionPage.css';
 import { useState } from "react";
@@ -57,6 +58,7 @@ function CollectionPage() {
 			<div>
 				<Search onSearch={handleSearch} />
 			</div>
+			<FoodList />
 			<Footer />
 		</>
 	);

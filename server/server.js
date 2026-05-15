@@ -73,6 +73,10 @@ app.get("/api", (req, res) => {
 	res.json({ fruits: ["mango", "apple"] });
 });
 
+//collection api
+import EachFoodRoutes from "../client/src/CollectionPage/EachFoodRoutes";
+app.use("/api/collections", EachFoodRoutes);
+
 //Plant Data Endpoint
 app.get("/plantData", async (req, res) => {
 	let results = await plantCollection.find({}).toArray();
@@ -383,5 +387,6 @@ async function startServer() {
 		console.log(`Backend running on http://localhost:${port}`);
 	});
 }
+
 
 startServer();
