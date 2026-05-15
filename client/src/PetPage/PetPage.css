@@ -1,0 +1,48 @@
+/* ── Page shell: fills viewport, no scroll on any axis ── */
+#PetPage {
+	position: fixed;
+	inset: 0;
+	overflow: hidden;
+
+	/*
+	 * Background: the full pet-bg.png (grid + rock in one image).
+	 * auto 100% → image always fills the full viewport height,
+	 * and tiles horizontally on wide screens via repeat-x.
+	 * center keeps the rock centered when tiling.
+	 */
+	background-image: url("/pet-bg.png");
+	background-repeat: repeat-x;
+	background-size: auto 100%;
+	background-position: center top;
+	background-color: var(--cream);
+}
+
+/*
+ * This single div contains ONLY the pet image.
+ * It is positioned so its BOTTOM edge lines up with the
+ * top surface of the rock in the background image.
+ *
+ * The rock's top surface is at ~57% from the top of pet-bg.png.
+ * So:  bottom = 100% - 57% = 43%
+ *
+ * Higher % → Pet moves up. Lower % → Pet moves down.
+ */
+.pet-scene {
+	position: absolute;
+	bottom: 37%;
+	left: 50%;
+	transform: translateX(-50%);
+
+	/* shrink-wraps the pet image */
+	display: inline-flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+/* ── Footer pinned inside the fixed section ── */
+.pet-footer {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}

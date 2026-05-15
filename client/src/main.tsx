@@ -51,10 +51,9 @@ createRoot(document.getElementById("root")!).render(
 							</GuestRoute>
 						}
 					/>
-					
 
 					{/* Protected */}
-				
+
 					<Route
 						path="/profile"
 						element={
