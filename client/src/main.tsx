@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import "./css/index.css";
 import LandingPage from "./LandingPage/LandingPage.tsx";
-import CollectionPage from "./CollectionPage/CollectionPage.tsx";
+import CollectionPage from "./CollectionPage/CollectionPage/CollectionPage.tsx";
 import CameraPage from "./CameraPage/CameraPage.tsx";
 import MapPage from "./MapPage/MapPage.tsx";
 import ProfilePage from "./ProfilePage/ProfilePage.tsx";
@@ -22,7 +22,7 @@ import { AuthProvider } from "./context/AuthProvider.tsx";
 
 createRoot(document.getElementById("root")!).render(
 	<StrictMode>
-		{/* <AuthProvider> */}
+		<AuthProvider>
 			<BrowserRouter>
 				<Routes>
 					{/* Guest-only */}
@@ -82,9 +82,9 @@ createRoot(document.getElementById("root")!).render(
 					<Route
 						path="/collection"
 						element={
-							// <ProtectedRoute>
+							<ProtectedRoute>
 								<CollectionPage />
-							// </ProtectedRoute>
+							</ProtectedRoute>
 						}
 					/>
 					<Route
@@ -122,6 +122,6 @@ createRoot(document.getElementById("root")!).render(
 					/>
 				</Routes>
 			</BrowserRouter>
-		{/* </AuthProvider> */}
+		</AuthProvider>
 	</StrictMode>
 );

@@ -1,10 +1,10 @@
-import Footer from "../Footer/Footer";
-import PopUp from "../PopUp/PopUp";
-import AskAIPopUp from "./AskAIPopUp/AskAIPopUp";
+import Footer from "../../Footer/Footer";
+import PopUp from "../../PopUp/PopUp";
+import AskAIPopUp from "../AskAIPopUp/AskAIPopUp";
+import Search from '../Search';
+import './CollectionPage.css';
+import { useState } from "react";
 
-import Footer from '../Footer/Footer';
-import PopUp from '../PopUp/PopUp';
-import SearchComponent from './SearchComponent';
 const guideSteps = [
 	{
 		x: "50%",
@@ -31,6 +31,12 @@ function CollectionPage() {
 		sources: ["https://www.wikidata.org/wiki/Q159021", "https://www.gbif.org/species/3003011"],
 	};
 
+	const[searchValue, setSearchValue] = useState('');
+
+	const handleSearch = (value: string) => {
+		console.log(value);
+		setSearchValue(value);
+	}
 	return (
 		<>
 			<PopUp
@@ -39,13 +45,17 @@ function CollectionPage() {
 				steps={guideSteps}
 			/>
 
-			<div>whatever collection page needs i guess</div>
+			<div className="flex min-h screen flex-col items-center justify-between p-24">
+				<a> defo should be cooking better rn</a>
+			</ div>
+
 
 			{/* Example usage of AskAIPopUp with demo plant info.
 			Please put this into the actual plant item page where you can pass the DB plant info. */}
+			
 			<AskAIPopUp plantInfo={demoPlantInfo} />
 			<div>
-				<SearchComponent />
+				<Search onSearch={handleSearch} />
 			</div>
 			<Footer />
 		</>
