@@ -1,25 +1,33 @@
-@import url('https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&display=swap");
 
 :root {
-	--cream: #f8f5f0;
-	--dark-cream: #c8c0b4;
+	--cream: #fdfaf5;
+	--dark-cream: rgb(248, 237, 215);
+	--darker-cream: rgb(253, 234, 198);
+
 	--dark-green: #2d4a2d;
 	--forest: #2d4a2d;
 	--moss: #5a7a4a;
+
+	--light-bark: #5f432b;
 	--bark: #3e2c1c;
+	--dark-bark: #2b1f14;
+
+	--black-text: #1c1c1c;
+	--white-text: #f8f5f0;
 
 	--radius: 28px;
 
-	--cherryBomb: 'Cherry Bomb One', cursive, system-ui;
-	--sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-	--heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+	--cherryBomb: "Cherry Bomb One", cursive, system-ui;
+	--sans: system-ui, "Segoe UI", Roboto, sans-serif;
+	--heading: system-ui, "Segoe UI", Roboto, sans-serif;
 	--mono: ui-monospace, Consolas, monospace;
 
 	font: 18px/145% var(--cherryBomb);
 	letter-spacing: 0.18px;
 	color-scheme: light dark;
 	color: var(--text);
-	background: var(--bg);
+	background: var(--darker-cream);
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
@@ -30,17 +38,33 @@
 	@media (max-width: 1024px) {
 		font-size: 16px;
 	}
+
+	overflow-x: hidden; /* Hide horizontal scrollbar */
 }
 
 #root {
-	width: 1126px;
+	width: 100%;
 	max-width: 100%;
-	margin: 0 auto;
+	padding: auto;
 	text-align: center;
+
 	min-height: 100svh;
 	display: flex;
 	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
 	box-sizing: border-box;
+
+	top: 0;
+	background: var(--darker-cream);
+}
+
+#map {
+	flex: 1 1 auto;
+	min-height: 0;
+	width: 100% !important;
+	height: auto !important;
+	align-self: stretch;
 }
 
 body {
@@ -69,4 +93,21 @@ h2 {
 
 p {
 	margin: 0;
+}
+
+/* Loading */
+
+.spinner {
+	width: 50px;
+	height: 50px;
+	border: 4px solid #e5e7eb;
+	border-top-color: #3b82f6;
+	border-radius: 50%;
+	animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+	to {
+		transform: rotate(360deg);
+	}
 }

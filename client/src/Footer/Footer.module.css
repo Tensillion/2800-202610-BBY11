@@ -3,8 +3,12 @@
 	flex-direction: row;
 	justify-content: center;
 	align-items: center;
+	flex-shrink: 0;
+	margin-top: auto;
 
-	position: fixed;
+	justify-self: center;
+
+	position: absolute;
 
 	background: var(--cream);
 	padding-top: clamp(8px, 1vw, 12px);
@@ -13,6 +17,8 @@
 
 	width: 100%;
 	height: auto;
+
+	z-index: 1000;
 }
 
 .footer nav {

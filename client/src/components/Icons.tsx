@@ -1,10 +1,12 @@
 /**
- * Icon from https://iconoir.com/
+ * Icons from https://iconoir.com/
  *
  * @param color - The color of the icon stroke (default: #000000)
  * @returns A profile Icon
+ *
+ * @author Tyson Nguyen
  */
-export function ProfileIcon({ color = '#000000' }: { color?: string }) {
+export function ProfileIcon({ color = "#000000" }: { color?: string }) {
 	return (
 		<svg
 			width="24px"
@@ -46,7 +48,7 @@ export function ProfileIcon({ color = '#000000' }: { color?: string }) {
  * @param color - The color of the icon stroke (default: #000000)
  * @returns A Camera Icon
  */
-export function CameraIcon({ color = '#000000' }: { color?: string }) {
+export function CameraIcon({ color = "#000000" }: { color?: string }) {
 	return (
 		<svg
 			width="24px"
@@ -81,7 +83,7 @@ export function CameraIcon({ color = '#000000' }: { color?: string }) {
  * @param color - The color of the icon stroke (default: #000000)
  * @returns A Pet Icon
  */
-export function PetIcon({ color = '#000000' }: { color?: string }) {
+export function PetIcon({ color = "#000000" }: { color?: string }) {
 	return (
 		<svg
 			width="24px"
@@ -108,7 +110,7 @@ export function PetIcon({ color = '#000000' }: { color?: string }) {
  * @param color - The color of the icon stroke (default: #000000)
  * @returns A Collection Icon
  */
-export function CollectionIcon({ color = '#000000' }: { color?: string }) {
+export function CollectionIcon({ color = "#000000" }: { color?: string }) {
 	return (
 		<svg
 			width="24px"
@@ -145,7 +147,7 @@ export function CollectionIcon({ color = '#000000' }: { color?: string }) {
  * @param color - The color of the icon stroke (default: #000000)
  * @returns A Map Icon
  */
-export function MapIcon({ color = '#000000' }: { color?: string }) {
+export function MapIcon({ color = "#000000" }: { color?: string }) {
 	return (
 		<svg
 			width="24px"

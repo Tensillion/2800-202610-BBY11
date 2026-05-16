@@ -1,0 +1,125 @@
+.result-card {
+	background: var(--cream);
+	border: 2px solid var(--dark-cream);
+	border-radius: var(--radius);
+	padding: 20px;
+	transition: all 0.3s ease;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.result-card:hover {
+	border-color: var(--moss);
+	box-shadow: 0 4px 16px rgba(45, 74, 45, 0.15);
+	transform: translateY(-2px);
+}
+
+.result-card-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	gap: 12px;
+	margin-bottom: 16px;
+	border-bottom: 2px solid var(--dark-cream);
+	padding-bottom: 12px;
+}
+
+.result-card-header h3 {
+	margin: 0;
+	font-size: 18px;
+	color: var(--forest);
+	flex: 1;
+	text-align: left;
+}
+
+.match-score {
+	background: var(--forest);
+	color: var(--cream);
+	padding: 6px 12px;
+	border-radius: 12px;
+	font-weight: 600;
+	font-size: 14px;
+	white-space: nowrap;
+}
+
+.result-badges {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.edibility-badge,
+.lookup-badge {
+	display: inline-flex;
+	align-items: center;
+	padding: 6px 10px;
+	border-radius: 999px;
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 0.02em;
+}
+
+.edibility-badge.edible {
+	background: rgba(90, 122, 74, 0.15);
+	color: var(--forest);
+}
+
+.edibility-badge.not-edible {
+	background: rgba(180, 48, 48, 0.14);
+	color: #8f1e1e;
+}
+
+.edibility-badge.unknown,
+.edibility-badge.no-lookup {
+	background: rgba(110, 110, 110, 0.14);
+	color: #555;
+}
+
+.lookup-badge {
+	background: rgba(200, 192, 180, 0.35);
+	color: var(--bark);
+}
+
+.common-names {
+	margin: 12px 0;
+	font-size: 14px;
+	line-height: 1.5;
+	color: var(--bark);
+}
+
+.common-names strong {
+	color: var(--forest);
+	display: block;
+	margin-bottom: 4px;
+}
+
+.family {
+	margin: 12px 0 0 0;
+	font-size: 14px;
+	color: var(--bark);
+}
+
+.family strong {
+	color: var(--forest);
+}
+
+.parts,
+.edibility-note,
+.warnings {
+	margin: 0;
+	font-size: 14px;
+	line-height: 1.5;
+	color: var(--bark);
+}
+
+.parts strong,
+.edibility-note strong,
+.warnings strong {
+	color: var(--forest);
+}
+
+.warnings {
+	padding-top: 4px;
+}

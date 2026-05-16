@@ -1,24 +1,29 @@
 {
-  "name": "2800-202610-bby11",
-  "version": "1.0.0",
-  "description": "Finders Keepers is a web app for the City of Vancouver Prompt of educating people about safe food in Vancouver, and our angle is food insecurity. React based webapp, mainly in Typescript, with MongoDB backend and implementing an OCR api for some functionality.",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "concurrently \"npm --prefix server run dev\" \"npm --prefix client run dev\""
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Tensillion/2800-202610-BBY11.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/Tensillion/2800-202610-BBY11/issues"
-  },
-  "homepage": "https://github.com/Tensillion/2800-202610-BBY11#readme",
-  "devDependencies": {
-    "concurrently": "^9.2.1"
-  }
+	"name": "2800-202610-bby11",
+	"version": "1.0.0",
+	"description": "Finders Keepers is a web app for the City of Vancouver Prompt of educating people about safe food in Vancouver, and our angle is food insecurity. React based webapp, mainly in Typescript, with MongoDB backend and implementing an OCR api for some functionality.",
+	"scripts": {
+		"start": "node server.js",
+		"frontend-build": "cd ../client && npm install && npm run build",
+		"backend-build": "npm install",
+		"build": "npm run frontend-build && npm run backend-build",
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"dev": "concurrently \"npm --prefix server run dev\" \"npm --prefix client run dev\""
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Tensillion/2800-202610-BBY11.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"type": "commonjs",
+	"bugs": {
+		"url": "https://github.com/Tensillion/2800-202610-BBY11/issues"
+	},
+	"homepage": "https://github.com/Tensillion/2800-202610-BBY11#readme",
+	"devDependencies": {
+		"@types/leaflet": "^1.9.21",
+		"concurrently": "^9.2.1"
+	}
 }
