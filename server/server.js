@@ -177,14 +177,11 @@ app.post("/plantIdentification", plantCaptureLimiter, upload.single("image"), as
 
 //---------------Authentication Endpoints------------------
 const authRequired = require("./Middleware/authMiddleware");
-const blockIfAuthenticated = require("./Middleware/blockIfAuthenticated");
 
-async function registerSignUpRoutes() {
+async function registerAuthenticationRoutes() {
 	const { default: signUpRouter } = await import("./authentication/signUpRoute.mjs");
-	app.use(signUpRouter);
-}
-async function registerLoginRoutes() {
 	const { default: loginRouter } = await import("./authentication/loginRoute.mjs");
+	app.use(signUpRouter);
 	app.use(loginRouter);
 }
 
@@ -386,8 +383,7 @@ app.delete("/markers/:id", async (req, res) => {
 async function startServer() {
 	try {
 		await registerGeminiRoutes();
-		await registerLoginRoutes();
-		await registerSignUpRoutes();
+		await registerAuthenticationRoutes();
 	} catch (error) {
 		console.error("Failed to register routes:", error);
 	}
