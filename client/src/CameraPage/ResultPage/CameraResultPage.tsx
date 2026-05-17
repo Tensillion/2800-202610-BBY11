@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import "./CameraResultPage.css";
 import ResultCard from "./ResultCard/ResultCard";
 
-const BACKEND_URL = "http://localhost:3000"; // Replace with actual backend URL when deployed
+const BACKEND_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 /**
  * Represents the result page for the camera scan.

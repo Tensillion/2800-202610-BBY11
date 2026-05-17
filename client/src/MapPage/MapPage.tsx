@@ -9,6 +9,8 @@ import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
 
+const BACKEND_URL = "http://localhost:3000";
+
 type PlantMarker = Marker & { dbId?: string };
 delete (
 	L.Icon.Default.prototype as Partial<L.Icon.Default> & {
@@ -23,9 +25,9 @@ L.Icon.Default.mergeOptions({
 });
 
 const customIcon = L.icon({
-	iconUrl: "/public/leaf.png", 
+	iconUrl: "/public/leaf.png",
 	iconSize: [40, 70],
-	iconAnchor: [20, 40],     
+	iconAnchor: [20, 40],
 	popupAnchor: [0, -40],
 });
 
@@ -76,11 +78,12 @@ function MapPage() {
 		if (!pendingLatLng || !plantName.trim()) return;
 
 		try {
-			const response = await fetch("http://localhost:3000/markers", {
+			const response = await fetch(`${BACKEND_URL}/markers`, {
 				method: "POST",
-				headers: { "Content-Type": "application/json",
-					       "Authorization": `Bearer ${localStorage.getItem("token")}`, 
-						 },
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${localStorage.getItem("token")}`,
+				},
 				body: JSON.stringify({
 					lat: pendingLatLng.lat,
 					lng: pendingLatLng.lng,
@@ -95,7 +98,9 @@ function MapPage() {
 			pendingMarkerRef.current?.remove();
 			pendingMarkerRef.current = null;
 
-			const marker = L.marker([savedMarker.lat, savedMarker.lng], { icon: customIcon }).addTo(mapRef.current!);
+			const marker = L.marker([savedMarker.lat, savedMarker.lng], { icon: customIcon }).addTo(
+				mapRef.current!
+			);
 			(marker as PlantMarker).dbId = savedMarker._id;
 			markersRef.current.push(marker);
 			addPopup(marker, savedMarker._id, savedMarker.userId);
@@ -120,14 +125,16 @@ function MapPage() {
 			const openBtn = document.getElementById(`open-btn-${markerId}`);
 			const deleteBtn = document.getElementById(`delete-btn-${markerId}`);
 
-			openBtn?.addEventListener("click", () => { navigate("/ItemPage"); });
+			openBtn?.addEventListener("click", () => {
+				navigate("/ItemPage");
+			});
 
 			deleteBtn?.addEventListener("click", async () => {
 				try {
-					await fetch(`http://localhost:3000/markers/${markerId}`, {
+					await fetch(`${BACKEND_URL}/markers/${markerId}`, {
 						method: "DELETE",
-						headers: { 
-							"Authorization": `Bearer ${localStorage.getItem("token")}`, 
+						headers: {
+							Authorization: `Bearer ${localStorage.getItem("token")}`,
 						},
 					});
 					marker.remove();
@@ -142,7 +149,7 @@ function MapPage() {
 	useEffect(() => {
 		const vancouverBounds = L.latLngBounds(
 			[49.19, -123.3], // Southwest Coordinates
-			[49.4, -123.0]   // Northeast Coordinates
+			[49.4, -123.0] // Northeast Coordinates
 		);
 
 		const map = L.map("map", {
@@ -158,14 +165,16 @@ function MapPage() {
 			attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
 		}).addTo(map);
 
-		fetch("http://localhost:3000/markers")
+		fetch(`${BACKEND_URL}/markers`)
 			.then(res => {
 				if (!res.ok) throw new Error(`HTTP error: ${res.status}`);
 				return res.json();
 			})
 			.then((savedMarkers: { _id: string; lat: number; lng: number; userId: string }[]) => {
 				savedMarkers.forEach(savedMarker => {
-					const marker: PlantMarker = L.marker([savedMarker.lat, savedMarker.lng], { icon: customIcon }).addTo(map);
+					const marker: PlantMarker = L.marker([savedMarker.lat, savedMarker.lng], {
+						icon: customIcon,
+					}).addTo(map);
 					marker.dbId = savedMarker._id;
 					markersRef.current.push(marker);
 					addPopup(marker, savedMarker._id, savedMarker.userId);
@@ -186,7 +195,6 @@ function MapPage() {
 			map.remove();
 			mapRef.current = null;
 		};
-		
 	}, [navigate]);
 
 	return (
@@ -315,7 +323,9 @@ function MapPage() {
 			<div className={`plant-sidebar ${sidebarOpen ? "open" : ""}`}>
 				<div className="sidebar-header">
 					<h2>New Plant Marker</h2>
-					<button className="sidebar-close" onClick={closeSidebar}>✕</button>
+					<button className="sidebar-close" onClick={closeSidebar}>
+						✕
+					</button>
 				</div>
 				<div className="sidebar-body">
 					<label htmlFor="plant-name-input">Plant Name</label>
@@ -330,7 +340,9 @@ function MapPage() {
 					/>
 				</div>
 				<div className="sidebar-footer">
-					<button className="btn-cancel" onClick={closeSidebar}>Cancel</button>
+					<button className="btn-cancel" onClick={closeSidebar}>
+						Cancel
+					</button>
 					<button className="btn-confirm" disabled={!plantName.trim()} onClick={confirmMarker}>
 						Place Marker
 					</button>

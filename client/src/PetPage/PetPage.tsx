@@ -6,6 +6,8 @@ import PetStatDisplay from "./PetStatDisplay/PetStatDisplay";
 import "./PetPage.css";
 import Pet from "./Pet/Pet";
 
+const BACKEND_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+
 const guideSteps = [
 	{
 		x: "50%",
@@ -21,8 +23,6 @@ const guideSteps = [
 			"Make sure to feed your pet regularly and take care of it to keep it happy and healthy.",
 	},
 ];
-
-const BACKEND_URL = "http://localhost:3000";
 
 interface PetUpdatePayload {
 	xp?: number;

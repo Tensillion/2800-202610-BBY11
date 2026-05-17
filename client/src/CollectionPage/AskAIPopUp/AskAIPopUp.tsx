@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import "./AskAIPopUp.css";
 
+const BACKEND_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+
 type PlantInfo = {
 	name: string;
 	edible?: boolean;
@@ -114,7 +116,7 @@ export default function AskAIPopUp({ plantInfo }: AskAIPopUpProps) {
 
 		try {
 			//Change the URL here
-			const response = await fetch("http://localhost:3000/ask-gemini", {
+			const response = await fetch(`${BACKEND_URL}/ask-gemini`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",

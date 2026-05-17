@@ -8,12 +8,8 @@ const axios = require("axios");
 // server.js
 const express = require("express");
 const rateLimit = require("express-rate-limit");
-const jwt = require("jsonwebtoken");
 
 const { MongoClient, ObjectId } = require("mongodb");
-const bcrypt = require("bcrypt");
-const Joi = require("joi");
-const saltRoundsCount = 12;
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -25,15 +21,20 @@ const frontendPath = path.join(__dirname, "../COMP-2800/dist");
 //SECRETS
 const PLANTNET_API_KEY = process.env.PLANTNET_API_KEY;
 const MONGO_ATLAS_URL = process.env.MONGO_ATLAS_URL;
-
 const MONGO_USERS_DB = process.env.MONGO_USERS_DB;
 const MONGO_PLANTS_DB = process.env.MONGO_PLANTS_DB;
+const JWT_SECRET = process.env.JWT_SECRET;
 
-const JWT_SECRET = process.env.JWT_SECRET || "dev-secret-change-me";
+if (!PLANTNET_API_KEY || !MONGO_ATLAS_URL || !MONGO_USERS_DB || !MONGO_PLANTS_DB || !JWT_SECRET) {
+	console.error("Missing required environment variables. Please check your .env file.");
+	process.exit(1);
+}
+
 //END OF SECRETS
 
 //DB STUFF
 const database = new MongoClient(MONGO_ATLAS_URL, {});
+global.database = database;
 const userCollection = database.db(MONGO_USERS_DB).collection("users");
 const markerCollection = database.db(MONGO_USERS_DB).collection("markers");
 const plantCollection = database.db(MONGO_PLANTS_DB).collection("plants");
@@ -85,8 +86,24 @@ app.post("/plants/search", async (req, res) => {
 	try {
 		const { names = [], limit = 50, sortField = "name", sortOrder = 1 } = req.body;
 
+		const allowedSortFields = ["name", "scientificName", "genus"];
+
 		if (!Array.isArray(names) || names.length === 0) {
 			return res.status(400).json({ error: "names must be a non-empty array" });
+		}
+
+		if (limit < 1 || limit > 100) {
+			return res.status(400).json({ error: "limit must be between 1 and 100" });
+		}
+
+		if (!allowedSortFields.includes(sortField)) {
+			return res
+				.status(400)
+				.json({ error: `sortField must be one of: ${allowedSortFields.join(", ")}` });
+		}
+
+		if (![1, -1].includes(sortOrder)) {
+			return res.status(400).json({ error: "sortOrder must be 1 (asc) or -1 (desc)" });
 		}
 
 		// Normalize names for case-insensitive matching
@@ -162,81 +179,14 @@ app.post("/plantIdentification", plantCaptureLimiter, upload.single("image"), as
 const authRequired = require("./Middleware/authMiddleware");
 const blockIfAuthenticated = require("./Middleware/blockIfAuthenticated");
 
-const loginLimiter = rateLimit({
-	windowMs: 60 * 1000, // 1 minute
-	max: 5, // 5 attempts per minute
-	message: { error: "Too many login attempts. Try again later." },
-	standardHeaders: true,
-	legacyHeaders: false,
-});
-
-app.post("/authentication/signup", blockIfAuthenticated, async (req, res) => {
-	let { username, email, password } = req.body;
-
-	const schema = Joi.object({
-		username: Joi.string().alphanum().min(3).max(30).required(),
-		email: Joi.string().email().required(),
-		password: Joi.string().min(6).required(),
-	});
-
-	const { error } = schema.validate({ username, email, password });
-	if (error) {
-		return res.status(400).json({ error: error.details[0].message });
-	}
-
-	//Checks if email is already in use
-	const user = await userCollection.findOne({ email }, { projection: { password: 0 } });
-	if (user) {
-		return res.status(409).json({ error: "Email is already in use" });
-	}
-
-	const saltRounds = bcrypt.genSaltSync(saltRoundsCount);
-	const hashedPassword = bcrypt.hashSync(password, saltRounds);
-
-	await userCollection.insertOne({ username, email, password: hashedPassword, user_type: "user" });
-
-	//Log the user in immediately after signing up
-
-	const token = jwt.sign({ username: username, email: email, userType: "user" }, JWT_SECRET, {
-		expiresIn: "7d",
-	});
-
-	return res.json({ message: "User created and logged in successfully", token });
-});
-
-app.post("/authentication/login", loginLimiter, blockIfAuthenticated, async (req, res) => {
-	let { email, password } = req.body;
-
-	const schema = Joi.object({
-		email: Joi.string().email().required(),
-		password: Joi.string().min(6).required(),
-	});
-
-	const { error } = schema.validate({ email, password });
-	if (error) {
-		return res.status(400).json({ error: error.details[0].message });
-	}
-
-	const user = await userCollection.findOne({ email });
-	if (!user) {
-		return res.status(401).json({ error: "Invalid email or password" });
-	}
-
-	const isMatch = await bcrypt.compare(password, user.password);
-	if (!isMatch) {
-		return res.status(401).json({ error: "Invalid email or password" });
-	}
-
-	const token = jwt.sign(
-		{ userId: user._id, username: user.username, userType: user.user_type },
-		JWT_SECRET,
-		{
-			expiresIn: "7d",
-		}
-	);
-
-	return res.json({ message: "Login successful", token });
-});
+async function registerSignUpRoutes() {
+	const { default: signUpRouter } = await import("./authentication/signUpRoute.mjs");
+	app.use(signUpRouter);
+}
+async function registerLoginRoutes() {
+	const { default: loginRouter } = await import("./authentication/loginRoute.mjs");
+	app.use(loginRouter);
+}
 
 app.get("/authentication/status", authRequired, (req, res) => {
 	res.json({
@@ -436,8 +386,10 @@ app.delete("/markers/:id", async (req, res) => {
 async function startServer() {
 	try {
 		await registerGeminiRoutes();
+		await registerLoginRoutes();
+		await registerSignUpRoutes();
 	} catch (error) {
-		console.error("Failed to register Gemini routes:", error);
+		console.error("Failed to register routes:", error);
 	}
 
 	app.listen(port, () => {
