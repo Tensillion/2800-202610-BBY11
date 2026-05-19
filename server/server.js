@@ -416,20 +416,27 @@ app.post("/markers", authRequired, async (req, res) => {
 	}
 });
 
-app.delete("/markers/:id", async (req, res) => {
-	try {
-		const id = req.params.id;
-		const requestingUserId = req.user.userId;
+app.delete("/markers/:id", authRequired, async (req, res) => {
+    try {
+        const id = req.params.id;
+        const requestingUserId = req.user.userId;
 
-		await markerCollection.deleteOne({
-			_id: new ObjectId(id),
-		});
+        const marker = await markerCollection.findOne({ _id: new ObjectId(id) });
 
-		res.json({ message: "Marker deleted" });
-	} catch (err) {
-		console.error(err);
-		res.status(500).json({ error: "Failed to delete marker" });
-	}
+        if (!marker) {
+            return res.status(404).json({ error: "Marker not found" });
+        }
+
+        if (marker.userId !== requestingUserId.toString()) {
+            return res.status(403).json({ error: "Not authorized to delete this marker" });
+        }
+
+        await markerCollection.deleteOne({ _id: new ObjectId(id) });
+        res.json({ message: "Marker deleted" });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Failed to delete marker" });
+    }
 });
 
 //used specifically for backend.
