@@ -134,10 +134,14 @@ function PetPage() {
 	useEffect(() => {
 		const loadPetStatus = async () => {
 			await checkIfUserHasPet();
+
+			if (hasPet) {
+				await loadPet();
+			}
 		};
 
 		void loadPetStatus();
-	}, [checkIfUserHasPet, token]);
+	}, [checkIfUserHasPet, loadPet, hasPet]);
 
 	const handleOnboardingComplete = async (petName: string, petType: string) => {
 		try {
