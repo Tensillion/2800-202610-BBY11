@@ -364,10 +364,10 @@ app.post("/markers", authRequired, async (req, res) => {
 	}
 });
 
-app.delete("/markers/:id", async (req, res) => {
-	try {
-		const id = req.params.id;
-		const requestingUserId = req.user.userId;
+app.delete("/markers/:id", authRequired, async (req, res) => {
+    try {
+        const id = req.params.id;
+        const requestingUserId = req.user.userId;
 
         const marker = await markerCollection.findOne({ _id: new ObjectId(id) });
 
