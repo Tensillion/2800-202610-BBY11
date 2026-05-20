@@ -17,4 +17,5 @@ const FoodSchema = new Schema<FoodData>({
   parts: { type: [String], required: true },
 });
 
-export default mongoose.models.Food || mongoose.model<FoodData>("Food", FoodSchema);
+export default mongoose.models.Food ||
+  mongoose.model<FoodData>("Food", FoodSchema);

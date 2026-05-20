@@ -15,7 +15,7 @@ export default function FoodList() {
 
   useEffect(() => {
     async function loadFoods() {
-      const res = await fetch("/api/foods");
+      const res = await fetch("/api/collection");
       const data = await res.json();
       setFoods(data);
     }
