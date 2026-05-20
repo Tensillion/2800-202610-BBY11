@@ -8,11 +8,13 @@
 	justify-content: space-between;
 	align-items: center;
 	padding: 20px;
+	max-height: 90px;
 }
 
 .logo {
 	width: 30%;
 	height: auto;
+	max-width: 200px;
 }
 
 .other-page-btn {

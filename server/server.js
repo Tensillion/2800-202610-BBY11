@@ -8,12 +8,9 @@ const axios = require("axios");
 // server.js
 const express = require("express");
 const rateLimit = require("express-rate-limit");
-const jwt = require("jsonwebtoken");
+const Joi = require("joi");
 
 const { MongoClient, ObjectId } = require("mongodb");
-const bcrypt = require("bcrypt");
-const Joi = require("joi");
-const saltRoundsCount = 12;
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -25,15 +22,20 @@ const frontendPath = path.join(__dirname, "../COMP-2800/dist");
 //SECRETS
 const PLANTNET_API_KEY = process.env.PLANTNET_API_KEY;
 const MONGO_ATLAS_URL = process.env.MONGO_ATLAS_URL;
-
 const MONGO_USERS_DB = process.env.MONGO_USERS_DB;
 const MONGO_PLANTS_DB = process.env.MONGO_PLANTS_DB;
+const JWT_SECRET = process.env.JWT_SECRET;
 
-const JWT_SECRET = process.env.JWT_SECRET || "dev-secret-change-me";
+if (!PLANTNET_API_KEY || !MONGO_ATLAS_URL || !MONGO_USERS_DB || !MONGO_PLANTS_DB || !JWT_SECRET) {
+	console.error("Missing required environment variables. Please check your .env file.");
+	process.exit(1);
+}
+
 //END OF SECRETS
 
 //DB STUFF
 const database = new MongoClient(MONGO_ATLAS_URL, {});
+global.database = database;
 const userCollection = database.db(MONGO_USERS_DB).collection("users");
 const markerCollection = database.db(MONGO_USERS_DB).collection("markers");
 const plantCollection = database.db(MONGO_PLANTS_DB).collection("plants");
@@ -84,10 +86,26 @@ app.get("/plantData", async (req, res) => {
 //Plant Search Endpoint, reusable for search bar and plant identification results
 app.post("/plants/search", async (req, res) => {
 	try {
-		const { names = [], limit = 50, sortField = "name", sortOrder = 1 } = req.body;
+		const { names = [], limit = 50, sortField = "scientific_name", sortOrder = 1 } = req.body;
+
+		const allowedSortFields = ["scientific_name", "common_names", "genus"];
 
 		if (!Array.isArray(names) || names.length === 0) {
 			return res.status(400).json({ error: "names must be a non-empty array" });
+		}
+
+		if (limit < 1 || limit > 100) {
+			return res.status(400).json({ error: "limit must be between 1 and 100" });
+		}
+
+		if (!allowedSortFields.includes(sortField)) {
+			return res
+				.status(400)
+				.json({ error: `sortField must be one of: ${allowedSortFields.join(", ")}` });
+		}
+
+		if (![1, -1].includes(sortOrder)) {
+			return res.status(400).json({ error: "sortOrder must be 1 (asc) or -1 (desc)" });
 		}
 
 		// Normalize names for case-insensitive matching
@@ -105,20 +123,50 @@ app.post("/plants/search", async (req, res) => {
 			n => new RegExp(`^${n.replace(/[-\/\\^$*+?.()| [\\]{}]/g, "\\$&")}$`, "i")
 		);
 
+		const searchableFields = ["scientific_name", "common_names", "parts"];
+
 		// Search for plants matching any of the names
 		const plants = await plantCollection
 			.find({
-				name: { $in: regexPatterns },
+				$or: searchableFields.map(field => ({ [field]: { $in: regexPatterns } })),
 			})
 			.sort({ [sortField]: sortOrder })
 			.limit(limit)
 			.toArray();
 
-		res.json(plants);
+		res.json(
+			plants.map(plant => ({
+				...plant,
+				name: plant.scientific_name ?? null,
+				scientific_name: plant.scientific_name ?? null,
+				common_names: plant.common_names ?? [],
+				parts: plant.parts ?? [],
+			}))
+		);
 	} catch (error) {
 		console.error("Error searching plants:", error);
 		res.status(500).json({ error: "Failed to search plants" });
 	}
+});
+
+app.get("/plants/search", async (req, res) => {
+  try {
+    const q = req.query.q?.trim();
+    if (!q) return res.json([]);
+
+    const results = await plantCollection
+      .find({
+        common_names: { $regex: q, $options: "i" }
+      })
+      .limit(8)
+	  .project({ common_names: 1, scientific_name: 1, edible: 1 })
+      .toArray();
+
+    res.json(results);
+  } catch (err) {
+    console.error("Plant autocomplete error:", err);
+    res.status(500).json({ error: "Failed to search plants" });
+  }
 });
 
 // accept a single image file upload (field name: "image")
@@ -161,83 +209,13 @@ app.post("/plantIdentification", plantCaptureLimiter, upload.single("image"), as
 
 //---------------Authentication Endpoints------------------
 const authRequired = require("./Middleware/authMiddleware");
-const blockIfAuthenticated = require("./Middleware/blockIfAuthenticated");
 
-const loginLimiter = rateLimit({
-	windowMs: 60 * 1000, // 1 minute
-	max: 5, // 5 attempts per minute
-	message: { error: "Too many login attempts. Try again later." },
-	standardHeaders: true,
-	legacyHeaders: false,
-});
-
-app.post("/authentication/signup", blockIfAuthenticated, async (req, res) => {
-	let { username, email, password } = req.body;
-
-	const schema = Joi.object({
-		username: Joi.string().alphanum().min(3).max(30).required(),
-		email: Joi.string().email().required(),
-		password: Joi.string().min(6).required(),
-	});
-
-	const { error } = schema.validate({ username, email, password });
-	if (error) {
-		return res.status(400).json({ error: error.details[0].message });
-	}
-
-	//Checks if email is already in use
-	const user = await userCollection.findOne({ email }, { projection: { password: 0 } });
-	if (user) {
-		return res.status(409).json({ error: "Email is already in use" });
-	}
-
-	const saltRounds = bcrypt.genSaltSync(saltRoundsCount);
-	const hashedPassword = bcrypt.hashSync(password, saltRounds);
-
-	await userCollection.insertOne({ username, email, password: hashedPassword, user_type: "user" });
-
-	//Log the user in immediately after signing up
-
-	const token = jwt.sign({ username: username, email: email, userType: "user" }, JWT_SECRET, {
-		expiresIn: "7d",
-	});
-
-	return res.json({ message: "User created and logged in successfully", token });
-});
-
-app.post("/authentication/login", loginLimiter, blockIfAuthenticated, async (req, res) => {
-	let { email, password } = req.body;
-
-	const schema = Joi.object({
-		email: Joi.string().email().required(),
-		password: Joi.string().min(6).required(),
-	});
-
-	const { error } = schema.validate({ email, password });
-	if (error) {
-		return res.status(400).json({ error: error.details[0].message });
-	}
-
-	const user = await userCollection.findOne({ email });
-	if (!user) {
-		return res.status(401).json({ error: "Invalid email or password" });
-	}
-
-	const isMatch = await bcrypt.compare(password, user.password);
-	if (!isMatch) {
-		return res.status(401).json({ error: "Invalid email or password" });
-	}
-
-	const token = jwt.sign(
-		{ userId: user._id, username: user.username, userType: user.user_type },
-		JWT_SECRET,
-		{
-			expiresIn: "7d",
-		}
-	);
-
-	return res.json({ message: "Login successful", token });
-});
+async function registerAuthenticationRoutes() {
+	const { default: signUpRouter } = await import("./authentication/signUpRoute.mjs");
+	const { default: loginRouter } = await import("./authentication/loginRoute.mjs");
+	app.use(signUpRouter);
+	app.use(loginRouter);
+}
 
 app.get("/authentication/status", authRequired, (req, res) => {
 	res.json({
@@ -263,14 +241,46 @@ app.get("/api/collection", async (req,res) => {
 
 app.post("/users/getUserData", authRequired, async (req, res) => {
 	const user = await userCollection.findOne(
-		{ _id: new MongoClient.ObjectId(req.user.userId) },
+		{ _id: new ObjectId(req.user.userId) },
 		{ projection: { password: 0 } }
 	);
 
 	if (!user) {
 		return res.status(404).json({ error: "User not found" });
 	}
-	return res.json({ user });
+	return res.json({
+		user,
+		plants: user.plants ?? [],
+	});
+});
+
+app.post("/users/addPlant", authRequired, async (req, res) => {
+	const { scientificNameWithoutAuthor } = req.body;
+
+	if (!scientificNameWithoutAuthor) {
+		return res.status(400).json({ error: "scientificNameWithoutAuthor is required" });
+	}
+
+	// Validate that the plant is not already in the user's collection
+	const user = await userCollection.findOne(
+		{ _id: new ObjectId(req.user.userId) },
+		{ projection: { plants: 1 } }
+	);
+
+	if (user.plants && user.plants.includes(scientificNameWithoutAuthor)) {
+		return res.status(400).json({ error: "Plant already in user's collection" });
+	}
+
+	//Add to user's plant collection
+	await userCollection.updateOne(
+		{ _id: new ObjectId(req.user.userId) },
+		{ $addToSet: { plants: scientificNameWithoutAuthor } }
+	);
+
+	return res.json({
+		message: "Plant added successfully",
+		plant: scientificNameWithoutAuthor,
+	});
 });
 
 //---------------Pet Endpoints------------------
@@ -279,7 +289,7 @@ const petTypes = ["Acorn", "Mushroom", "Berry"];
 
 app.get("/petAPI/hasPet", authRequired, async (req, res) => {
 	const pet = await petCollection.findOne({
-		ownerId: new MongoClient.ObjectId(req.user.userId),
+		ownerId: req.user.userId,
 	});
 	return res.json({ hasPet: !!pet });
 });
@@ -322,15 +332,86 @@ app.post("/petAPI/addPet", authRequired, async (req, res) => {
 	const pet = {
 		name,
 		type,
+		xp: 0,
+		level: 1,
+		happiness: 100,
+		food: 5,
+		lastupdate: Date.now() / 1000,
+		decayrate: 0.001,
 		ownerId: req.user.userId,
 	};
 
 	await petCollection.insertOne(pet);
 
-	return res.json({ message: "Pet added successfully" });
+	return res.json({
+		message: "Pet added successfully",
+		pet,
+	});
 });
 
-//Markers Endpoints
+app.post("/petAPI/updatePet", authRequired, async (req, res) => {
+	const pet = await petCollection.findOne({
+		ownerId: req.user.userId,
+	});
+
+	if (!pet) {
+		return res.status(404).json({ error: "Pet not found" });
+	}
+
+	const { xp = 0, happiness = 0, food = 0 } = req.body;
+
+	const now = Date.now() / 1000;
+	const elapsed = now - pet.lastupdate;
+
+	let decayedHappiness = pet.happiness - elapsed * pet.decayrate;
+	decayedHappiness = Math.max(0, Math.min(decayedHappiness, 100));
+
+	let finalHappiness = decayedHappiness + happiness;
+	finalHappiness = Math.max(0, Math.min(finalHappiness, 100));
+
+	let newXP = pet.xp + xp;
+	let newLevel = pet.level;
+
+	//To ensure that food is always added, even if pet.food is undefined / NaN
+	let newFood;
+	if (pet.food) {
+		newFood = pet.food + food;
+	} else {
+		newFood = 5 + food;
+	}
+
+	if (newXP >= 100) {
+		newLevel += Math.floor(newXP / 100);
+		newXP = newXP % 100;
+	}
+
+	await petCollection.updateOne(
+		{ _id: pet._id },
+		{
+			$set: {
+				happiness: finalHappiness,
+				xp: newXP,
+				level: newLevel,
+				lastupdate: now,
+				food: newFood,
+			},
+		}
+	);
+
+	return res.json({
+		message: "Pet updated successfully",
+		pet: {
+			...pet,
+			happiness: finalHappiness,
+			xp: newXP,
+			level: newLevel,
+			lastupdate: now,
+			food: pet.food + food,
+		},
+	});
+});
+
+//---------------- Markers Endpoints ----------------
 app.get("/markers", async (req, res) => {
 	try {
 		const markers = await markerCollection.find({}).toArray();
@@ -341,9 +422,10 @@ app.get("/markers", async (req, res) => {
 	}
 });
 
-app.post("/markers", async (req, res) => {
+app.post("/markers", authRequired, async (req, res) => {
 	try {
-		const { lat, lng } = req.body;
+		const { lat, lng, plantName, plantId, edible } = req.body;
+	    const userId = req.user.userId.toString();
 
 		if (lat == null || lng == null) {
 			return res.status(400).json({ error: "lat and lng required" });
@@ -352,6 +434,10 @@ app.post("/markers", async (req, res) => {
 		const newMarker = {
 			lat,
 			lng,
+			plantName,
+			plantId,
+			edible: edible ?? null,
+			userId,
 			createdAt: new Date(),
 		};
 
@@ -367,27 +453,36 @@ app.post("/markers", async (req, res) => {
 	}
 });
 
-app.delete("/markers/:id", async (req, res) => {
-	try {
-		const id = req.params.id;
+app.delete("/markers/:id", authRequired, async (req, res) => {
+    try {
+        const id = req.params.id;
+        const requestingUserId = req.user.userId;
 
-		await markerCollection.deleteOne({
-			_id: new ObjectId(id),
-		});
+        const marker = await markerCollection.findOne({ _id: new ObjectId(id) });
 
-		res.json({ message: "Marker deleted" });
-	} catch (err) {
-		console.error(err);
-		res.status(500).json({ error: "Failed to delete marker" });
-	}
+        if (!marker) {
+            return res.status(404).json({ error: "Marker not found" });
+        }
+
+        if (marker.userId !== requestingUserId.toString()) {
+            return res.status(403).json({ error: "Not authorized to delete this marker" });
+        }
+
+        await markerCollection.deleteOne({ _id: new ObjectId(id) });
+        res.json({ message: "Marker deleted" });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Failed to delete marker" });
+    }
 });
 
 //used specifically for backend.
 async function startServer() {
 	try {
 		await registerGeminiRoutes();
+		await registerAuthenticationRoutes();
 	} catch (error) {
-		console.error("Failed to register Gemini routes:", error);
+		console.error("Failed to register routes:", error);
 	}
 
 	app.listen(port, () => {

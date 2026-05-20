@@ -1,6 +1,6 @@
-import { CameraIcon, CollectionIcon, MapIcon, PetIcon, ProfileIcon } from '../components/Icons';
-import NavItem from '../NavItem/NavItem';
-import styles from './Footer.module.css';
+import { CameraIcon, CollectionIcon, MapIcon, PetIcon, ProfileIcon } from "../components/Icons";
+import NavItem from "../NavItem/NavItem";
+import styles from "./Footer.module.css";
 
 /**
  * Footer component for the main elements for the application.
@@ -15,15 +15,15 @@ function Footer() {
 	return (
 		<footer className={styles.footer}>
 			<nav>
-				<NavItem link="/map" label="map" icon={MapIcon} />
+				<NavItem link="/map" label="Map" icon={MapIcon} />
 
-				<NavItem link="/collection" label="collection" icon={CollectionIcon} />
+				<NavItem link="/collection" label="Catalogue" icon={CollectionIcon} />
 
-				<NavItem link="/pet" label="pet" icon={PetIcon} />
+				<NavItem link="/pet" label="Pet" icon={PetIcon} />
 
-				<NavItem link="/camera" label="camera" icon={CameraIcon} />
+				<NavItem link="/camera" label="Camera" icon={CameraIcon} />
 
-				<NavItem link="/profile" label="profile" icon={ProfileIcon} />
+				<NavItem link="/profile" label="Profile" icon={ProfileIcon} />
 			</nav>
 		</footer>
 	);

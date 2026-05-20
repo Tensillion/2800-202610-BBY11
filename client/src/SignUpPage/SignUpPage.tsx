@@ -4,6 +4,8 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import "../css/auth.css";
 
+const BACKEND_URL = "http://localhost:3000";
+
 /**
  * Authentication page for users to sign up for a new account
  *
@@ -22,7 +24,7 @@ function SignUpPage() {
 		e.preventDefault();
 
 		//CHANGE URL FOR PRODUCTION
-		const response = await fetch("http://localhost:3000/authentication/signup", {
+		const response = await fetch(`${BACKEND_URL}/authentication/signup`, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({ username, email, password }),

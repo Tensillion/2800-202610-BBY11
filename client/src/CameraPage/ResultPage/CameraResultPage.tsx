@@ -1,9 +1,55 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useContext, useCallback } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./CameraResultPage.css";
 import ResultCard from "./ResultCard/ResultCard";
+import { AuthContext } from "../../context/AuthContext";
 
-const BACKEND_URL = "http://localhost:3000"; // Replace with actual backend URL when deployed
+const BACKEND_URL = "http://localhost:3000";
+
+//Types for the plant identification result and edibility lookup
+type PlantIdentificationResult = {
+	bestMatch: string;
+	results: Array<{
+		score: number;
+		species: {
+			scientificName: string;
+			scientificNameWithoutAuthor: string;
+			scientificNameAuthorship: string;
+			commonNames: string[];
+			family: {
+				scientificName: string;
+			};
+			genus: {
+				scientificName: string;
+			};
+		};
+		gbif?: { id: string };
+		powo?: { id: string };
+	}>;
+};
+
+type EdibilityEntry = {
+	edible: boolean | "unknown";
+	parts: string[];
+	warnings: string;
+	sources: string[];
+};
+
+type EdibilityLookup = Record<string, EdibilityEntry>;
+
+type ResultWithLookup = PlantIdentificationResult["results"][number] & {
+	lookupKey: string | null;
+	edibility: EdibilityEntry | null;
+	_searchCandidates?: string[];
+};
+
+interface PetUpdatePayload {
+	xp?: number;
+	happiness?: number;
+	food?: number;
+}
+
+//END OF TYPE DEFINITIONS
 
 /**
  * Represents the result page for the camera scan.
@@ -18,47 +64,19 @@ const BACKEND_URL = "http://localhost:3000"; // Replace with actual backend URL 
  * @version 1.0 - Initial implementation with plant identification result display.
  */
 export default function CameraResultPage() {
+	const { token } = useContext(AuthContext);
 	const { state } = useLocation();
 	const navigate = useNavigate();
 	const imageBlob = state?.imageBlob;
+	const [newResult, setNewResult] = useState(false);
 
-	//Types for the plant identification result and edibility lookup
-	type PlantIdentificationResult = {
-		bestMatch: string;
-		results: Array<{
-			score: number;
-			species: {
-				scientificName: string;
-				scientificNameWithoutAuthor: string;
-				scientificNameAuthorship: string;
-				commonNames: string[];
-				family: {
-					scientificName: string;
-				};
-				genus: {
-					scientificName: string;
-				};
-			};
-			gbif?: { id: string };
-			powo?: { id: string };
-		}>;
-	};
-
-	type EdibilityEntry = {
-		edible: boolean | "unknown";
-		parts: string[];
-		warnings: string;
-		sources: string[];
-	};
-
-	type EdibilityLookup = Record<string, EdibilityEntry>;
-
-	type ResultWithLookup = PlantIdentificationResult["results"][number] & {
-		lookupKey: string | null;
-		edibility: EdibilityEntry | null;
-		_searchCandidates?: string[];
-	};
-	//END OF TYPE DEFINITIONS
+	const getAuthHeaders = useCallback(
+		() => ({
+			"Content-Type": "application/json",
+			...(token && { Authorization: `Bearer ${token}` }),
+		}),
+		[token]
+	);
 
 	//State for the plant identification result, edibility lookup data, loading and error states
 	const [result, setResult] = useState<PlantIdentificationResult | null>(() => {
@@ -73,6 +91,100 @@ export default function CameraResultPage() {
 
 	const [error, setError] = useState<string | null>(null);
 	//END OF STATE DEFINITIONS
+
+	const loadUserPlants = useCallback(async () => {
+		const response = await fetch(`${BACKEND_URL}/users/getUserData`, {
+			method: "POST",
+			headers: getAuthHeaders(),
+		});
+
+		if (!response.ok) {
+			throw new Error("Failed to load user plants");
+		}
+
+		const data = await response.json();
+		return (data?.user?.plants ?? data?.plants ?? []) as string[];
+	}, [getAuthHeaders]);
+
+	const getIdentifiedPlantName = useCallback(
+		(plantResult: PlantIdentificationResult | null) =>
+			plantResult?.results[0]?.species.scientificNameWithoutAuthor ?? null,
+		[]
+	);
+
+	const syncRewardState = useCallback(
+		async (plantResult: PlantIdentificationResult | null) => {
+			const identifiedPlantName = getIdentifiedPlantName(plantResult);
+
+			if (!identifiedPlantName) {
+				return null;
+			}
+
+			const userPlants = await loadUserPlants();
+			return {
+				identifiedPlantName,
+				isNew: !userPlants.includes(identifiedPlantName),
+			};
+		},
+		[getIdentifiedPlantName, loadUserPlants]
+	);
+
+	const updatePetStats = useCallback(
+		async (updates: PetUpdatePayload = {}) => {
+			const response = await fetch(`${BACKEND_URL}/petAPI/updatePet`, {
+				method: "POST",
+				headers: getAuthHeaders(),
+				body: JSON.stringify(updates),
+			});
+
+			if (!response.ok) {
+				let errorMessage = "Failed to update pet (Cannot Add Food Reward)";
+				try {
+					const errorData = await response.json();
+					errorMessage = errorData.error || errorMessage;
+				} catch (parseErr) {
+					console.error("Could not parse pet update error response:", parseErr);
+				}
+				throw new Error(errorMessage);
+			}
+		},
+		[getAuthHeaders]
+	);
+
+	const gainReward = useCallback(
+		async (plantResult?: PlantIdentificationResult | null) => {
+			const rewardState = await syncRewardState(plantResult ?? result);
+			if (!rewardState) return;
+
+			if (rewardState.isNew) {
+				const addPlantResponse = await fetch(`${BACKEND_URL}/users/addPlant`, {
+					method: "POST",
+					headers: getAuthHeaders(),
+					body: JSON.stringify({
+						scientificNameWithoutAuthor: rewardState.identifiedPlantName,
+					}),
+				});
+
+				if (!addPlantResponse.ok) {
+					let errorMessage = "Failed to add plant to collection";
+					try {
+						const errorData = await addPlantResponse.json();
+						errorMessage = errorData.error || errorMessage;
+					} catch (parseErr) {
+						console.error("Could not parse add plant error response:", parseErr);
+					}
+					throw new Error(errorMessage);
+				}
+
+				setNewResult(true);
+				await updatePetStats({ food: 5 });
+			} else {
+				setNewResult(false);
+				await updatePetStats({ food: 1 });
+			}
+		},
+		[result, getAuthHeaders, syncRewardState, updatePetStats]
+	);
 
 	//Merge plant identification results with edibility data from server
 	const mergedResults = useMemo<ResultWithLookup[]>(() => {
@@ -99,6 +211,13 @@ export default function CameraResultPage() {
 	//Gets the plant identification result from the backend with Pl@ntNet API
 	useEffect(() => {
 		if (result) {
+			void syncRewardState(result)
+				.then(rewardState => {
+					if (rewardState) {
+						setNewResult(rewardState.isNew);
+					}
+				})
+				.catch(err => console.error(err));
 			return;
 		}
 
@@ -130,6 +249,7 @@ export default function CameraResultPage() {
 				setResult(json);
 				setError(null);
 				sessionStorage.setItem("plantIdentificationResult", JSON.stringify(json));
+				await gainReward(json);
 			} catch (err) {
 				if (err instanceof Error && err.name !== "AbortError") {
 					console.error(err);
@@ -143,7 +263,7 @@ export default function CameraResultPage() {
 		identifyPlant();
 
 		return () => controller.abort();
-	}, [imageBlob, navigate, result]);
+	}, [imageBlob, navigate, gainReward, result, syncRewardState]);
 
 	//Fetch edibility data from server using plant search endpoint
 	useEffect(() => {
@@ -157,7 +277,9 @@ export default function CameraResultPage() {
 				}
 
 				// Collect all candidate names from the results
-				const candidateNames = mergedResults.flatMap(item => item._searchCandidates);
+				const candidateNames = Array.from(
+					new Set(mergedResults.flatMap(item => item._searchCandidates ?? []))
+				);
 
 				// Call the new search endpoint with parameters
 				const response = await fetch(`${BACKEND_URL}/plants/search`, {
@@ -166,7 +288,7 @@ export default function CameraResultPage() {
 					body: JSON.stringify({
 						names: candidateNames,
 						limit: 50,
-						sortField: "name",
+						sortField: "scientific_name",
 						sortOrder: 1,
 					}),
 				});
@@ -175,17 +297,35 @@ export default function CameraResultPage() {
 					throw new Error(`Failed to search plants: ${response.status}`);
 				}
 
-				const plants = (await response.json()) as Array<EdibilityEntry & { name: string }>;
+				const plants = (await response.json()) as Array<
+					EdibilityEntry & {
+						name?: string;
+						scientific_name?: string;
+						scientificName?: string;
+						common_names?: string[];
+						commonNames?: string[];
+					}
+				>;
 
-				// Map results by name for quick lookup
+				// Map results by every usable plant name for quick lookup
 				if (!cancelled) {
 					const lookup = plants.reduce<EdibilityLookup>((acc, plant) => {
-						acc[plant.name] = {
-							edible: plant.edible,
-							parts: plant.parts,
-							warnings: plant.warnings,
-							sources: plant.sources,
-						};
+						const aliases = [
+							plant.name,
+							plant.scientific_name,
+							plant.scientificName,
+							...(plant.common_names ?? []),
+							...(plant.commonNames ?? []),
+						].filter((alias): alias is string => Boolean(alias));
+
+						for (const alias of aliases) {
+							acc[alias] = {
+								edible: plant.edible,
+								parts: plant.parts,
+								warnings: plant.warnings,
+								sources: plant.sources,
+							};
+						}
 						return acc;
 					}, {});
 					setEdibilityLookup(lookup);
@@ -269,7 +409,19 @@ export default function CameraResultPage() {
 
 	return (
 		<div className="result-container">
-			<h1>Plant Identification Results</h1>
+			<h1>Plant Results</h1>
+			{newResult ?
+				<div className="new-result">
+					<p className="new-result-label">You found a new plant!</p>
+					<p className="new-result-description">
+						Your pet has been rewarded with a bonus of 5 food points for discovering a new plant!
+					</p>
+				</div>
+			:	<p className="new-result-description">
+					Your pet has been rewarded with a 1 food point for identifying a plant you've seen before!
+				</p>
+			}
+
 			{result.bestMatch && (
 				<div className="best-match">
 					<p className="best-match-label">Top Match:</p>

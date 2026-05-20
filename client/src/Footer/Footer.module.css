@@ -3,6 +3,10 @@
 	flex-direction: row;
 	justify-content: center;
 	align-items: center;
+	flex-shrink: 0;
+	margin-top: auto;
+
+	justify-self: center;
 
 	position: fixed;
 
@@ -10,6 +14,7 @@
 	padding-top: clamp(8px, 1vw, 12px);
 
 	bottom: 0;
+	left: 0;
 
 	width: 100%;
 	height: auto;

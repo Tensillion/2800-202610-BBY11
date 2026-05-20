@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import type { User } from "./AuthContext";
 import { AuthContext } from "./AuthContext";
 
+const BACKEND_URL = "http://localhost:3000";
+
 /**
  * Provider for managing authentication state
  *	Generated from Copilot, modified by Tyson Nguyen
@@ -22,7 +24,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 			try {
 				//CHANGE URL FOR PRODUCTION
-				const res = await fetch("http://localhost:3000/authentication/status", {
+				const res = await fetch(`${BACKEND_URL}/authentication/status`, {
 					headers: { Authorization: `Bearer ${token}` },
 				});
 
@@ -53,6 +55,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 	function logout() {
 		localStorage.removeItem("token");
+		sessionStorage.clear();
 		setToken(null);
 		setUser(null);
 	}

@@ -1,0 +1,32 @@
+/*
+ * Pet's image.
+ *
+ * IMPORTANT: If the pet still has a black background, re-export
+ * the PNG with transparency from your art tool (Figma/Aseprite/etc).
+ * A black-bg PNG cannot be cleanly masked in CSS on a light background.
+ *
+ * height is viewport-relative so the pet scales naturally with screen size.
+ * clamp(min, preferred, max) keeps it from being too small or too large.
+ */
+#pet-image {
+	display: block;
+	height: clamp(120px, 26vh, 240px);
+	width: auto;
+
+	/* Prevents accidental drag on desktop */
+	-webkit-user-drag: none;
+	-webkit-user-select: none;
+	user-select: none;
+	pointer-events: auto;
+
+	z-index: 1; /* Ensure pet is above the background */
+
+	transition: transform 0.2s ease-in-out;
+}
+
+.click-effect {
+	position: absolute;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.5);
+	animation: clickEffectAnim 0.6s ease-out forwards;
+}

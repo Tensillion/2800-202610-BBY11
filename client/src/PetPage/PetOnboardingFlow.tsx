@@ -92,7 +92,7 @@ const PetOnboardingFlow = ({ onComplete }: PetOnboardingFlowProps) => {
 
 						<div className="pet-carousel-display">
 							<img
-								src={`/assets/pets/${selectedPetType}.png`}
+								src={`/assets/pets/${selectedPetType}-pet-standing.png`}
 								alt={selectedPetType}
 								className="pet-carousel-image"
 								key={selectedPetType}
@@ -141,7 +141,7 @@ const PetOnboardingFlow = ({ onComplete }: PetOnboardingFlowProps) => {
 					</button>
 
 					<img
-						src={`/assets/pets/${selectedPetType}.png`}
+						src={`/assets/pets/${selectedPetType}-pet-standing.png`}
 						alt={selectedPetType}
 						className="pet-confirmation-image"
 					/>
@@ -234,7 +234,7 @@ const PetOnboardingFlow = ({ onComplete }: PetOnboardingFlowProps) => {
 					</button>
 
 					<img
-						src={`/assets/pets/${selectedPetType}.png`}
+						src={`/assets/pets/${selectedPetType}-pet-standing.png`}
 						alt={selectedPetType}
 						className="pet-confirmation-image"
 					/>

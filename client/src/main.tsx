@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import "./css/index.css";
+import Footer from "./Footer/Footer.tsx";
 import LandingPage from "./LandingPage/LandingPage.tsx";
 import CollectionPage from "./CollectionPage/CollectionPage/CollectionPage.tsx";
 import CameraPage from "./CameraPage/CameraPage.tsx";
@@ -35,92 +36,100 @@ createRoot(document.getElementById("root")!).render(
             }
           />
 
-          <Route
-            path="/signup"
-            element={
-              <GuestRoute>
-                <SignUpPage />
-              </GuestRoute>
-            }
-          />
-          <Route
-            path="/login"
-            element={
-              <GuestRoute>
-                <LoginPage />
-              </GuestRoute>
-            }
-          />
+					<Route
+						path="/signup"
+						element={
+							<GuestRoute>
+								<SignUpPage />
+							</GuestRoute>
+						}
+					/>
+					<Route
+						path="/login"
+						element={
+							<GuestRoute>
+								<LoginPage />
+							</GuestRoute>
+						}
+					/>
 
-          {/* Protected */}
+					{/* Protected */}
 
-          <Route
-            path="/profile"
-            element={
-              <ProtectedRoute>
-                <ProfilePage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/map"
-            element={
-              <ProtectedRoute>
-                <MapPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/pet"
-            element={
-              <ProtectedRoute>
-                <PetPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/collection"
-            element={
-              <ProtectedRoute>
-                <CollectionPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/settings"
-            element={
-              <ProtectedRoute>
-                <SettingsPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/item"
-            element={
-              <ProtectedRoute>
-                <ItemPage />
-              </ProtectedRoute>
-            }
-          />
+					<Route
+						path="/profile"
+						element={
+							<ProtectedRoute>
+								<ProfilePage />
+								<Footer />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path="/map"
+						element={
+							<ProtectedRoute>
+								<MapPage />
+								<Footer />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path="/pet"
+						element={
+							<ProtectedRoute>
+								<PetPage />
+								<Footer />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path="/collection"
+						element={
+							<ProtectedRoute>
+								<CollectionPage />
+								<Footer />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path="/settings"
+						element={
+							<ProtectedRoute>
+								<SettingsPage />
+								<Footer />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path="/item"
+						element={
+							<ProtectedRoute>
+								<ItemPage />
+								<Footer />
+							</ProtectedRoute>
+						}
+					/>
 
-          <Route
-            path="/camera"
-            element={
-              <ProtectedRoute>
-                <CameraPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/camera/result"
-            element={
-              <ProtectedRoute>
-                <CameraResultPage />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
-  </StrictMode>,
+					<Route
+						path="/camera"
+						element={
+							<ProtectedRoute>
+								<CameraPage />
+								<Footer />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path="/camera/result"
+						element={
+							<ProtectedRoute>
+								<CameraResultPage />
+								<Footer />
+							</ProtectedRoute>
+						}
+					/>
+				</Routes>
+			</BrowserRouter>
+		</AuthProvider>
+	</StrictMode>
 );
