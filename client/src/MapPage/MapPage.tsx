@@ -113,8 +113,6 @@ function MapPage() {
 		(filterEdible !== "all" ? 1 : 0) +
 		(filterOwner  !== "all" ? 1 : 0);
 
-	// ── Apply filters whenever they change ────────────────────────────────────
-
 	useEffect(() => {
 		if (!mapRef.current) return;
 		markersRef.current.forEach(marker => {
@@ -127,7 +125,7 @@ function MapPage() {
 		});
 	}, [filterEdible, filterOwner, currentUserId]);
 
-	// ── Sidebar controls ──────────────────────────────────────────────────────
+	// Sidebar controls
 
 	const closeSidebar = () => {
 		pendingMarkerRef.current?.remove();
@@ -139,8 +137,6 @@ function MapPage() {
 		setSuggestions([]);
 		setShowDropdown(false);
 	};
-
-	// ── Autocomplete handlers ─────────────────────────────────────────────────
 
 	const handlePlantInput = (value: string) => {
 		setPlantName(value);
@@ -174,7 +170,7 @@ function MapPage() {
 		setShowDropdown(false);
 	};
 
-	// ── Save marker ───────────────────────────────────────────────────────────
+	// Save marker
 
 	const confirmMarker = async () => {
 		if (!pendingLatLng || !selectedPlant) return;
@@ -222,7 +218,7 @@ function MapPage() {
 		}
 	};
 
-	// ── Popup ─────────────────────────────────────────────────────────────────
+	// Popup
 
 	const addPopup = (marker: Marker, markerId: string, markerUserId: string) => {
 		const isOwner = currentUserId === markerUserId;
@@ -255,7 +251,7 @@ function MapPage() {
 		});
 	};
 
-	// ── Map init ──────────────────────────────────────────────────────────────
+	// Map init
 
 	useEffect(() => {
 		if (mapRef.current || !mapContainerRef.current) return;
@@ -315,7 +311,7 @@ function MapPage() {
 		};
 	}, []);
 
-	// ── Render ────────────────────────────────────────────────────────────────
+	// Render
 
 	return (
 		<>
@@ -329,8 +325,6 @@ function MapPage() {
 				ref={mapContainerRef}
 				style={{ position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh", zIndex: 0 }}
 			/>
-
-			{/* ── Filter toggle button ── */}
 			
 			<button
 				className={`filter-toggle-btn ${activeFilterCount > 0 ? "has-active" : ""}`}
@@ -348,7 +342,6 @@ function MapPage() {
 				)}
 			</button>
 
-			{/* ── Filter panel ── */}
 			{filterOpen && (
 				<div className="filter-panel">
 					<div className="filter-panel-header">
@@ -395,7 +388,6 @@ function MapPage() {
 				</div>
 			)}
 
-			{/* ── Sidebar ── */}
 			<div className={`plant-sidebar ${sidebarOpen ? "open" : ""}`}>
 				<div className="sidebar-header">
 					<h2>New Plant Marker</h2>
