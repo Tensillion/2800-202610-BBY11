@@ -87,7 +87,7 @@ app.post("/plants/search", async (req, res) => {
 	try {
 		const { names = [], limit = 50, sortField = "scientific_name", sortOrder = 1 } = req.body;
 
-		const allowedSortFields = ["scientific_name", "scientificName", "name", "genus"];
+		const allowedSortFields = ["scientific_name", "common_names", "genus"];
 
 		if (!Array.isArray(names) || names.length === 0) {
 			return res.status(400).json({ error: "names must be a non-empty array" });
@@ -122,13 +122,7 @@ app.post("/plants/search", async (req, res) => {
 			n => new RegExp(`^${n.replace(/[-\/\\^$*+?.()| [\\]{}]/g, "\\$&")}$`, "i")
 		);
 
-		const searchableFields = [
-			"scientific_name",
-			"scientificName",
-			"name",
-			"common_names",
-			"commonNames",
-		];
+		const searchableFields = ["scientific_name", "common_names", "parts"];
 
 		// Search for plants matching any of the names
 		const plants = await plantCollection
@@ -142,11 +136,10 @@ app.post("/plants/search", async (req, res) => {
 		res.json(
 			plants.map(plant => ({
 				...plant,
-				name: plant.name ?? plant.scientific_name ?? plant.scientificName ?? null,
-				scientificName: plant.scientificName ?? plant.scientific_name ?? null,
-				scientific_name: plant.scientific_name ?? plant.scientificName ?? null,
-				commonNames: plant.commonNames ?? plant.common_names ?? [],
-				common_names: plant.common_names ?? plant.commonNames ?? [],
+				name: plant.scientific_name ?? null,
+				scientific_name: plant.scientific_name ?? null,
+				common_names: plant.common_names ?? [],
+				parts: plant.parts ?? [],
 			}))
 		);
 	} catch (error) {
