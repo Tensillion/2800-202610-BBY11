@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import FoodCard from "../FoodCard";
 
 type Food = {
@@ -10,19 +9,7 @@ type Food = {
   parts: string[];
 };
 
-export default function FoodList() {
-  const [foods, setFoods] = useState<Food[]>([]);
-
-  useEffect(() => {
-    async function loadFoods() {
-      const res = await fetch("/api/collection");
-      const data = await res.json();
-      setFoods(data);
-    }
-
-    loadFoods();
-  }, []);
-
+export default function FoodList({ foods }: { foods: Food[] }) {
   return (
     <div className="d-flex flex-wrap gap-3">
       {foods.map((food) => (

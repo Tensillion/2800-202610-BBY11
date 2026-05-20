@@ -177,7 +177,13 @@ app.get("/plants/search", async (req, res) => {
         common_names: { $regex: q, $options: "i" },
       })
       .limit(8)
-      .project({ common_names: 1, scientific_name: 1, edible: 1 })
+      .project({
+        common_names: 1,
+        scientific_name: 1,
+        edible: 1,
+        parts: 1,
+        warnings: 1,
+      })
       .toArray();
 
     res.json(results);
