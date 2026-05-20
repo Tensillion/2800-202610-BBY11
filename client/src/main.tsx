@@ -13,9 +13,8 @@ import LoginPage from "./LoginPage/LoginPage.tsx";
 import SignUpPage from "./SignUpPage/SignUpPage.tsx";
 import PetPage from "./PetPage/PetPage.tsx";
 import SettingsPage from "./SettingsPage/SettingsPage.tsx";
-import ItemPage from "./CollectionPage/FoodData.tsx/FoodData.tsx";
 import CameraResultPage from "./CameraPage/ResultPage/CameraResultPage.tsx";
-
+import ItemPage from "./ItemPage/ItemPage.tsx";
 import GuestRoute from "./components/GuestRoute.tsx";
 import ProtectedRoute from "./components/ProtectedRoute.tsx";
 
@@ -101,7 +100,7 @@ createRoot(document.getElementById("root")!).render(
             }
           />
           <Route
-            path="/item"
+            path="/ItemPage"
             element={
               <ProtectedRoute>
                 <ItemPage />

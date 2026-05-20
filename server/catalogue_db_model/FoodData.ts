@@ -4,7 +4,7 @@ export interface FoodData extends Document {
   _id: Types.ObjectId;
   warnings: string;
   scientific_name: string;
-  common_names: string;
+  common_names: string[];
   edible: boolean;
   parts: string[];
 }
@@ -12,7 +12,7 @@ export interface FoodData extends Document {
 const FoodSchema = new Schema<FoodData>({
   warnings: { type: String, required: true },
   scientific_name: { type: String, required: true },
-  common_names: { type: String, required: true },
+  common_names: { type: [String], required: true },
   edible: { type: Boolean, required: true },
   parts: { type: [String], required: true },
 });
