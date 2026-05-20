@@ -3,17 +3,19 @@ import PopUp from "../PopUp/PopUp";
 import PetOnboardingFlow from "./PetOnboardingFlow";
 import { AuthContext } from "../context/AuthContext";
 import PetStatDisplay from "./PetStatDisplay/PetStatDisplay";
+import FeedButton from "./FeedButton/FeedButton";
 import "./PetPage.css";
 import Pet from "./Pet/Pet";
 
-const BACKEND_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+const BACKEND_URL = "http://localhost:3000";
 
 const guideSteps = [
 	{
 		x: "50%",
 		y: "80%",
 		title: "Feed Your Pet",
-		message: "This is where you use the food to feed your pet.",
+		message:
+			"This is where you use Sunshine to feed your pet and keep it happy! You collect sunshine by foraging plants!",
 	},
 	{
 		x: "50%",
@@ -27,6 +29,7 @@ const guideSteps = [
 interface PetUpdatePayload {
 	xp?: number;
 	happiness?: number;
+	food?: number;
 }
 
 interface Pet {
@@ -36,6 +39,7 @@ interface Pet {
 	xp: number;
 	level: number;
 	happiness: number;
+	food: number;
 }
 
 function PetPage() {
@@ -43,6 +47,7 @@ function PetPage() {
 	const [hasPet, setHasPet] = useState<boolean | null>(null);
 	const [pet, setPet] = useState<Pet | null>(null);
 	const [loading, setLoading] = useState(true);
+	const [feeding, setFeeding] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 
 	const getAuthHeaders = useCallback(
@@ -134,10 +139,6 @@ function PetPage() {
 	useEffect(() => {
 		const loadPetStatus = async () => {
 			await checkIfUserHasPet();
-
-			if (hasPet) {
-				await loadPet();
-			}
 		};
 
 		void loadPetStatus();
@@ -174,6 +175,27 @@ function PetPage() {
 			throw err;
 		}
 	};
+
+	const handleFeedPet = useCallback(async () => {
+		if (feeding) return;
+		if (pet?.food === 0) {
+			alert(
+				"You don't have any food to feed your pet! Forage some plants to collect more sunshine."
+			);
+			return;
+		}
+
+		try {
+			setFeeding(true);
+			await updatePetStats({ xp: 5, happiness: 10, food: -1 });
+			await loadPet();
+		} catch (err) {
+			console.error("Error feeding pet:", err);
+			setError(err instanceof Error ? err.message : "Failed to feed pet");
+		} finally {
+			setFeeding(false);
+		}
+	}, [feeding, pet, updatePetStats, loadPet]);
 
 	if (loading) {
 		return (
@@ -223,6 +245,7 @@ function PetPage() {
 			<div className="pet-scene">
 				<Pet imageUrl={`/assets/pets/${pet.type}-pet-sitting.png`} />
 			</div>
+			<FeedButton onFeed={handleFeedPet} disabled={feeding} />
 		</section>
 	);
 }

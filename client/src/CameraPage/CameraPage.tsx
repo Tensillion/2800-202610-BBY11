@@ -1,5 +1,5 @@
 import Webcam from "react-webcam";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./CameraPage.css";
 import PopUp from "../PopUp/PopUp";
@@ -59,6 +59,11 @@ function CameraPage() {
 			state: { imageBlob: blob },
 		});
 	};
+
+	useEffect(() => {
+		const cached = sessionStorage.getItem("plantIdentificationResult");
+		if (cached) navigate("/camera/result");
+	}, [navigate]);
 
 	return (
 		<>

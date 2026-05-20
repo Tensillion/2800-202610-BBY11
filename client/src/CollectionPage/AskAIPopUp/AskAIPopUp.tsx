@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import "./AskAIPopUp.css";
 
-const BACKEND_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+const BACKEND_URL = "http://localhost:3000";
 
 type PlantInfo = {
 	name: string;

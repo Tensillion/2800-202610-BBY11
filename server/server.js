@@ -85,9 +85,9 @@ app.get("/plantData", async (req, res) => {
 //Plant Search Endpoint, reusable for search bar and plant identification results
 app.post("/plants/search", async (req, res) => {
 	try {
-		const { names = [], limit = 50, sortField = "name", sortOrder = 1 } = req.body;
+		const { names = [], limit = 50, sortField = "scientific_name", sortOrder = 1 } = req.body;
 
-		const allowedSortFields = ["name", "scientificName", "genus"];
+		const allowedSortFields = ["scientific_name", "scientificName", "name", "genus"];
 
 		if (!Array.isArray(names) || names.length === 0) {
 			return res.status(400).json({ error: "names must be a non-empty array" });
@@ -122,16 +122,33 @@ app.post("/plants/search", async (req, res) => {
 			n => new RegExp(`^${n.replace(/[-\/\\^$*+?.()| [\\]{}]/g, "\\$&")}$`, "i")
 		);
 
+		const searchableFields = [
+			"scientific_name",
+			"scientificName",
+			"name",
+			"common_names",
+			"commonNames",
+		];
+
 		// Search for plants matching any of the names
 		const plants = await plantCollection
 			.find({
-				name: { $in: regexPatterns },
+				$or: searchableFields.map(field => ({ [field]: { $in: regexPatterns } })),
 			})
 			.sort({ [sortField]: sortOrder })
 			.limit(limit)
 			.toArray();
 
-		res.json(plants);
+		res.json(
+			plants.map(plant => ({
+				...plant,
+				name: plant.name ?? plant.scientific_name ?? plant.scientificName ?? null,
+				scientificName: plant.scientificName ?? plant.scientific_name ?? null,
+				scientific_name: plant.scientific_name ?? plant.scientificName ?? null,
+				commonNames: plant.commonNames ?? plant.common_names ?? [],
+				common_names: plant.common_names ?? plant.commonNames ?? [],
+			}))
+		);
 	} catch (error) {
 		console.error("Error searching plants:", error);
 		res.status(500).json({ error: "Failed to search plants" });
@@ -207,7 +224,39 @@ app.post("/users/getUserData", authRequired, async (req, res) => {
 	if (!user) {
 		return res.status(404).json({ error: "User not found" });
 	}
-	return res.json({ user });
+	return res.json({
+		user,
+		plants: user.plants ?? [],
+	});
+});
+
+app.post("/users/addPlant", authRequired, async (req, res) => {
+	const { scientificNameWithoutAuthor } = req.body;
+
+	if (!scientificNameWithoutAuthor) {
+		return res.status(400).json({ error: "scientificNameWithoutAuthor is required" });
+	}
+
+	// Validate that the plant is not already in the user's collection
+	const user = await userCollection.findOne(
+		{ _id: new ObjectId(req.user.userId) },
+		{ projection: { plants: 1 } }
+	);
+
+	if (user.plants && user.plants.includes(scientificNameWithoutAuthor)) {
+		return res.status(400).json({ error: "Plant already in user's collection" });
+	}
+
+	//Add to user's plant collection
+	await userCollection.updateOne(
+		{ _id: new ObjectId(req.user.userId) },
+		{ $addToSet: { plants: scientificNameWithoutAuthor } }
+	);
+
+	return res.json({
+		message: "Plant added successfully",
+		plant: scientificNameWithoutAuthor,
+	});
 });
 
 //---------------Pet Endpoints------------------
@@ -262,6 +311,7 @@ app.post("/petAPI/addPet", authRequired, async (req, res) => {
 		xp: 0,
 		level: 1,
 		happiness: 100,
+		food: 5,
 		lastupdate: Date.now() / 1000,
 		decayrate: 0.001,
 		ownerId: req.user.userId,
@@ -269,7 +319,10 @@ app.post("/petAPI/addPet", authRequired, async (req, res) => {
 
 	await petCollection.insertOne(pet);
 
-	return res.json({ message: "Pet added successfully" });
+	return res.json({
+		message: "Pet added successfully",
+		pet,
+	});
 });
 
 app.post("/petAPI/updatePet", authRequired, async (req, res) => {
@@ -281,7 +334,7 @@ app.post("/petAPI/updatePet", authRequired, async (req, res) => {
 		return res.status(404).json({ error: "Pet not found" });
 	}
 
-	const { xp = 0, happiness = 0 } = req.body;
+	const { xp = 0, happiness = 0, food = 0 } = req.body;
 
 	const now = Date.now() / 1000;
 	const elapsed = now - pet.lastupdate;
@@ -294,6 +347,14 @@ app.post("/petAPI/updatePet", authRequired, async (req, res) => {
 
 	let newXP = pet.xp + xp;
 	let newLevel = pet.level;
+
+	//To ensure that food is always added, even if pet.food is undefined / NaN
+	let newFood;
+	if (pet.food) {
+		newFood = pet.food + food;
+	} else {
+		newFood = 5 + food;
+	}
 
 	if (newXP >= 100) {
 		newLevel += Math.floor(newXP / 100);
@@ -308,6 +369,7 @@ app.post("/petAPI/updatePet", authRequired, async (req, res) => {
 				xp: newXP,
 				level: newLevel,
 				lastupdate: now,
+				food: newFood,
 			},
 		}
 	);
@@ -320,6 +382,7 @@ app.post("/petAPI/updatePet", authRequired, async (req, res) => {
 			xp: newXP,
 			level: newLevel,
 			lastupdate: now,
+			food: pet.food + food,
 		},
 	});
 });
