@@ -24,11 +24,12 @@ async function attemptSignUp(username, email, password) {
 		email,
 		password: hashedPassword,
 		user_type: "user",
+		plants: [],
 	});
 	const userId = result.insertedId;
 
 	const token = jwt.sign(
-		{ userId: userId.toString(), username, email, userType: "user" },
+		{ userId: userId.toString(), username, email, userType: "user", plants: [] },
 		JWT_SECRET,
 		{ expiresIn: "7d" }
 	);

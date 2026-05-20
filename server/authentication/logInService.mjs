@@ -24,6 +24,7 @@ async function attemptLogin(email, password) {
 			username: user.username,
 			email: user.email,
 			userType: user.user_type,
+			plants: user.plants,
 		},
 		JWT_SECRET,
 		{ expiresIn: "7d" }
