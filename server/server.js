@@ -138,6 +138,26 @@ app.post("/plants/search", async (req, res) => {
 	}
 });
 
+app.get("/plants/search", async (req, res) => {
+  try {
+    const q = req.query.q?.trim();
+    if (!q) return res.json([]);
+
+    const results = await plantCollection
+      .find({
+        common_names: { $regex: q, $options: "i" }
+      })
+      .limit(8)
+	  .project({ common_names: 1, scientific_name: 1, edible: 1 })
+      .toArray();
+
+    res.json(results);
+  } catch (err) {
+    console.error("Plant autocomplete error:", err);
+    res.status(500).json({ error: "Failed to search plants" });
+  }
+});
+
 // accept a single image file upload (field name: "image")
 app.post("/plantIdentification", plantCaptureLimiter, upload.single("image"), async (req, res) => {
 	if (!req.file) {
@@ -337,7 +357,7 @@ app.get("/markers", async (req, res) => {
 
 app.post("/markers", authRequired, async (req, res) => {
 	try {
-		const { lat, lng, plantName } = req.body;
+		const { lat, lng, plantName, plantId, edible } = req.body;
 	    const userId = req.user.userId.toString();
 
 		if (lat == null || lng == null) {
@@ -348,6 +368,8 @@ app.post("/markers", authRequired, async (req, res) => {
 			lat,
 			lng,
 			plantName,
+			plantId,
+			edible: edible ?? null,
 			userId,
 			createdAt: new Date(),
 		};
