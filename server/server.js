@@ -174,7 +174,11 @@ app.get("/plants/search", async (req, res) => {
 
     const results = await plantCollection
       .find({
-        common_names: { $regex: q, $options: "i" },
+        $or: [
+          { common_names: { $regex: q, $options: "i" } },
+          { scientific_name: { $regex: q, $options: "i" } },
+          // { parts: { $regex: q, $options: "i" } },
+        ],
       })
       .limit(8)
       .project({
