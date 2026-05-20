@@ -138,6 +138,26 @@ app.post("/plants/search", async (req, res) => {
 	}
 });
 
+app.get("/plants/search", async (req, res) => {
+  try {
+    const q = req.query.q?.trim();
+    if (!q) return res.json([]);
+
+    const results = await plantCollection
+      .find({
+        common_names: { $regex: q, $options: "i" }
+      })
+      .limit(8)
+	  .project({ common_names: 1, scientific_name: 1, edible: 1 })
+      .toArray();
+
+    res.json(results);
+  } catch (err) {
+    console.error("Plant autocomplete error:", err);
+    res.status(500).json({ error: "Failed to search plants" });
+  }
+});
+
 // accept a single image file upload (field name: "image")
 app.post("/plantIdentification", plantCaptureLimiter, upload.single("image"), async (req, res) => {
 	if (!req.file) {
@@ -337,8 +357,8 @@ app.get("/markers", async (req, res) => {
 
 app.post("/markers", authRequired, async (req, res) => {
 	try {
-		const { lat, lng, plantName } = req.body;
-		const userId = req.user.userId.toString();
+		const { lat, lng, plantName, plantId, edible } = req.body;
+	    const userId = req.user.userId.toString();
 
 		if (lat == null || lng == null) {
 			return res.status(400).json({ error: "lat and lng required" });
@@ -348,6 +368,8 @@ app.post("/markers", authRequired, async (req, res) => {
 			lat,
 			lng,
 			plantName,
+			plantId,
+			edible: edible ?? null,
 			userId,
 			createdAt: new Date(),
 		};
@@ -364,20 +386,27 @@ app.post("/markers", authRequired, async (req, res) => {
 	}
 });
 
-app.delete("/markers/:id", async (req, res) => {
-	try {
-		const id = req.params.id;
-		const requestingUserId = req.user.userId;
+app.delete("/markers/:id", authRequired, async (req, res) => {
+    try {
+        const id = req.params.id;
+        const requestingUserId = req.user.userId;
 
-		await markerCollection.deleteOne({
-			_id: new ObjectId(id),
-		});
+        const marker = await markerCollection.findOne({ _id: new ObjectId(id) });
 
-		res.json({ message: "Marker deleted" });
-	} catch (err) {
-		console.error(err);
-		res.status(500).json({ error: "Failed to delete marker" });
-	}
+        if (!marker) {
+            return res.status(404).json({ error: "Marker not found" });
+        }
+
+        if (marker.userId !== requestingUserId.toString()) {
+            return res.status(403).json({ error: "Not authorized to delete this marker" });
+        }
+
+        await markerCollection.deleteOne({ _id: new ObjectId(id) });
+        res.json({ message: "Marker deleted" });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Failed to delete marker" });
+    }
 });
 
 //used specifically for backend.
