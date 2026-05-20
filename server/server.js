@@ -264,15 +264,15 @@ app.get("/authentication/status", authRequired, (req, res) => {
   });
 });
 
-//---------------CollectionPage EndPoints--------
-app.get("/api/collection", async (req, res) => {
+//---------------Catalogue Page EndPoints--------
+app.get("/api/catalogue", async (req, res) => {
   try {
     const foodData = await plantCollection.find({}).toArray();
     res.json(foodData);
   } catch (err) {
     console.error(err);
     res.status(500).json({
-      error: "Failed to load collection",
+      error: "Failed to load catalogue",
     });
   }
 });

@@ -1,7 +1,7 @@
 import Footer from "../../Footer/Footer";
 import PopUp from "../../PopUp/PopUp";
 import AskAIPopUp from "../AskAIPopUp/AskAIPopUp";
-import "./CollectionPage.css";
+import "./CataloguePage.css";
 import FoodList from "../FoodList/FoodList";
 import Search from "../Search";
 import { useEffect, useState } from "react";
@@ -24,11 +24,11 @@ const guideSteps = [
   },
 ];
 
-function CollectionPage() {
+function CataloguePage() {
   const [foods, setFoods] = useState<Food[]>([]);
   useEffect(() => {
     async function loadFoods() {
-      const res = await fetch("/api/collection");
+      const res = await fetch("/api/CataloguePage");
       const data = await res.json();
       setFoods(data);
     }
@@ -81,4 +81,4 @@ function CollectionPage() {
     </>
   );
 }
-export default CollectionPage;
+export default CataloguePage;

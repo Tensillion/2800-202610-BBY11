@@ -5,7 +5,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./css/index.css";
 import Footer from "./Footer/Footer.tsx";
 import LandingPage from "./LandingPage/LandingPage.tsx";
-import CollectionPage from "./CollectionPage/CollectionPage/CollectionPage.tsx";
+import CataloguePage from "./CataloguePage/CataloguePage/CataloguePage.tsx";
 import CameraPage from "./CameraPage/CameraPage.tsx";
 import MapPage from "./MapPage/MapPage.tsx";
 import ProfilePage from "./ProfilePage/ProfilePage.tsx";
@@ -14,7 +14,7 @@ import SignUpPage from "./SignUpPage/SignUpPage.tsx";
 import PetPage from "./PetPage/PetPage.tsx";
 import SettingsPage from "./SettingsPage/SettingsPage.tsx";
 import CameraResultPage from "./CameraPage/ResultPage/CameraResultPage.tsx";
-import ItemPage from "./ItemPage/ItemPage.tsx";
+import PlantPage from "./PlantPage/PlantPage.tsx";
 import GuestRoute from "./components/GuestRoute.tsx";
 import ProtectedRoute from "./components/ProtectedRoute.tsx";
 
@@ -82,10 +82,10 @@ createRoot(document.getElementById("root")!).render(
             }
           />
           <Route
-            path="/collection"
+            path="/catalogue"
             element={
               <ProtectedRoute>
-                <CollectionPage />
+                <CataloguePage />
                 <Footer />
               </ProtectedRoute>
             }
@@ -100,10 +100,10 @@ createRoot(document.getElementById("root")!).render(
             }
           />
           <Route
-            path="/ItemPage"
+            path="/plants/:id"
             element={
               <ProtectedRoute>
-                <ItemPage />
+                <PlantPage />
                 <Footer />
               </ProtectedRoute>
             }

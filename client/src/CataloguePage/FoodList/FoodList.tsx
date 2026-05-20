@@ -4,7 +4,7 @@ type Food = {
   _id: string;
   warnings: string;
   scientific_name: string;
-  common_names: string;
+  common_names: string[];
   edible: boolean;
   parts: string[];
 };
