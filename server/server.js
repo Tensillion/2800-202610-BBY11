@@ -37,7 +37,7 @@ const database = new MongoClient(MONGO_ATLAS_URL, {});
 const userCollection = database.db(MONGO_USERS_DB).collection("users");
 const markerCollection = database.db(MONGO_USERS_DB).collection("markers");
 const plantCollection = database.db(MONGO_PLANTS_DB).collection("plants");
-const petCollection = database.db(MONGO_USERS_DB).collection("pets");
+const petCollection = database.db(MONGO_USERS_DB).collection("pets"); 
 
 const corsOptions = {
 	origin: ["http://localhost:5173"],
@@ -48,6 +48,7 @@ app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
 
 //------------------ Gemini Route ------------------
 async function registerGeminiRoutes() {
@@ -72,10 +73,6 @@ const plantCaptureLimiter = rateLimit({
 app.get("/api", (req, res) => {
 	res.json({ fruits: ["mango", "apple"] });
 });
-
-//collection api
-import EachFoodRoutes from "../client/src/CollectionPage/EachFoodRoutes";
-app.use("/api/collections", EachFoodRoutes);
 
 //Plant Data Endpoint
 app.get("/plantData", async (req, res) => {
@@ -251,6 +248,16 @@ app.get("/authentication/status", authRequired, (req, res) => {
 		},
 	});
 });
+
+//---------------CollectionPage EndPoints--------
+//Collection api
+// import EachFoodRoutes from "../client/src/CollectionPage/EachFoodRoutes";
+// app.use("/api/collections", EachFoodRoutes);
+app.get("/api/collection", async (req,res) => {
+	const foodData = await plantCollection.find({});
+	res.json(foodData);
+});
+
 
 //---------------User Endpoints------------------
 

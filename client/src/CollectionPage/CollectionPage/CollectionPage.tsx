@@ -48,7 +48,7 @@ function CollectionPage() {
 
 			<div className="flex min-h screen flex-col items-center justify-between p-24">
 				<a> defo should be cooking better rn</a>
-			</ div>
+			</ div>	
 
 
 			{/* Example usage of AskAIPopUp with demo plant info.

@@ -1,6 +1,7 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema, Document, Types } from "mongoose";
 
 export interface FoodData extends Document {
+  _id: Types.ObjectId;
   warnings: string;
   scientific_name: string;
   common_names: string;
