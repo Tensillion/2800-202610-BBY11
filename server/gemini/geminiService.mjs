@@ -12,36 +12,38 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
  * @returns {string} The constructed prompt to be sent to the Gemini API.
  */
 function buildPrompt(question, plantInfo) {
-	const infoLines = [
-		`Name: ${plantInfo.name}`,
-		typeof plantInfo.edible === "boolean" ? `Edible: ${plantInfo.edible ? "Yes" : "No"}` : null,
-		Array.isArray(plantInfo.parts) && plantInfo.parts.length > 0 ?
-			`Edible parts: ${plantInfo.parts.join(", ")}`
-		:	null,
-		plantInfo.warnings ? `Warnings: ${plantInfo.warnings}` : null,
-		Array.isArray(plantInfo.sources) && plantInfo.sources.length > 0 ?
-			`Sources: ${plantInfo.sources.slice(0, 3).join(", ")}`
-		:	null,
-	].filter(Boolean);
+  const infoLines = [
+    `scientific_name: ${plantInfo.scientific_name}`,
+    typeof plantInfo.edible === "boolean"
+      ? `Edible: ${plantInfo.edible ? "Yes" : "No"}`
+      : null,
+    Array.isArray(plantInfo.parts) && plantInfo.parts.length > 0
+      ? `Edible parts: ${plantInfo.parts.join(", ")}`
+      : null,
+    plantInfo.warnings ? `Warnings: ${plantInfo.warnings}` : null,
+    Array.isArray(plantInfo.sources) && plantInfo.sources.length > 0
+      ? `Sources: ${plantInfo.sources.slice(0, 3).join(", ")}`
+      : null,
+  ].filter(Boolean);
 
-	return [
-		"You are a foraging safety assistant for the citizens of Vancouver, British Columbia.",
-		"Prioritize safety over identification or edibility claims.",
-		"Rules:",
-		"- Don't guarantee a plant or mushroom is safe to eat if you're unsure.",
-		"- Warn about dangerous lookalikes and common misidentification risks.",
-		"- If needed, encourage expert verification and multiple sources before consumption.",
-		"- Give concise, beginner-friendly answers.",
-		"- Avoid hallucinated or overly specific claims.",
-		"- Focus on safety-first guidance.",
-		"",
-		"Plant info:",
-		...infoLines,
-		"",
-		`User question: ${question}`,
-		"",
-		"Answer in 3-6 short sentences.",
-	].join("\n");
+  return [
+    "You are a foraging safety assistant for the citizens of Vancouver, British Columbia.",
+    "Prioritize safety over identification or edibility claims.",
+    "Rules:",
+    "- Don't guarantee a plant or mushroom is safe to eat if you're unsure.",
+    "- Warn about dangerous lookalikes and common misidentification risks.",
+    "- If needed, encourage expert verification and multiple sources before consumption.",
+    "- Give concise, beginner-friendly answers.",
+    "- Avoid hallucinated or overly specific claims.",
+    "- Focus on safety-first guidance.",
+    "",
+    "Plant info:",
+    ...infoLines,
+    "",
+    `User question: ${question}`,
+    "",
+    "Answer in 3-6 short sentences.",
+  ].join("\n");
 }
 
 /**
@@ -57,22 +59,22 @@ function buildPrompt(question, plantInfo) {
  * @throws Will throw an error if the GEMINI_API_KEY is not set or if the API request fails.
  */
 export async function askGemini(question, plantInfo) {
-	const apiKey = process.env.GEMINI_API_KEY;
-	if (!apiKey) {
-		const error = new Error("GEMINI_API_KEY is not set");
-		error.code = "MISSING_API_KEY";
-		throw error;
-	}
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) {
+    const error = new Error("GEMINI_API_KEY is not set");
+    error.code = "MISSING_API_KEY";
+    throw error;
+  }
 
-	const genAI = new GoogleGenerativeAI(apiKey);
-	const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
-	const prompt = buildPrompt(question, plantInfo);
-	const result = await model.generateContent(prompt);
-	const text = result?.response?.text?.();
+  const genAI = new GoogleGenerativeAI(apiKey);
+  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
+  const prompt = buildPrompt(question, plantInfo);
+  const result = await model.generateContent(prompt);
+  const text = result?.response?.text?.();
 
-	if (!text) {
-		throw new Error("Empty response from Gemini");
-	}
+  if (!text) {
+    throw new Error("Empty response from Gemini");
+  }
 
-	return text.trim();
+  return text.trim();
 }

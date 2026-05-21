@@ -1,15 +1,7 @@
 import FoodCard from "../FoodCard";
+import type { Plant } from "../PlantData";
 
-type Food = {
-  _id: string;
-  warnings: string;
-  scientific_name: string;
-  common_names: string[];
-  edible: boolean;
-  parts: string[];
-};
-
-export default function FoodList({ foods }: { foods: Food[] }) {
+export default function FoodList({ foods }: { foods: Plant[] }) {
   return (
     <div className="d-flex flex-wrap gap-3">
       {foods.map((food) => (

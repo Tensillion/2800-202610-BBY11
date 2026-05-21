@@ -1,19 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import "./AskAIPopUp.css";
-
+import type { Plant } from "../PlantData";
 const BACKEND_URL = "http://localhost:3000";
 
-type PlantInfo = {
-  _id: string;
-  warnings: string;
-  scientific_name: string;
-  common_names: string[];
-  edible: boolean;
-  parts: string[];
-};
-
 type AskAIPopUpProps = {
-  plantInfo: PlantInfo;
+  plantInfo: Plant;
 };
 
 const PRESET_QUESTIONS = [
