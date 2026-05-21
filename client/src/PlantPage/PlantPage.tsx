@@ -1,40 +1,77 @@
-import { useLocation } from "react-router-dom";
 import AskAIPopUp from "../CataloguePage/AskAIPopUp/AskAIPopUp";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import type { Plant } from "../CataloguePage/PlantData";
 import "./PlantPage.css";
 
 function PlantPage() {
-	const location = useLocation();
-	const food = location.state?.food;
+  const { id } = useParams();
+  const [food, setFood] = useState<Plant | null>(null);
+  const [loading, setLoading] = useState(true);
 
-	const parts = food.parts ?? [];
-	const commonNames = food.common_names ?? [];
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/${id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setFood(data);
+        setLoading(false);
+      });
+  }, [id]);
 
-	if (!food) {
-		return <div>Sorry no food found sad face</div>;
-	}
+  if (loading) {
+    return <div className="loading-state">Loading...</div>;
+  }
 
-	return (
-		<div className="plant-page">
-			<div className="plant-page-card">
-				<h3>{commonNames.join(", ")}</h3>
-				<p className="plant-info">
-					<b>Scientific:</b> {food.scientific_name}
-				</p>
-				<p className="plant-info">
-					<b>Edible:</b> {food.edible ? "Yes" : "No"}
-				</p>
-				<p className="plant-info">
-					<b>Parts:</b> {parts.length ? parts.join(", ") : "None listed"}{" "}
-				</p>
-				<p className="plant-info">
-					<b>Warnings:</b> {food.warnings || "None in database. Investigate!"}
-				</p>
-				<div className="plant-page-actions">
-					<AskAIPopUp plantInfo={food} />
-				</div>
-			</div>
-		</div>
-	);
+  if (!food) {
+    return <div className="error-state">Plant not found.</div>;
+  }
+
+  console.log(food);
+  const parts = food.parts ?? [];
+  const commonNames = food.common_names ?? [];
+
+  return (
+    <div className="plant-page">
+      <div className="plant-container">
+        <div className="plant-card">
+          <h1 className="CommonNames">{commonNames.join(", ")}</h1>
+
+          <div className="plant-section">
+            <span className="plant-label">Scientific Name</span>
+            <span className="plant-value">{food.scientific_name}</span>
+          </div>
+
+          <div className="plant-section">
+            <span className="plant-label">Edibility</span>
+
+            <span
+              className={`plant-value ${
+                food.edible ? "edible-yes" : "edible-no"
+              }`}
+            >
+              {food.edible ? "Edible" : "Not Edible"}
+            </span>
+          </div>
+
+          <div className="plant-section">
+            <span className="plant-label">Edible Parts</span>
+
+            <span className="plant-value">
+              {parts.length ? parts.join(", ") : "None listed"}
+            </span>
+          </div>
+          <div className="warning-box">
+            <div className="plant-label">Warnings</div>
+
+            <div className="plant-value">
+              {food.warnings || "None in database."}
+            </div>
+          </div>
+          <AskAIPopUp plantInfo={food} />
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default PlantPage;

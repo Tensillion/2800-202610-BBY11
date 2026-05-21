@@ -22,30 +22,27 @@ function Search(props: SearchProps) {
 		}
 	};
 
-	return (
-		<div className="search-container">
-			<div className="search-bar">
-				<input
-					className="search-input"
-					type="search"
-					name="search"
-					value={value}
-					placeholder="Enter Search"
-					onChange={searchHandler}
-					onKeyDown={handleKeyDown}
-				></input>
+  return (
+    <div className="searchBar">
+      <input
+        className="searchInput"
+        type="search"
+        name="search"
+        value={value}
+        placeholder="Enter Search"
+        onChange={searchHandler}
+        onKeyDown={handleKeyDown}
+      />
 
-				<button
-					title="Search"
-					type="button"
-					className="search-button"
-					onClick={() => onSearch(value)}
-				>
-					<img className="search-icon" src="/search-icon.svg" alt="Search"></img>
-				</button>
-			</div>
-		</div>
-	);
+      <button
+        type="button"
+        className="searchButton"
+        onClick={() => onSearch(value)}
+      >
+        <img className="searchIcon" src="/search-icon.svg"></img>
+      </button>
+    </div>
+  );
 }
 
 export default Search;
