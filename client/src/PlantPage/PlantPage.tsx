@@ -1,15 +1,32 @@
-import { useLocation } from "react-router-dom";
 import AskAIPopUp from "../CataloguePage/AskAIPopUp/AskAIPopUp";
-function PlantPage() {
-  const location = useLocation();
-  const food = location.state?.food;
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import type { Plant } from "../CataloguePage/PlantData";
 
-  const parts = food.parts ?? [];
-  const commonNames = food.common_names ?? [];
+function PlantPage() {
+  const { plantId } = useParams();
+  const [food, setFood] = useState<Plant | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(`http://localhost:3000/plants/${plantId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setFood(data);
+        setLoading(false);
+      });
+  }, [plantId]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   if (!food) {
     return <div>Sorry no food found sad face</div>;
   }
+
+  const parts = food.parts ?? [];
+  const commonNames = food.common_names ?? [];
 
   return (
     <div>
