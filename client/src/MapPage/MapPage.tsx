@@ -313,7 +313,7 @@ function MapPage() {
       const deleteBtn = document.getElementById(`delete-btn-${markerId}`);
 
       openBtn?.addEventListener("click", () => {
-        console.log(plantId);
+        console.log(plantId + "does exist in db");
         navigate(`/plants/${plantId}`);
       });
 
@@ -472,7 +472,7 @@ function MapPage() {
       map.remove();
       mapRef.current = null;
     };
-  }, []);
+  });
 
   // Render
 

@@ -201,17 +201,23 @@ app.get("/plants/search", async (req, res) => {
   }
 });
 
-//query for the id from markers
+// query for a plant by id
 app.get("/plants/:id", async (req, res) => {
   try {
-    const plant = await Food.findById(req.params.id);
-
-    if (!plant) {
-      return res.status(404).json({ error: "Plant not found" });
+    let plant;
+    try {
+      plant = await plantCollection.findOne({
+        _id: new ObjectId(req.params.id),
+      });
+    } catch (e) {
+      return res.status(400).json({ error: "Invalid plant id" });
     }
+
+    if (!plant) return res.status(404).json({ error: "Plant not found" });
 
     res.json(plant);
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: "Server error" });
   }
 });

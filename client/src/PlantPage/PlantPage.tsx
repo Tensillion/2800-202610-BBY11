@@ -4,18 +4,18 @@ import { useParams } from "react-router-dom";
 import type { Plant } from "../CataloguePage/PlantData";
 
 function PlantPage() {
-  const { plantId } = useParams();
+  const { id } = useParams();
   const [food, setFood] = useState<Plant | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/plants/${plantId}`)
+    fetch(`http://localhost:3000/plants/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setFood(data);
         setLoading(false);
       });
-  }, [plantId]);
+  }, [id]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -25,6 +25,7 @@ function PlantPage() {
     return <div>Sorry no food found sad face</div>;
   }
 
+  console.log(food);
   const parts = food.parts ?? [];
   const commonNames = food.common_names ?? [];
 
