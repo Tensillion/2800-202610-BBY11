@@ -1,15 +1,8 @@
 import { useNavigate } from "react-router-dom";
+import type { Plant } from "./PlantData";
 
-type Food = {
-  _id: string;
-  warnings: string;
-  scientific_name: string;
-  common_names: string[];
-  edible: boolean;
-  parts: string[];
-};
 
-export default function FoodCard({ food }: { food: Food }) {
+export default function FoodCard({ food }: { food: Plant }) {
   const parts = food.parts ?? [];
   const commonNames = food.common_names ?? [];
   const navigate = useNavigate();

@@ -5,15 +5,7 @@ import "./CataloguePage.css";
 import FoodList from "../FoodList/FoodList";
 import Search from "../Search";
 import { useEffect, useState } from "react";
-
-type Food = {
-  _id: string;
-  warnings: string;
-  scientific_name: string;
-  common_names: string[];
-  edible: boolean;
-  parts: string[];
-};
+import type { Plant } from "../PlantData";
 
 const guideSteps = [
   {
@@ -25,10 +17,10 @@ const guideSteps = [
 ];
 
 function CataloguePage() {
-  const [foods, setFoods] = useState<Food[]>([]);
+  const [foods, setFoods] = useState<Plant[]>([]);
   useEffect(() => {
     async function loadFoods() {
-      const res = await fetch("/api/CataloguePage");
+      const res = await fetch("/api/catalogue");
       const data = await res.json();
       setFoods(data);
     }
@@ -38,7 +30,7 @@ function CataloguePage() {
 
   async function handleSearch(query: string) {
     if (!query.trim()) {
-      const res = await fetch("/api/collection");
+      const res = await fetch("/api/catalogue");
       const data = await res.json();
       setFoods(data);
       return;
