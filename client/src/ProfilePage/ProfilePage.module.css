@@ -1,8 +1,11 @@
 .profilePage {
 	--profile-bg: var(--cream);
-	--profile-text: var(--black-text);
-	--profile-panel: #d9d9d9;
-	--profile-line: #a9a9a9;
+	--profile-text: var(--text);
+	--profile-panel: var(--dark-cream);
+	--profile-panel-hover: color-mix(in srgb, var(--profile-panel) 82%, var(--forest));
+	--profile-card: color-mix(in srgb, var(--profile-bg) 62%, var(--profile-panel));
+	--profile-line: color-mix(in srgb, var(--profile-text) 28%, transparent);
+	--profile-focus: var(--forest);
 
 	min-height: 100svh;
 	width: 100vw;
@@ -15,10 +18,12 @@
 }
 
 .profilePage[data-theme="dark"] {
-	--profile-bg: #181818;
-	--profile-text: #f8f5f0;
-	--profile-panel: #2f2f2f;
-	--profile-line: #5f5f5f;
+	--profile-bg: var(--bg);
+	--profile-text: var(--text);
+	--profile-panel: var(--dark-cream);
+	--profile-panel-hover: color-mix(in srgb, var(--profile-panel) 84%, var(--forest));
+	--profile-card: color-mix(in srgb, var(--profile-panel) 72%, var(--bg));
+	--profile-line: color-mix(in srgb, var(--profile-text) 24%, transparent);
 }
 
 .profileContent {
@@ -37,11 +42,13 @@
 	font-weight: 400;
 	letter-spacing: 0;
 	margin: 0;
+	color: var(--forest);
 }
 
 .panel {
 	background: var(--profile-panel);
 	border-radius: 10px;
+	border: 1px solid var(--profile-line);
 	min-height: 270px;
 	padding: 10px 14px;
 	box-sizing: border-box;
@@ -62,6 +69,10 @@
 	font: inherit;
 	letter-spacing: 0;
 	box-sizing: border-box;
+	transition:
+		background 0.2s ease,
+		color 0.2s ease,
+		border-color 0.2s ease;
 }
 
 .menuRow {
@@ -70,6 +81,20 @@
 	padding: 0;
 	text-align: left;
 	cursor: pointer;
+}
+
+.menuRow:hover,
+.panelTitle:hover,
+.actions button:hover {
+	background: var(--profile-panel-hover);
+}
+
+.menuRow:focus-visible,
+.panelTitle:focus-visible,
+.toggle:focus-visible,
+.actions button:focus-visible {
+	outline: 3px solid var(--profile-focus);
+	outline-offset: 3px;
 }
 
 .menuRow span {
@@ -97,6 +122,95 @@
 	font-size: 14px;
 }
 
+.locationList {
+	display: grid;
+	gap: 10px;
+	max-height: 210px;
+	overflow-y: auto;
+	padding-top: 12px;
+}
+
+.locationCard {
+	display: grid;
+	gap: 4px;
+	background: var(--profile-card);
+	border: 1px solid var(--profile-line);
+	border-radius: 8px;
+	padding: 10px;
+}
+
+.locationCard strong,
+.locationCard span,
+.statusText {
+	font-size: 14px;
+	line-height: 1.25;
+	letter-spacing: 0;
+}
+
+.locationCard strong {
+	font-weight: 400;
+}
+
+.locationCard span,
+.statusText {
+	opacity: 0.85;
+}
+
+.profileForm {
+	display: grid;
+	gap: 8px;
+	padding-top: 14px;
+}
+
+.profileForm label {
+	font-size: 14px;
+	line-height: 1.2;
+}
+
+.profileForm input {
+	width: 100%;
+	min-height: 38px;
+	border: 1px solid var(--profile-line);
+	border-radius: 8px;
+	background: var(--profile-card);
+	color: var(--profile-text);
+	font: inherit;
+	font-size: 14px;
+	letter-spacing: 0;
+	padding: 8px 10px;
+	box-sizing: border-box;
+}
+
+.profileForm input:focus {
+	outline: 3px solid var(--profile-focus);
+	outline-offset: 2px;
+}
+
+.profileForm button {
+	min-height: 40px;
+	border: 0;
+	border-radius: 8px;
+	background: var(--forest);
+	color: var(--white-text);
+	font: inherit;
+	font-size: 14px;
+	letter-spacing: 0;
+	cursor: pointer;
+	margin-top: 6px;
+}
+
+.profileForm button:disabled {
+	cursor: not-allowed;
+	opacity: 0.7;
+}
+
+.formMessage {
+	font-size: 13px;
+	line-height: 1.25;
+	letter-spacing: 0;
+	opacity: 0.9;
+}
+
 .toggle {
 	width: 38px;
 	height: 22px;
@@ -108,6 +222,9 @@
 	box-sizing: border-box;
 	background: transparent;
 	cursor: pointer;
+	transition:
+		background 0.2s ease,
+		border-color 0.2s ease;
 }
 
 .toggle span {
@@ -123,13 +240,13 @@
 }
 
 .toggle[aria-checked="true"] span {
-	background: var(--profile-text);
+	background: var(--forest);
+	border-color: var(--forest);
 	transform: translateX(15px);
 }
 
 .actions {
 	display: grid;
-	gap: 14px;
 	margin-top: 20px;
 }
 
@@ -143,6 +260,9 @@
 	font-size: 15px;
 	letter-spacing: 0;
 	cursor: pointer;
+	transition:
+		background 0.2s ease,
+		color 0.2s ease;
 }
 
 @media (min-width: 600px) {
