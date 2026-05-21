@@ -21,5 +21,6 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true
   },
+  // "include": ["src", "../server/catalogue_db_model/FoodData.ts"]
   "include": ["src"]
 }

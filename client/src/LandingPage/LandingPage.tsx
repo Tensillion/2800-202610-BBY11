@@ -92,7 +92,7 @@ export default function LandingPage() {
 		<div className="lp-root">
 			{/* Title Goes here, Replace with Logo IMG afterwards*/}
 			<header className="lp-header">
-				<img className="lp-logo" src="../public/Logo.png" alt="Logo" />
+				<img className="lp-logo" src="/Logo.png" alt="Logo" />
 			</header>
 
 			{/* Image Carousel */}

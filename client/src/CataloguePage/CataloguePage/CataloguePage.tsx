@@ -1,0 +1,59 @@
+import Footer from "../../Footer/Footer";
+import PopUp from "../../PopUp/PopUp";
+import "./CataloguePage.css";
+import FoodList from "../FoodList/FoodList";
+import Search from "../Search";
+import { useEffect, useState } from "react";
+import type { Plant } from "../PlantData";
+
+const guideSteps = [
+  {
+    x: "50%",
+    y: 300,
+    title: "Look through the Catalogue !",
+    message: "Search and filter through the plants to learn more about them.",
+  },
+];
+
+function CataloguePage() {
+  const [foods, setFoods] = useState<Plant[]>([]);
+  useEffect(() => {
+    async function loadFoods() {
+      const res = await fetch("/api/catalogue");
+      const data = await res.json();
+      setFoods(data);
+    }
+
+    loadFoods();
+  }, []);
+
+  async function handleSearch(query: string) {
+    if (!query.trim()) {
+      const res = await fetch("/api/catalogue");
+      const data = await res.json();
+      setFoods(data);
+      return;
+    }
+    const res = await fetch(`/plants/search?q=${encodeURIComponent(query)}`);
+    const data = await res.json();
+
+    setFoods(data);
+  }
+
+  return (
+    <section id="catalogue-page">
+      <PopUp
+        title="Welcome to the Catalogue Page!"
+        message="View all the plants you've identified and collected here."
+        steps={guideSteps}
+      />
+
+      <div>
+        <Search onSearch={handleSearch} />
+      </div>
+      <FoodList foods={foods} />
+      <Footer />
+    </section>
+  );
+}
+export default CataloguePage;

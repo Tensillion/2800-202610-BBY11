@@ -11,41 +11,51 @@ import { askGemini } from "./geminiService.mjs";
  * @returns {Object} An object containing either the validated data or an error message.
  */
 function validateAskGeminiBody(body) {
-	if (!body || typeof body !== "object") {
-		return { error: "Request body must be a JSON object" };
-	}
+  if (!body || typeof body !== "object") {
+    return { error: "Request body must be a JSON object" };
+  }
 
-	const { question, plantInfo } = body;
-	if (typeof question !== "string" || question.trim().length === 0) {
-		return { error: "question is required" };
-	}
+  const { question, plantInfo } = body;
+  if (typeof question !== "string" || question.trim().length === 0) {
+    return { error: "question is required" };
+  }
 
-	if (!plantInfo || typeof plantInfo !== "object" || Array.isArray(plantInfo)) {
-		return { error: "plantInfo is required" };
-	}
+  if (!plantInfo || typeof plantInfo !== "object" || Array.isArray(plantInfo)) {
+    return { error: "plantInfo is required" };
+  }
 
-	if (typeof plantInfo.name !== "string" || plantInfo.name.trim().length === 0) {
-		return { error: "plantInfo.name is required" };
-	}
+  if (
+    typeof plantInfo.scientific_name !== "string" ||
+    plantInfo.scientific_name.trim().length === 0
+  ) {
+    return { error: "plantInfo.scientific_name is required" };
+  }
 
-	const parts =
-		Array.isArray(plantInfo.parts) ?
-			plantInfo.parts.filter(part => typeof part === "string" && part.trim().length > 0)
-		:	[];
-	const sources =
-		Array.isArray(plantInfo.sources) ?
-			plantInfo.sources.filter(source => typeof source === "string" && source.trim().length > 0)
-		:	[];
+  const parts = Array.isArray(plantInfo.parts)
+    ? plantInfo.parts.filter(
+        (part) => typeof part === "string" && part.trim().length > 0,
+      )
+    : [];
+  const sources = Array.isArray(plantInfo.sources)
+    ? plantInfo.sources.filter(
+        (source) => typeof source === "string" && source.trim().length > 0,
+      )
+    : [];
 
-	const normalizedInfo = {
-		name: plantInfo.name.trim(),
-		edible: typeof plantInfo.edible === "boolean" ? plantInfo.edible : undefined,
-		parts,
-		warnings: typeof plantInfo.warnings === "string" ? plantInfo.warnings.trim() : "",
-		sources,
-	};
+  const normalizedInfo = {
+    scientific_name: plantInfo.scientific_name.trim(),
+    common_names: Array.isArray(plantInfo.common_names)
+      ? plantInfo.common_names
+      : [],
+    edible:
+      typeof plantInfo.edible === "boolean" ? plantInfo.edible : undefined,
+    parts,
+    warnings:
+      typeof plantInfo.warnings === "string" ? plantInfo.warnings.trim() : "",
+    sources,
+  };
 
-	return { question: question.trim(), plantInfo: normalizedInfo };
+  return { question: question.trim(), plantInfo: normalizedInfo };
 }
 
 /**
@@ -59,19 +69,19 @@ function validateAskGeminiBody(body) {
  * @returns {Promise<void>} A promise resolving to void.
  */
 export async function askGeminiController(req, res) {
-	const validated = validateAskGeminiBody(req.body);
-	if (validated.error) {
-		return res.status(400).json({ error: validated.error });
-	}
+  const validated = validateAskGeminiBody(req.body);
+  if (validated.error) {
+    return res.status(400).json({ error: validated.error });
+  }
 
-	try {
-		const answer = await askGemini(validated.question, validated.plantInfo);
-		return res.json({ answer });
-	} catch (error) {
-		const message = error instanceof Error ? error.message : "Unknown error";
-		console.error("Gemini request failed:", message);
+  try {
+    const answer = await askGemini(validated.question, validated.plantInfo);
+    return res.json({ answer });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Unknown error";
+    console.error("Gemini request failed:", message);
 
-		const status = error && error.code === "MISSING_API_KEY" ? 500 : 502;
-		return res.status(status).json({ error: "Gemini request failed" });
-	}
+    const status = error && error.code === "MISSING_API_KEY" ? 500 : 502;
+    return res.status(status).json({ error: "Gemini request failed" });
+  }
 }

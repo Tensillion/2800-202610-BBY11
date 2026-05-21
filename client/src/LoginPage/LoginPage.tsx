@@ -43,7 +43,7 @@ function LoginPage() {
 	return (
 		<section id="login-page">
 			<div className="authentication-header">
-				<img className="logo" src="../public/Logo.png" alt="Logo" />
+				<img className="logo" src="/Logo.png" alt="Logo" />
 				<Link className="nav-link" to="/signup">
 					<button className="other-page-btn">Sign up</button>
 				</Link>
