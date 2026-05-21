@@ -9,7 +9,7 @@ import Pet from "./Pet/Pet";
 import { Hat } from "./Hat/Hat";
 import HatMenu from "./HatMenu/HatMenu";
 
-const BACKEND_URL = "http://localhost:3000";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
 
 const guideSteps = [
 	{

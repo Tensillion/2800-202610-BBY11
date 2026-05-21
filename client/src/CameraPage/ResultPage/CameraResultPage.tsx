@@ -4,7 +4,7 @@ import "./CameraResultPage.css";
 import ResultCard from "./ResultCard/ResultCard";
 import { AuthContext } from "../../context/AuthContext";
 
-const BACKEND_URL = "http://localhost:3000";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
 
 //Types for the plant identification result and edibility lookup
 type PlantIdentificationResult = {

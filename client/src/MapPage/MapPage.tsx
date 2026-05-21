@@ -1,5 +1,5 @@
 import PopUp from "../PopUp/PopUp";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import L, { Map as LeafletMap, Marker, LatLng } from "leaflet";
 
@@ -12,7 +12,7 @@ import markerShadow from "leaflet/dist/images/marker-shadow.png";
 
 import Footer from "../Footer/Footer";
 
-const BACKEND_URL = "http://localhost:3000";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
 
 type PlantMarker = Marker & {
   dbId?: string;
@@ -45,7 +45,7 @@ L.Icon.Default.mergeOptions({
 });
 
 const customIcon = L.icon({
-  iconUrl: "/public/leaf.png",
+  iconUrl: "/leaf.png",
   iconSize: [55, 55],
   iconAnchor: [20, 40],
   popupAnchor: [0, -40],
@@ -213,7 +213,6 @@ function MapPage() {
       }).addTo(mapRef.current!) as PlantMarker;
 
       marker.dbId = savedMarker._id;
-      marker.plantId = savedMarker.plantId;
       marker.edible = savedMarker.edible;
       marker.markerUserId = savedMarker.userId;
       marker.plantName = savedMarker.plantName;
@@ -222,7 +221,6 @@ function MapPage() {
         marker,
         savedMarker._id,
         savedMarker.userId,
-        savedMarker.plantId,
         savedMarker.plantName,
       );
 
@@ -242,25 +240,25 @@ function MapPage() {
 
   // Popup
 
-  const addPopup = (
-    marker: Marker,
-    markerId: string,
-    markerUserId: string,
-    plantId: string,
-    plantDisplayName?: string,
-  ) => {
-    const isOwner = currentUserId === markerUserId;
+  const addPopup = useCallback(
+    (
+      marker: Marker,
+      markerId: string,
+      markerUserId: string,
+      plantDisplayName?: string,
+    ) => {
+      const isOwner = currentUserId === markerUserId;
 
-    const edibleStatus = (marker as PlantMarker).edible;
-    const edibleBadge =
-      edibleStatus === true
-        ? `<span class="popup-badge popup-badge--edible">Edible</span>`
-        : edibleStatus === false
-          ? `<span class="popup-badge popup-badge--not-edible">Not Edible</span>`
-          : "";
+      const edibleStatus = (marker as PlantMarker).edible;
+      const edibleBadge =
+        edibleStatus === true
+          ? `<span class="popup-badge popup-badge--edible">Edible</span>`
+          : edibleStatus === false
+            ? `<span class="popup-badge popup-badge--not-edible">Not Edible</span>`
+            : "";
 
-    marker.bindPopup(
-      `
+      marker.bindPopup(
+        `
 			<div class="marker-popup">
 				${
           plantDisplayName
@@ -280,59 +278,60 @@ function MapPage() {
 				</div>
 			</div>
 		`,
-      { closeButton: false, autoClose: false },
-    );
+        { closeButton: false, autoClose: false },
+      );
 
-    // Per-marker timer so mouse can travel from marker → popup without it closing
-    let closeTimer: ReturnType<typeof setTimeout> | null = null;
-    const scheduleClose = () => {
-      closeTimer = setTimeout(() => marker.closePopup(), 200);
-    };
-    const cancelClose = () => {
-      if (closeTimer) {
-        clearTimeout(closeTimer);
-        closeTimer = null;
-      }
-    };
-
-    marker.on("mouseover", () => {
-      cancelClose();
-      marker.openPopup();
-    });
-    marker.on("mouseout", scheduleClose);
-
-    marker.on("popupopen", () => {
-      // Keep popup open while hovering over it
-      const popupEl = marker.getPopup()?.getElement();
-      if (popupEl) {
-        popupEl.addEventListener("mouseenter", cancelClose);
-        popupEl.addEventListener("mouseleave", scheduleClose);
-      }
-
-      const openBtn = document.getElementById(`open-btn-${markerId}`);
-      const deleteBtn = document.getElementById(`delete-btn-${markerId}`);
-
-      openBtn?.addEventListener("click", () => {
-        console.log(plantId + "does exist in db");
-        navigate(`/plants/${plantId}`);
-      });
-
-      deleteBtn?.addEventListener("click", async () => {
-        try {
-          await fetch(`${BACKEND_URL}/markers/${markerId}`, {
-            method: "DELETE",
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          });
-          marker.remove();
-          markersRef.current = markersRef.current.filter((m) => m !== marker);
-        } catch (err) {
-          console.error("Failed to delete marker:", err);
+      // Per-marker timer so mouse can travel from marker → popup without it closing
+      let closeTimer: ReturnType<typeof setTimeout> | null = null;
+      const scheduleClose = () => {
+        closeTimer = setTimeout(() => marker.closePopup(), 200);
+      };
+      const cancelClose = () => {
+        if (closeTimer) {
+          clearTimeout(closeTimer);
+          closeTimer = null;
         }
+      };
+
+      marker.on("mouseover", () => {
+        cancelClose();
+        marker.openPopup();
       });
-    });
-  };
+      marker.on("mouseout", scheduleClose);
+
+      marker.on("popupopen", () => {
+        // Keep popup open while hovering over it
+        const popupEl = marker.getPopup()?.getElement();
+        if (popupEl) {
+          popupEl.addEventListener("mouseenter", cancelClose);
+          popupEl.addEventListener("mouseleave", scheduleClose);
+        }
+
+        const openBtn = document.getElementById(`open-btn-${markerId}`);
+        const deleteBtn = document.getElementById(`delete-btn-${markerId}`);
+
+        openBtn?.addEventListener("click", () => {
+          navigate("/ItemPage");
+        });
+
+        deleteBtn?.addEventListener("click", async () => {
+          try {
+            await fetch(`${BACKEND_URL}/markers/${markerId}`, {
+              method: "DELETE",
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            });
+            marker.remove();
+            markersRef.current = markersRef.current.filter((m) => m !== marker);
+          } catch (err) {
+            console.error("Failed to delete marker:", err);
+          }
+        });
+      });
+    },
+    [currentUserId, navigate],
+  );
 
   // Map init
 
@@ -423,7 +422,6 @@ function MapPage() {
         (
           savedMarkers: {
             _id: string;
-            plantId: string;
             lat: number;
             lng: number;
             userId: string;
@@ -438,17 +436,14 @@ function MapPage() {
             }).addTo(map) as PlantMarker;
 
             marker.dbId = savedMarker._id;
-            marker.plantId = savedMarker.plantId;
             marker.edible = savedMarker.edible;
             marker.markerUserId = savedMarker.userId;
             marker.plantName = savedMarker.plantName;
             markersRef.current.push(marker);
-
             addPopup(
               marker,
               savedMarker._id,
               savedMarker.userId,
-              savedMarker.plantId,
               savedMarker.plantName,
             );
           });
@@ -472,7 +467,7 @@ function MapPage() {
       map.remove();
       mapRef.current = null;
     };
-  });
+  }, [addPopup]);
 
   // Render
 

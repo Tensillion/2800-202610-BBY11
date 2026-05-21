@@ -3,7 +3,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { recolorImage } from "../../utils/recolorImage";
 import "./HatMenu.css";
 
-const BACKEND_URL = "http://localhost:3000";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
 
 type HatItem = {
 	_id?: string;

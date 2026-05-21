@@ -1,17 +1,11 @@
 import type { FormEvent } from "react";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-	Accessibility,
-	ArrowLeft,
-	ChevronRight,
-	Leaf,
-	Lock,
-	Settings,
-	User,
-} from "lucide-react";
+import { Accessibility, ArrowLeft, ChevronRight, Leaf, Lock, Settings, User } from "lucide-react";
 import { AuthContext } from "../context/AuthContext";
 import styles from "./ProfilePage.module.css";
+
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
 
 type ProfileView =
 	| "account"
@@ -97,7 +91,7 @@ export default function ProfilePage() {
 		}
 
 		try {
-			const response = await fetch("http://localhost:3000/markers/mine", {
+			const response = await fetch(`${BACKEND_URL}/markers/mine`, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 
@@ -126,7 +120,7 @@ export default function ProfilePage() {
 		setFormMessage("");
 
 		try {
-			const response = await fetch("http://localhost:3000/users/profile/username", {
+			const response = await fetch(`${BACKEND_URL}/users/profile/username`, {
 				method: "PATCH",
 				headers: {
 					Authorization: `Bearer ${token}`,
@@ -166,7 +160,7 @@ export default function ProfilePage() {
 		setFormMessage("");
 
 		try {
-			const response = await fetch("http://localhost:3000/users/profile/password", {
+			const response = await fetch(`${BACKEND_URL}/users/profile/password`, {
 				method: "PATCH",
 				headers: {
 					Authorization: `Bearer ${token}`,
