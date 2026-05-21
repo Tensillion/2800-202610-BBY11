@@ -1,4 +1,4 @@
-import { Navigate, useNavigation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 type Food = {
   _id: string;
@@ -12,13 +12,16 @@ type Food = {
 export default function FoodCard({ food }: { food: Food }) {
   const parts = food.parts ?? [];
   const commonNames = food.common_names ?? [];
+  const navigate = useNavigate();
   return (
-    <div className="card p-3 shadow"
-    onClick={() => {
-      Navigate(`plants/${food._id}`), {
-        state: {food};
+    <div
+      className="card p-3 shadow"
+      onClick={() =>
+        navigate(`/plants/${food._id}`, {
+          state: { food },
+        })
       }
-    }}>
+    >
       <h3>{commonNames.join(", ")}</h3>
       <p>
         <b>Scientific:</b> {food.scientific_name}
