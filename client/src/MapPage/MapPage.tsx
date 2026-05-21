@@ -44,7 +44,7 @@ L.Icon.Default.mergeOptions({
 });
 
 const customIcon = L.icon({
-	iconUrl: "/leaf.png",
+	iconUrl: "/leaf.PNG",
 	iconSize: [55, 55],
 	iconAnchor: [20, 40],
 	popupAnchor: [0, -40],
