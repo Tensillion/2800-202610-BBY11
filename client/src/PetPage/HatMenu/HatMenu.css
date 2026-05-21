@@ -1,0 +1,308 @@
+.hat-menu {
+	position: relative;
+	display: flex;
+	justify-content: flex-end;
+
+	width: 30%;
+	z-index: 6;
+
+	align-self: center;
+	align-items: center;
+}
+
+.hat-menu__toggle {
+	display: flex;
+	font-family: var(--cherryBomb);
+
+	align-self: center;
+	justify-self: center;
+
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.7rem 1rem;
+	border: 0;
+	border-radius: 999px;
+	background: linear-gradient(135deg, var(--forest, #446d3b), var(--dark-green, #254021));
+	color: var(--cream, #fff8ec);
+	box-shadow: 0 10px 24px rgba(24, 46, 18, 0.2);
+	cursor: pointer;
+	transition:
+		transform 0.18s ease,
+		box-shadow 0.18s ease,
+		filter 0.18s ease;
+}
+
+.hat-menu__toggle:hover,
+.hat-menu__toggle:focus-visible {
+	transform: translateY(-1px);
+	box-shadow: 0 14px 28px rgba(24, 46, 18, 0.28);
+	filter: brightness(1.05);
+}
+
+/* Make this cover the whole screen */
+.hat-menu__overlay {
+	position: fixed;
+	inset: 0;
+	width: 100vw;
+	height: 100vh;
+
+	margin: 0;
+	padding: 0;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba(16, 20, 14, 0.58);
+	-webkit-backdrop-filter: blur(10px);
+	backdrop-filter: blur(10px);
+	z-index: 1000;
+	animation: hat-menu-fade 140ms ease-out;
+}
+
+.hat-menu__toggle:focus-visible,
+.hat-menu__item:focus-visible,
+.hat-menu__close:focus-visible {
+	outline: 3px solid rgba(255, 255, 255, 0.7);
+	outline-offset: 3px;
+}
+
+.hat-menu__count {
+	padding: 0.15rem 0.5rem;
+	border-radius: 999px;
+	background: rgba(255, 255, 255, 0.16);
+	font-size: 0.8rem;
+}
+
+.hat-menu__panel {
+	position: relative;
+
+	max-width: 80%;
+	max-height: min(90vh, 52rem);
+
+	border: 1px solid rgba(255, 255, 255, 0.42);
+	border-radius: 1.4rem;
+
+	background: linear-gradient(180deg, rgba(255, 252, 245, 0.98), rgba(248, 239, 220, 0.98));
+	box-shadow: 0 24px 56px rgba(40, 29, 10, 0.32);
+	-webkit-backdrop-filter: blur(10px);
+	backdrop-filter: blur(10px);
+	transform-origin: center;
+	animation: hat-menu-pop 180ms ease-out;
+
+	width: min(94vw, 30rem);
+	padding: 0.85rem;
+}
+
+.hat-menu__header {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 0.75rem;
+	margin-bottom: 0.85rem;
+	color: var(--dark-green, #254021);
+}
+
+.hat-menu__title {
+	margin: 0;
+	font-size: 1.05rem;
+	line-height: 1;
+	text-align: left;
+}
+
+.hat-menu__subtitle {
+	margin: 0.3rem 0 0;
+	font-size: 0.8rem;
+	font-family: system-ui, sans-serif;
+	color: rgba(37, 64, 33, 0.72);
+	text-align: left;
+	line-height: 1.2;
+}
+
+.hat-menu__close {
+	border: 0;
+	border-radius: 999px;
+	background: rgba(37, 64, 33, 0.1);
+	color: var(--dark-green, #254021);
+	padding: 0.35rem 0.6rem;
+	cursor: pointer;
+	transition:
+		background 0.18s ease,
+		transform 0.18s ease;
+}
+
+.hat-menu__close:hover {
+	background: rgba(37, 64, 33, 0.16);
+	transform: scale(1.02);
+}
+
+.hat-menu__content {
+	display: grid;
+	gap: 0.65rem;
+	max-height: calc(55vh - 6.5rem);
+	overflow: auto;
+	overflow-y: scroll;
+	padding-right: 0.15rem;
+}
+
+.hat-menu__loading,
+.hat-menu__empty,
+.hat-menu__error {
+	margin: 0;
+	padding: 0.8rem;
+	border-radius: 0.85rem;
+	background: rgba(37, 64, 33, 0.06);
+	color: var(--dark-green, #254021);
+	font-family: system-ui, sans-serif;
+	font-size: 0.92rem;
+	line-height: 1.4;
+}
+
+.hat-menu__error {
+	background: rgba(199, 64, 53, 0.1);
+	color: #9f2c24;
+}
+
+.hat-menu__items {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 0.6rem;
+}
+
+.hat-menu__item {
+	position: relative;
+	display: grid;
+
+	grid-template-columns: 1fr;
+
+	gap: 0.5rem;
+	padding: 0.65rem;
+	border: 1px solid rgba(37, 64, 33, 0.12);
+	border-radius: 1rem;
+	background: rgba(255, 255, 255, 0.8);
+	box-shadow: 0 6px 18px rgba(34, 27, 14, 0.08);
+	cursor: pointer;
+	transition:
+		transform 0.18s ease,
+		box-shadow 0.18s ease,
+		border-color 0.18s ease;
+	text-align: left;
+	color: inherit;
+	min-width: 0;
+}
+
+.hat-menu__item:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 10px 22px rgba(34, 27, 14, 0.14);
+	border-color: rgba(37, 64, 33, 0.24);
+}
+
+.hat-menu__item--active {
+	border-color: rgba(69, 109, 59, 0.9);
+	box-shadow:
+		0 0 0 2px rgba(69, 109, 59, 0.14),
+		0 12px 24px rgba(34, 27, 14, 0.12);
+}
+
+.hat-menu__item--active::after {
+	content: "Equipped";
+	position: absolute;
+	top: 0.55rem;
+	right: 0.55rem;
+	padding: 0.2rem 0.45rem;
+	border-radius: 999px;
+	background: var(--forest, #446d3b);
+	color: var(--cream, #fff8ec);
+	font-size: 0.66rem;
+	letter-spacing: 0.03em;
+	text-transform: uppercase;
+}
+
+.hat-menu__preview {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 4.6rem;
+	padding: 0.4rem;
+	border-radius: 0.8rem;
+	background: radial-gradient(circle at top, rgba(255, 255, 255, 0.95), rgba(246, 232, 200, 0.7));
+	overflow: hidden;
+}
+
+.hat-menu__preview img {
+	display: block;
+	max-width: 100%;
+	max-height: 4.6rem;
+	object-fit: contain;
+	image-rendering: auto;
+}
+
+.hat-menu__preview-skeleton {
+	width: 100%;
+	height: 4.6rem;
+	border-radius: 0.6rem;
+	background: linear-gradient(
+		90deg,
+		rgba(223, 207, 171, 0.65),
+		rgba(255, 255, 255, 0.65),
+		rgba(223, 207, 171, 0.65)
+	);
+	background-size: 200% 100%;
+	animation: hat-menu-shimmer 1.1s ease-in-out infinite;
+}
+
+.hat-menu__item-meta {
+	display: grid;
+	gap: 0.18rem;
+	font-family: system-ui, sans-serif;
+	min-width: 0;
+}
+
+.hat-menu__item-name {
+	font-weight: 700;
+	font-size: 0.95rem;
+	color: var(--dark-green, #254021);
+}
+
+.hat-menu__item-hue {
+	font-size: 0.78rem;
+	color: rgba(37, 64, 33, 0.72);
+}
+
+.hat-menu__item-badge {
+	justify-self: start;
+	padding: 0.18rem 0.45rem;
+	border-radius: 999px;
+	background: rgba(69, 109, 59, 0.12);
+	color: var(--forest, #446d3b);
+	font-size: 0.72rem;
+	font-weight: 700;
+}
+
+@keyframes hat-menu-pop {
+	from {
+		transform: translateY(10px) scale(0.96);
+		opacity: 0;
+	}
+	to {
+		transform: translateY(0) scale(1);
+		opacity: 1;
+	}
+}
+
+@keyframes hat-menu-fade {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes hat-menu-shimmer {
+	0% {
+		background-position: 0% 50%;
+	}
+	100% {
+		background-position: 200% 50%;
+	}
+}

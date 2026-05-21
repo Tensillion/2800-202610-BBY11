@@ -69,6 +69,7 @@ export default function CameraResultPage() {
 	const navigate = useNavigate();
 	const imageBlob = state?.imageBlob;
 	const [newResult, setNewResult] = useState(false);
+	const [hasPet, setHasPet] = useState<boolean | null>(null);
 
 	const getAuthHeaders = useCallback(
 		() => ({
@@ -152,7 +153,12 @@ export default function CameraResultPage() {
 	);
 
 	const gainReward = useCallback(
-		async (plantResult?: PlantIdentificationResult | null) => {
+		async (plantResult?: PlantIdentificationResult | null, allowReward = true) => {
+			if (!allowReward) {
+				setNewResult(false);
+				return;
+			}
+
 			const rewardState = await syncRewardState(plantResult ?? result);
 			if (!rewardState) return;
 
@@ -186,6 +192,28 @@ export default function CameraResultPage() {
 		[result, getAuthHeaders, syncRewardState, updatePetStats]
 	);
 
+	const refreshPetStatus = useCallback(async () => {
+		try {
+			const response = await fetch(`${BACKEND_URL}/petAPI/hasPet`, {
+				method: "GET",
+				headers: getAuthHeaders(),
+			});
+
+			if (!response.ok) {
+				throw new Error("Failed to check pet status");
+			}
+
+			const data = await response.json();
+			const petExists = Boolean(data.hasPet);
+			setHasPet(petExists);
+			return petExists;
+		} catch (error) {
+			console.error("Error checking pet status:", error);
+			setHasPet(false);
+			return false;
+		}
+	}, [getAuthHeaders]);
+
 	//Merge plant identification results with edibility data from server
 	const mergedResults = useMemo<ResultWithLookup[]>(() => {
 		const scannedResults = result?.results ?? [];
@@ -211,13 +239,18 @@ export default function CameraResultPage() {
 	//Gets the plant identification result from the backend with Pl@ntNet API
 	useEffect(() => {
 		if (result) {
-			void syncRewardState(result)
-				.then(rewardState => {
-					if (rewardState) {
-						setNewResult(rewardState.isNew);
-					}
-				})
-				.catch(err => console.error(err));
+			void (async () => {
+				const userHasPet = await refreshPetStatus();
+				if (!userHasPet) {
+					setNewResult(false);
+					return;
+				}
+
+				const rewardState = await syncRewardState(result);
+				if (rewardState) {
+					setNewResult(rewardState.isNew);
+				}
+			})();
 			return;
 		}
 
@@ -249,7 +282,12 @@ export default function CameraResultPage() {
 				setResult(json);
 				setError(null);
 				sessionStorage.setItem("plantIdentificationResult", JSON.stringify(json));
-				await gainReward(json);
+				const userHasPet = await refreshPetStatus();
+				if (userHasPet) {
+					await gainReward(json, true);
+				} else {
+					setNewResult(false);
+				}
 			} catch (err) {
 				if (err instanceof Error && err.name !== "AbortError") {
 					console.error(err);
@@ -263,7 +301,7 @@ export default function CameraResultPage() {
 		identifyPlant();
 
 		return () => controller.abort();
-	}, [imageBlob, navigate, gainReward, result, syncRewardState]);
+	}, [imageBlob, navigate, gainReward, refreshPetStatus, result, syncRewardState]);
 
 	//Fetch edibility data from server using plant search endpoint
 	useEffect(() => {
@@ -410,7 +448,7 @@ export default function CameraResultPage() {
 	return (
 		<div className="result-container">
 			<h1>Plant Results</h1>
-			{newResult ?
+			{newResult && hasPet ?
 				<div className="new-result">
 					<p className="new-result-label">You found a new plant!</p>
 					<p className="new-result-description">

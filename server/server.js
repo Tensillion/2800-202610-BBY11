@@ -42,6 +42,7 @@ const userCollection = database.db(MONGO_USERS_DB).collection("users");
 const markerCollection = database.db(MONGO_USERS_DB).collection("markers");
 const plantCollection = database.db(MONGO_PLANTS_DB).collection("plants");
 const petCollection = database.db(MONGO_USERS_DB).collection("pets");
+const hatCollection = database.db(MONGO_USERS_DB).collection("hats");
 
 const corsOptions = {
 	origin: ["http://localhost:5173"],
@@ -151,23 +152,23 @@ app.post("/plants/search", async (req, res) => {
 });
 
 app.get("/plants/search", async (req, res) => {
-  try {
-    const q = req.query.q?.trim();
-    if (!q) return res.json([]);
+	try {
+		const q = req.query.q?.trim();
+		if (!q) return res.json([]);
 
-    const results = await plantCollection
-      .find({
-        common_names: { $regex: q, $options: "i" }
-      })
-      .limit(8)
-	  .project({ common_names: 1, scientific_name: 1, edible: 1 })
-      .toArray();
+		const results = await plantCollection
+			.find({
+				common_names: { $regex: q, $options: "i" },
+			})
+			.limit(8)
+			.project({ common_names: 1, scientific_name: 1, edible: 1 })
+			.toArray();
 
-    res.json(results);
-  } catch (err) {
-    console.error("Plant autocomplete error:", err);
-    res.status(500).json({ error: "Failed to search plants" });
-  }
+		res.json(results);
+	} catch (err) {
+		console.error("Plant autocomplete error:", err);
+		res.status(500).json({ error: "Failed to search plants" });
+	}
 });
 
 // accept a single image file upload (field name: "image")
@@ -415,6 +416,7 @@ app.post("/petAPI/addPet", authRequired, async (req, res) => {
 		level: 1,
 		happiness: 100,
 		food: 5,
+		hat: null,
 		lastupdate: Date.now() / 1000,
 		decayrate: 0.001,
 		ownerId: req.user.userId,
@@ -450,18 +452,35 @@ app.post("/petAPI/updatePet", authRequired, async (req, res) => {
 
 	let newXP = pet.xp + xp;
 	let newLevel = pet.level;
+	let hasNewHat = false;
 
 	//To ensure that food is always added, even if pet.food is undefined / NaN
 	let newFood;
-	if (pet.food) {
+	if (pet.food !== null && !isNaN(pet.food)) {
 		newFood = pet.food + food;
-	} else {
-		newFood = 5 + food;
 	}
 
 	if (newXP >= 100) {
 		newLevel += Math.floor(newXP / 100);
 		newXP = newXP % 100;
+
+		// For every 5 levels gained, give the user a new hat (random)
+
+		if (newLevel % 5 === 0) {
+			console.log("Congratulations! Your pet leveled up and you received a new hat!");
+			const hatTypes = ["cap", "kankan", "rain", "top"];
+			const randomHat = hatTypes[Math.floor(Math.random() * hatTypes.length)];
+			const randomHue = Math.floor(Math.random() * 361);
+
+			const newHat = {
+				type: randomHat,
+				hue: randomHue,
+				ownerId: req.user.userId,
+			};
+
+			hasNewHat = true;
+			await hatCollection.insertOne(newHat);
+		}
 	}
 
 	await petCollection.updateOne(
@@ -477,6 +496,21 @@ app.post("/petAPI/updatePet", authRequired, async (req, res) => {
 		}
 	);
 
+	if (hasNewHat) {
+		return res.json({
+			message: "Pet updated successfully and you received a new hat!",
+			newHat: true,
+			pet: {
+				...pet,
+				happiness: finalHappiness,
+				xp: newXP,
+				level: newLevel,
+				lastupdate: now,
+				food: newFood,
+			},
+		});
+	}
+
 	return res.json({
 		message: "Pet updated successfully",
 		pet: {
@@ -488,6 +522,79 @@ app.post("/petAPI/updatePet", authRequired, async (req, res) => {
 			food: pet.food + food,
 		},
 	});
+});
+
+app.post("/petAPI/setHat", authRequired, async (req, res) => {
+	const hatTypes = ["cap", "kankan", "rain", "top"];
+	const { hat } = req.body;
+
+	if (hat !== null && (!hat || !hatTypes.includes(hat.type))) {
+		return res.status(400).json({ error: "Invalid hat type" });
+	}
+
+	const pet = await petCollection.findOne({
+		ownerId: req.user.userId,
+	});
+
+	if (!pet) {
+		return res.status(404).json({ error: "Pet not found" });
+	}
+
+	await petCollection.updateOne(
+		{ _id: pet._id },
+		{
+			$set: {
+				hat,
+			},
+		}
+	);
+
+	return res.json({
+		message: "Pet hat updated successfully",
+		pet: {
+			...pet,
+			hat,
+		},
+	});
+});
+
+//Hats Sub-Endpoints
+
+// Get all hats owned by the user
+async function getOwnedHats(req, res) {
+	const hat = await hatCollection
+		.find({
+			ownerId: req.user.userId,
+		})
+		.sort({ _id: -1 })
+		.toArray();
+	return res.json({ hat });
+}
+
+app.get("/petAPI/hat/getHats", authRequired, getOwnedHats);
+app.post("/petAPI/hat/getHats", authRequired, getOwnedHats);
+
+// Add a new hat to the user's collection
+app.post("/petAPI/hat/add", authRequired, async (req, res) => {
+	const { hatType, hue } = req.body;
+	const hatTypes = ["cap", "kankan", "rain", "top"];
+
+	if (!hatType || !hatTypes.includes(hatType)) {
+		return res.status(400).json({ error: "Invalid hat type" });
+	}
+
+	if (hue !== undefined && (typeof hue !== "number" || hue < 0 || hue > 360)) {
+		return res.status(400).json({ error: "Hue must be a number between 0 and 360" });
+	}
+
+	const newHat = {
+		type: hatType,
+		hue: hue !== undefined ? hue : 0,
+		ownerId: req.user.userId,
+	};
+
+	await hatCollection.insertOne(newHat);
+	return res.json({ message: "Hat added successfully", hat: newHat });
 });
 
 
@@ -579,7 +686,7 @@ app.get("/markers/mine", authRequired, async (req, res) => {
 app.post("/markers", authRequired, async (req, res) => {
 	try {
 		const { lat, lng, plantName, plantId, edible } = req.body;
-	    const userId = req.user.userId.toString();
+		const userId = req.user.userId.toString();
 
 		if (lat == null || lng == null) {
 			return res.status(400).json({ error: "lat and lng required" });
@@ -608,26 +715,26 @@ app.post("/markers", authRequired, async (req, res) => {
 });
 
 app.delete("/markers/:id", authRequired, async (req, res) => {
-    try {
-        const id = req.params.id;
-        const requestingUserId = req.user.userId;
+	try {
+		const id = req.params.id;
+		const requestingUserId = req.user.userId;
 
-        const marker = await markerCollection.findOne({ _id: new ObjectId(id) });
+		const marker = await markerCollection.findOne({ _id: new ObjectId(id) });
 
-        if (!marker) {
-            return res.status(404).json({ error: "Marker not found" });
-        }
+		if (!marker) {
+			return res.status(404).json({ error: "Marker not found" });
+		}
 
-        if (marker.userId !== requestingUserId.toString()) {
-            return res.status(403).json({ error: "Not authorized to delete this marker" });
-        }
+		if (marker.userId !== requestingUserId.toString()) {
+			return res.status(403).json({ error: "Not authorized to delete this marker" });
+		}
 
-        await markerCollection.deleteOne({ _id: new ObjectId(id) });
-        res.json({ message: "Marker deleted" });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: "Failed to delete marker" });
-    }
+		await markerCollection.deleteOne({ _id: new ObjectId(id) });
+		res.json({ message: "Marker deleted" });
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ error: "Failed to delete marker" });
+	}
 });
 
 //used specifically for backend.

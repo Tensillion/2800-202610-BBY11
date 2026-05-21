@@ -7,7 +7,7 @@ type FeedButtonProps = {
 	disabled?: boolean;
 };
 
-const COOLDOWN_TIME_MS = 5000; // 5 seconds cooldown
+const COOLDOWN_TIME_MS = 1000; // 1 seconds cooldown
 const BACKEND_URL = "http://localhost:3000";
 
 export default function FeedButton({ onFeed, disabled = false }: FeedButtonProps) {
