@@ -28,7 +28,7 @@ type Plant = {
 };
 
 type FilterEdible = "all" | "edible" | "not-edible";
-type FilterOwner  = "all" | "mine";
+type FilterOwner = "all" | "mine";
 
 delete (
 	L.Icon.Default.prototype as Partial<L.Icon.Default> & {
@@ -53,7 +53,7 @@ const guideSteps = [
 	{
 		x: "50%",
 		y: 300,
-		title: "Scan Your Area!",
+		title: "Check your Surroundings!",
 		message: "This is where you can explore the map and find plants in your area.",
 	},
 	{
@@ -65,7 +65,7 @@ const guideSteps = [
 	},
 	{
 		x: "50%",
-		y: 120,
+		y: "50%",
 		title: "Share your finds!",
 		message:
 			"Share your plant discoveries with the community and help others find great forage locations!",
@@ -78,40 +78,38 @@ function matchesFilters(
 	filterOwner: FilterOwner,
 	currentUserId: string
 ): boolean {
-	if (filterEdible === "edible"     && marker.edible !== true)  return false;
+	if (filterEdible === "edible" && marker.edible !== true) return false;
 	if (filterEdible === "not-edible" && marker.edible !== false) return false;
-	if (filterOwner  === "mine"       && marker.markerUserId !== currentUserId) return false;
+	if (filterOwner === "mine" && marker.markerUserId !== currentUserId) return false;
 	return true;
 }
 
 function MapPage() {
 	const navigate = useNavigate();
-	const mapRef           = useRef<LeafletMap | null>(null);
-	const mapContainerRef  = useRef<HTMLDivElement | null>(null);
-	const markersRef       = useRef<PlantMarker[]>([]);
+	const mapRef = useRef<LeafletMap | null>(null);
+	const mapContainerRef = useRef<HTMLDivElement | null>(null);
+	const markersRef = useRef<PlantMarker[]>([]);
 	const pendingMarkerRef = useRef<Marker | null>(null);
-	const debounceRef      = useRef<ReturnType<typeof setTimeout> | null>(null);
+	const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-	const [sidebarOpen,    setSidebarOpen]    = useState(false);
-	const [pendingLatLng,  setPendingLatLng]  = useState<LatLng | null>(null);
-	const [filterOpen,     setFilterOpen]     = useState(false);
+	const [sidebarOpen, setSidebarOpen] = useState(false);
+	const [pendingLatLng, setPendingLatLng] = useState<LatLng | null>(null);
+	const [filterOpen, setFilterOpen] = useState(false);
 
 	// Plant autocomplete state
-	const [plantName,     setPlantName]     = useState("");
-	const [suggestions,   setSuggestions]   = useState<Plant[]>([]);
+	const [plantName, setPlantName] = useState("");
+	const [suggestions, setSuggestions] = useState<Plant[]>([]);
 	const [selectedPlant, setSelectedPlant] = useState<Plant | null>(null);
-	const [showDropdown,  setShowDropdown]  = useState(false);
+	const [showDropdown, setShowDropdown] = useState(false);
 
 	// Filter state
 	const [filterEdible, setFilterEdible] = useState<FilterEdible>("all");
-	const [filterOwner,  setFilterOwner]  = useState<FilterOwner>("all");
+	const [filterOwner, setFilterOwner] = useState<FilterOwner>("all");
 
 	const token = localStorage.getItem("token");
 	const currentUserId = token ? JSON.parse(atob(token.split(".")[1])).userId : "";
 
-	const activeFilterCount =
-		(filterEdible !== "all" ? 1 : 0) +
-		(filterOwner  !== "all" ? 1 : 0);
+	const activeFilterCount = (filterEdible !== "all" ? 1 : 0) + (filterOwner !== "all" ? 1 : 0);
 
 	useEffect(() => {
 		if (!mapRef.current) return;
@@ -152,7 +150,7 @@ function MapPage() {
 
 		debounceRef.current = setTimeout(async () => {
 			try {
-				const res  = await fetch(`${BACKEND_URL}/plants/search?q=${encodeURIComponent(value)}`);
+				const res = await fetch(`${BACKEND_URL}/plants/search?q=${encodeURIComponent(value)}`);
 				const data: Plant[] = await res.json();
 				setSuggestions(data);
 				setShowDropdown(data.length > 0);
@@ -183,11 +181,11 @@ function MapPage() {
 					Authorization: `Bearer ${localStorage.getItem("token")}`,
 				},
 				body: JSON.stringify({
-					lat:       pendingLatLng.lat,
-					lng:       pendingLatLng.lng,
-					plantId:   selectedPlant._id,
+					lat: pendingLatLng.lat,
+					lng: pendingLatLng.lng,
+					plantId: selectedPlant._id,
 					plantName: selectedPlant.common_names[0],
-					edible:    selectedPlant.edible ?? null,
+					edible: selectedPlant.edible ?? null,
 				}),
 			});
 
@@ -198,13 +196,12 @@ function MapPage() {
 			pendingMarkerRef.current?.remove();
 			pendingMarkerRef.current = null;
 
-			const marker = L.marker(
-				[savedMarker.lat, savedMarker.lng],
-				{ icon: customIcon }
-			).addTo(mapRef.current!) as PlantMarker;
+			const marker = L.marker([savedMarker.lat, savedMarker.lng], { icon: customIcon }).addTo(
+				mapRef.current!
+			) as PlantMarker;
 
-			marker.dbId         = savedMarker._id;
-			marker.edible       = savedMarker.edible;
+			marker.dbId = savedMarker._id;
+			marker.edible = savedMarker.edible;
 			marker.markerUserId = savedMarker.userId;
 			markersRef.current.push(marker);
 			addPopup(marker, savedMarker._id, savedMarker.userId);
@@ -231,10 +228,12 @@ function MapPage() {
 		`);
 
 		marker.on("popupopen", () => {
-			const openBtn   = document.getElementById(`open-btn-${markerId}`);
+			const openBtn = document.getElementById(`open-btn-${markerId}`);
 			const deleteBtn = document.getElementById(`delete-btn-${markerId}`);
 
-			openBtn?.addEventListener("click", () => { navigate("/ItemPage"); });
+			openBtn?.addEventListener("click", () => {
+				navigate("/ItemPage");
+			});
 
 			deleteBtn?.addEventListener("click", async () => {
 				try {
@@ -261,39 +260,47 @@ function MapPage() {
 		const vancouverBounds = L.latLngBounds([49.19, -123.3], [49.4, -123.0]);
 
 		const map = L.map(mapContainerRef.current, {
-			doubleClickZoom:    false,
-			maxBounds:          vancouverBounds,
+			doubleClickZoom: false,
+			maxBounds: vancouverBounds,
 			maxBoundsViscosity: 1.0,
-			minZoom:            10,
+			minZoom: 10,
 		}).setView([49.2827, -123.1207], 14);
 
 		mapRef.current = map;
 
-		L.tileLayer(
-			`https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=gDkxVYMhRLP8Cdndhy8P`,
-			{ attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors' }
-		).addTo(map);
+		L.tileLayer(`https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=gDkxVYMhRLP8Cdndhy8P`, {
+			attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+		}).addTo(map);
 
 		fetch(`${BACKEND_URL}/markers`)
 			.then(res => {
 				if (!res.ok) throw new Error(`HTTP error: ${res.status}`);
 				return res.json();
 			})
-			.then((savedMarkers: { _id: string; lat: number; lng: number; userId: string; edible?: boolean | null }[]) => {
-				if (cancelled) return;
-				savedMarkers.forEach(savedMarker => {
-					const marker = L.marker(
-						[savedMarker.lat, savedMarker.lng],
-						{ icon: customIcon }
-					).addTo(map) as PlantMarker;
+			.then(
+				(
+					savedMarkers: {
+						_id: string;
+						lat: number;
+						lng: number;
+						userId: string;
+						edible?: boolean | null;
+					}[]
+				) => {
+					if (cancelled) return;
+					savedMarkers.forEach(savedMarker => {
+						const marker = L.marker([savedMarker.lat, savedMarker.lng], { icon: customIcon }).addTo(
+							map
+						) as PlantMarker;
 
-					marker.dbId         = savedMarker._id;
-					marker.edible       = savedMarker.edible;
-					marker.markerUserId = savedMarker.userId;
-					markersRef.current.push(marker);
-					addPopup(marker, savedMarker._id, savedMarker.userId);
-				});
-			})
+						marker.dbId = savedMarker._id;
+						marker.edible = savedMarker.edible;
+						marker.markerUserId = savedMarker.userId;
+						markersRef.current.push(marker);
+						addPopup(marker, savedMarker._id, savedMarker.userId);
+					});
+				}
+			)
 			.catch(err => console.error("Failed to load markers:", err));
 
 		map.on("dblclick", e => {
@@ -325,21 +332,28 @@ function MapPage() {
 				ref={mapContainerRef}
 				style={{ position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh", zIndex: 0 }}
 			/>
-			
+
 			<button
 				className={`filter-toggle-btn ${activeFilterCount > 0 ? "has-active" : ""}`}
 				onClick={() => setFilterOpen(o => !o)}
 				aria-label="Toggle filters"
 			>
-				<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-					<line x1="4" y1="6"  x2="20" y2="6"  />
+				<svg
+					width="18"
+					height="18"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					strokeWidth="2.2"
+					strokeLinecap="round"
+					strokeLinejoin="round"
+				>
+					<line x1="4" y1="6" x2="20" y2="6" />
 					<line x1="8" y1="12" x2="16" y2="12" />
 					<line x1="11" y1="18" x2="13" y2="18" />
 				</svg>
 				<span>Filter</span>
-				{activeFilterCount > 0 && (
-					<span className="filter-badge">{activeFilterCount}</span>
-				)}
+				{activeFilterCount > 0 && <span className="filter-badge">{activeFilterCount}</span>}
 			</button>
 
 			{filterOpen && (
@@ -349,7 +363,10 @@ function MapPage() {
 						{activeFilterCount > 0 && (
 							<button
 								className="filter-clear-btn"
-								onClick={() => { setFilterEdible("all"); setFilterOwner("all"); }}
+								onClick={() => {
+									setFilterEdible("all");
+									setFilterOwner("all");
+								}}
 							>
 								Clear all
 							</button>
@@ -365,7 +382,11 @@ function MapPage() {
 									className={`filter-pill ${filterEdible === opt ? "active" : ""}`}
 									onClick={() => setFilterEdible(opt)}
 								>
-									{opt === "all" ? "All" : opt === "edible" ? "Edible" : "Not Edible"}
+									{opt === "all" ?
+										"All"
+									: opt === "edible" ?
+										"Edible"
+									:	"Not Edible"}
 								</button>
 							))}
 						</div>
@@ -391,7 +412,9 @@ function MapPage() {
 			<div className={`plant-sidebar ${sidebarOpen ? "open" : ""}`}>
 				<div className="sidebar-header">
 					<h2>New Plant Marker</h2>
-					<button className="sidebar-close" onClick={closeSidebar}>✕</button>
+					<button className="sidebar-close" onClick={closeSidebar}>
+						✕
+					</button>
 				</div>
 
 				<div className="sidebar-body">
@@ -440,7 +463,9 @@ function MapPage() {
 				</div>
 
 				<div className="sidebar-footer">
-					<button className="btn-cancel" onClick={closeSidebar}>Cancel</button>
+					<button className="btn-cancel" onClick={closeSidebar}>
+						Cancel
+					</button>
 					<button className="btn-confirm" disabled={!selectedPlant} onClick={confirmMarker}>
 						Place Marker
 					</button>

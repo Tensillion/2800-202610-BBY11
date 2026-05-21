@@ -1,0 +1,122 @@
+.pet-hat {
+	display: block;
+	position: absolute;
+
+	z-index: 2; /* Ensure hat is above the pet */
+
+	left: var(--hat-left, 50%);
+	top: var(--hat-top, 8%);
+	height: calc(var(--pet-size) * var(--hat-size-multiplier, 0.92));
+	width: auto;
+	transform: translate(-50%, -100%) scale(var(--hat-scale, 1));
+	transform-origin: center bottom;
+	pointer-events: none;
+	-webkit-user-select: none;
+	user-select: none;
+}
+
+/* --------------- Mushroom */
+
+.pet-hat.Mushroom {
+	--hat-left: 50%;
+	--hat-top: 6%;
+	--hat-size-multiplier: 1.02;
+}
+
+/*Hat Types*/
+
+.pet-hat.Mushroom.top {
+	--hat-top: 32%;
+	--hat-left: 40%;
+	--hat-size-multiplier: 0.6;
+	transform: rotate(10deg) translate(-50%, -100%) scale(var(--hat-scale, 1));
+}
+
+.pet-hat.Mushroom.cap {
+	--hat-top: 35%;
+	--hat-left: 34%;
+	--hat-size-multiplier: 0.6;
+	transform: rotate(10deg) translate(-50%, -100%) scale(var(--hat-scale, 1));
+}
+
+.pet-hat.Mushroom.kankan {
+	--hat-top: 35%;
+	--hat-left: 40%;
+	--hat-size-multiplier: 0.6;
+	transform: rotate(10deg) translate(-50%, -100%) scale(var(--hat-scale, 1));
+}
+
+.pet-hat.Mushroom.rain {
+	--hat-top: 35%;
+	--hat-left: 42%;
+	--hat-size-multiplier: 0.7;
+	transform: rotate(10deg) translate(-50%, -100%) scale(var(--hat-scale, 1));
+}
+
+/* --------------- Berry */
+
+.pet-hat.Berry {
+	--hat-left: 50%;
+	--hat-top: 10%;
+	--hat-size-multiplier: 0.98;
+}
+
+/*Hat Types*/
+
+.pet-hat.Berry.top {
+	--hat-top: 40%;
+	--hat-size-multiplier: 0.8;
+}
+
+.pet-hat.Berry.cap {
+	--hat-top: 50%;
+	--hat-left: 43%;
+	--hat-size-multiplier: 0.65;
+}
+
+.pet-hat.Berry.kankan {
+	--hat-top: 50%;
+	--hat-left: 50%;
+	--hat-size-multiplier: 0.7;
+}
+
+.pet-hat.Berry.rain {
+	--hat-top: 50%;
+	--hat-size-multiplier: 0.8;
+}
+
+/* --------------- Acorn */
+
+.pet-hat.Acorn {
+	--hat-left: 50%;
+	--hat-top: 8%;
+	--hat-size-multiplier: 1.04;
+}
+
+/*Hat Types*/
+
+.pet-hat.Acorn.top {
+	--hat-top: 30%;
+	--hat-left: 38%;
+	--hat-size-multiplier: 0.6;
+	transform: rotate(20deg) translate(-50%, -100%) scale(var(--hat-scale, 1));
+}
+
+.pet-hat.Acorn.cap {
+	--hat-top: 35%;
+	--hat-left: 40%;
+	--hat-size-multiplier: 0.5;
+	transform: rotate(15deg) translate(-50%, -100%) scale(var(--hat-scale, 1));
+}
+
+.pet-hat.Acorn.kankan {
+	--hat-top: 25%;
+	--hat-left: 53%;
+	--hat-size-multiplier: 0.5;
+}
+
+.pet-hat.Acorn.rain {
+	--hat-top: 25%;
+	--hat-left: 53%;
+	--hat-size-multiplier: 0.5;
+}
