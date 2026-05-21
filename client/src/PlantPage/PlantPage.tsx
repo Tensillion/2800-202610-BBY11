@@ -10,7 +10,7 @@ function PlantPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/plants/${id}`)
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setFood(data);
