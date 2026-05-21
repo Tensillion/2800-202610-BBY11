@@ -12,7 +12,6 @@ import ProfilePage from "./ProfilePage/ProfilePage.tsx";
 import LoginPage from "./LoginPage/LoginPage.tsx";
 import SignUpPage from "./SignUpPage/SignUpPage.tsx";
 import PetPage from "./PetPage/PetPage.tsx";
-import SettingsPage from "./SettingsPage/SettingsPage.tsx";
 import ItemPage from "./ItemPage/ItemPage.tsx";
 import CameraResultPage from "./CameraPage/ResultPage/CameraResultPage.tsx";
 
@@ -90,15 +89,6 @@ createRoot(document.getElementById("root")!).render(
 						element={
 							<ProtectedRoute>
 								<CollectionPage />
-								<Footer />
-							</ProtectedRoute>
-						}
-					/>
-					<Route
-						path="/settings"
-						element={
-							<ProtectedRoute>
-								<SettingsPage />
 								<Footer />
 							</ProtectedRoute>
 						}
