@@ -252,6 +252,10 @@ app.patch("/users/profile/username", authRequired, async (req, res) => {
 	});
 	const { error, value } = schema.validate(req.body);
 
+	if (await userCollection.findOne({ username: value.username })) {
+		return res.status(400).json({ error: "Username already taken" });
+	}
+
 	if (error) {
 		return res.status(400).json({ error: error.details[0].message });
 	}
@@ -597,7 +601,6 @@ app.post("/petAPI/hat/add", authRequired, async (req, res) => {
 	return res.json({ message: "Hat added successfully", hat: newHat });
 });
 
-
 app.post("/petAPI/easterEgg", authRequired, async (req, res) => {
 	try {
 		const pet = await petCollection.findOne({
@@ -616,8 +619,7 @@ app.post("/petAPI/easterEgg", authRequired, async (req, res) => {
 			});
 		}
 
-		const randomTitle =
-			petTitles[Math.floor(Math.random() * petTitles.length)];
+		const randomTitle = petTitles[Math.floor(Math.random() * petTitles.length)];
 
 		const updatedName = `${randomTitle} ${pet.name}`;
 
@@ -635,7 +637,6 @@ app.post("/petAPI/easterEgg", authRequired, async (req, res) => {
 			message: "Secret discovered!",
 			newName: updatedName,
 		});
-
 	} catch (err) {
 		console.error(err);
 
@@ -645,14 +646,13 @@ app.post("/petAPI/easterEgg", authRequired, async (req, res) => {
 	}
 });
 
-
 //---------------- Markers Endpoints ----------------
 
 app.get("/markers", async (req, res) => {
 	try {
 		const markers = await markerCollection.find({}).toArray();
 		const enriched = await Promise.all(
-			markers.map(async (m) => {
+			markers.map(async m => {
 				if (m.plantName || !m.plantId) return m;
 				try {
 					const plant = await plantCollection.findOne(
