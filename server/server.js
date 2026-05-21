@@ -17,7 +17,7 @@ const port = process.env.PORT || 3000;
 
 const path = require("path");
 const cors = require("cors");
-const frontendPath = path.join(__dirname, "../COMP-2800/dist");
+const frontendPath = path.join(__dirname, "../client/dist");
 
 //SECRETS
 const PLANTNET_API_KEY = process.env.PLANTNET_API_KEY;
@@ -539,6 +539,14 @@ async function startServer() {
 
     await registerGeminiRoutes();
     await registerAuthenticationRoutes();
+
+    // put these lines back in for production, so users can refresh on item card page wihtout error.
+    //need to cd client n run npm run build, and then uncomment these lines
+    // app.use(express.static(frontendPath));
+
+    // app.use((req, res) => {
+    //   res.sendFile(path.join(frontendPath, "index.html"));
+    // });
 
     app.listen(port, () => {
       console.log(`Backend running on http://localhost:${port}`);

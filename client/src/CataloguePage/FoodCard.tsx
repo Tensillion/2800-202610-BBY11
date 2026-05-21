@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Navigate, useNavigation } from "react-router-dom";
 
 type Food = {
   _id: string;
@@ -13,22 +13,25 @@ export default function FoodCard({ food }: { food: Food }) {
   const parts = food.parts ?? [];
   const commonNames = food.common_names ?? [];
   return (
-    <Link to={`/plants/${food._id}`}>
-      <div className="card p-3 shadow">
-        <h3>{commonNames.join(", ")}</h3>
-        <p>
-          <b>Scientific:</b> {food.scientific_name}
-        </p>
-        <p>
-          <b>Edible:</b> {food.edible ? "Yes" : "No"}
-        </p>
-        <p>
-          <b>Parts:</b> {parts.length ? parts.join(", ") : "None listed"}{" "}
-        </p>
-        <p>
-          <b>Warnings:</b> {food.warnings || "None in database. Investigate!"}
-        </p>
-      </div>
-    </Link>
+    <div className="card p-3 shadow"
+    onClick={() => {
+      Navigate(`plants/${food._id}`), {
+        state: {food};
+      }
+    }}>
+      <h3>{commonNames.join(", ")}</h3>
+      <p>
+        <b>Scientific:</b> {food.scientific_name}
+      </p>
+      <p>
+        <b>Edible:</b> {food.edible ? "Yes" : "No"}
+      </p>
+      <p>
+        <b>Parts:</b> {parts.length ? parts.join(", ") : "None listed"}{" "}
+      </p>
+      <p>
+        <b>Warnings:</b> {food.warnings || "None in database. Investigate!"}
+      </p>
+    </div>
   );
 }
