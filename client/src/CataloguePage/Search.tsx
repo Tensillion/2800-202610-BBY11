@@ -23,9 +23,9 @@ function Search(props: SearchProps) {
   };
 
   return (
-    <div className="bg-white h-10 px-5 pr-10 w-full rounded-full text-sm focus:outline-none">
+    <div className="searchBar">
       <input
-        className="bg-white h-10 px-5 pr-10 w-full rounded-full text-sm focus:outline-none"
+        className="searchInput"
         type="search"
         name="search"
         value={value}
@@ -36,10 +36,10 @@ function Search(props: SearchProps) {
 
       <button
         type="button"
-        className="right-0 top-0 mt-3 mr-4"
+        className="searchButton"
         onClick={() => onSearch(value)}
       >
-        <img className="h-4 w-4" src="/search-icon.svg"></img>
+        <img className="searchIcon" src="/search-icon.svg"></img>
       </button>
     </div>
   );

@@ -1,0 +1,119 @@
+.plant-page {
+  --plant-bg: var(--cream);
+  --plant-text: var(--text);
+  --plant-panel: var(--dark-cream);
+  --plant-card: color-mix(in srgb, var(--plant-bg) 62%, var(--plant-panel));
+  --plant-line: color-mix(in srgb, var(--plant-text) 24%, transparent);
+  --plant-accent: var(--forest);
+
+  min-height: 100svh;
+  width: 100vw;
+  box-sizing: border-box;
+
+  padding: 42px 22px 120px;
+
+  background: var(--plant-bg);
+  background-image:
+    linear-gradient(var(--page-bg-overlay), var(--page-bg-overlay)),
+    url("/assets/bg/auth-setting-bg.JPG");
+  background-size: cover, cover;
+  background-position: center, center;
+  background-repeat: no-repeat, no-repeat;
+
+  color: var(--plant-text);
+  font-family: var(--cherryBomb);
+
+  display: flex;
+  justify-content: center;
+}
+
+.plant-page[data-theme="dark"] {
+  --plant-bg: var(--bg);
+  --plant-text: var(--text);
+  --plant-panel: var(--dark-cream);
+  --plant-card: color-mix(in srgb, var(--plant-panel) 72%, var(--bg));
+  --plant-line: color-mix(in srgb, var(--plant-text) 24%, transparent);
+}
+
+.plant-container {
+  width: min(100%, 420px);
+}
+
+.plant-card {
+  background: var(--plant-panel);
+  border: 1px solid var(--plant-line);
+  border-radius: 14px;
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+.CommonNames {
+  margin: 0 0 18px;
+  font-size: 30px;
+  line-height: 1;
+  font-weight: 400;
+  color: var(--plant-accent);
+  text-align: center;
+}
+
+.plant-section {
+  display: grid;
+  gap: 4px;
+
+  padding: 14px 0;
+
+  border-bottom: 1px solid var(--plant-line);
+}
+
+.plant-section:last-of-type {
+  border-bottom: 0;
+}
+
+.plant-label {
+  font-size: 13px;
+  opacity: 0.7;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.plant-value {
+  font-size: 15px;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.edible-yes {
+  color: #2e7d32;
+}
+
+.edible-no {
+  color: #b23b3b;
+}
+
+.warning-box {
+  margin-top: 18px;
+
+  background: var(--plant-card);
+
+  border: 1px solid var(--plant-line);
+  border-radius: 10px;
+
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+.warning-box .plant-label {
+  margin-bottom: 6px;
+}
+
+.loading-state,
+.error-state {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-family: var(--cherryBomb);
+  font-size: 18px;
+  color: var(--text);
+}
