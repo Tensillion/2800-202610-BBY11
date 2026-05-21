@@ -1,3 +1,17 @@
+#login-page,
+#signup-page {
+	background-image:
+		linear-gradient(var(--page-bg-overlay), var(--page-bg-overlay)),
+		url("/assets/bg/auth-setting-bg.JPG") !important;
+	background-size: cover, cover;
+	background-position: center, center;
+	background-repeat: no-repeat, no-repeat;
+
+	position: fixed;
+	inset: 0;
+	overflow: hidden;
+}
+
 .authentication-header {
 	position: absolute;
 	top: 0;

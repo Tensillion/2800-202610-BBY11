@@ -41,7 +41,7 @@ function LoginPage() {
 	}
 
 	return (
-		<>
+		<section id="login-page">
 			<div className="authentication-header">
 				<img className="logo" src="/Logo.png" alt="Logo" />
 				<Link className="nav-link" to="/signup">
@@ -75,7 +75,7 @@ function LoginPage() {
 					<a href="/resetPassword">Forgot Password? </a>.
 				</p>
 			</div>
-		</>
+		</section>
 	);
 }
 export default LoginPage;

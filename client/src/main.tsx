@@ -12,13 +12,15 @@ import ProfilePage from "./ProfilePage/ProfilePage.tsx";
 import LoginPage from "./LoginPage/LoginPage.tsx";
 import SignUpPage from "./SignUpPage/SignUpPage.tsx";
 import PetPage from "./PetPage/PetPage.tsx";
-import SettingsPage from "./SettingsPage/SettingsPage.tsx";
 import CameraResultPage from "./CameraPage/ResultPage/CameraResultPage.tsx";
 import PlantPage from "./PlantPage/PlantPage.tsx";
 import GuestRoute from "./components/GuestRoute.tsx";
 import ProtectedRoute from "./components/ProtectedRoute.tsx";
 
 import { AuthProvider } from "./context/AuthProvider.tsx";
+
+document.documentElement.dataset.theme =
+  localStorage.getItem("profileDarkMode") === "true" ? "dark" : "light";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -86,15 +88,6 @@ createRoot(document.getElementById("root")!).render(
             element={
               <ProtectedRoute>
                 <CataloguePage />
-                <Footer />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/settings"
-            element={
-              <ProtectedRoute>
-                <SettingsPage />
                 <Footer />
               </ProtectedRoute>
             }

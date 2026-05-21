@@ -6,6 +6,8 @@ import PetStatDisplay from "./PetStatDisplay/PetStatDisplay";
 import FeedButton from "./FeedButton/FeedButton";
 import "./PetPage.css";
 import Pet from "./Pet/Pet";
+import { Hat } from "./Hat/Hat";
+import HatMenu from "./HatMenu/HatMenu";
 
 const BACKEND_URL = "http://localhost:3000";
 
@@ -40,6 +42,10 @@ interface Pet {
 	level: number;
 	happiness: number;
 	food: number;
+	hat?: {
+		type: string;
+		hue: number;
+	} | null;
 }
 
 function PetPage() {
@@ -142,7 +148,7 @@ function PetPage() {
 		};
 
 		void loadPetStatus();
-	}, [checkIfUserHasPet, loadPet, hasPet]);
+	}, [checkIfUserHasPet]);
 
 	const handleOnboardingComplete = async (petName: string, petType: string) => {
 		try {
@@ -187,7 +193,7 @@ function PetPage() {
 
 		try {
 			setFeeding(true);
-			await updatePetStats({ xp: 5, happiness: 10, food: -1 });
+			await updatePetStats({ xp: 25, happiness: 10, food: -1 });
 			await loadPet();
 		} catch (err) {
 			console.error("Error feeding pet:", err);
@@ -235,15 +241,21 @@ function PetPage() {
 				steps={guideSteps}
 			/>
 
-			<PetStatDisplay
-				name={pet.name}
-				xp={pet.xp}
-				level={pet.level}
-				happiness={Math.round(pet.happiness)}
-			/>
+			<div className="pet-status-stack">
+				<PetStatDisplay
+					name={pet.name}
+					xp={pet.xp}
+					level={pet.level}
+					happiness={Math.round(pet.happiness)}
+				/>
+				<HatMenu currentHat={pet.hat ?? null} onHatEquipped={updatedPet => setPet(updatedPet)} />
+			</div>
 
 			<div className="pet-scene">
-				<Pet imageUrl={`/assets/pets/${pet.type}-pet-sitting.png`} />
+				<Pet
+					imageUrl={`/assets/pets/${pet.type}-pet-sitting.png`}
+					overlay={<Hat petType={pet.type} hat={pet.hat ?? null} />}
+				/>
 			</div>
 			<FeedButton onFeed={handleFeedPet} disabled={feeding} />
 		</section>

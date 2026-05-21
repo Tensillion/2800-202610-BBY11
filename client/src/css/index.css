@@ -15,6 +15,38 @@
 
 	--black-text: #1c1c1c;
 	--white-text: #f8f5f0;
+	--text: var(--black-text);
+	--bg: var(--darker-cream);
+	--nav-active: #111111;
+	--nav-inactive: #9ca3af;
+	--page-bg-overlay: rgba(0, 0, 0, 0);
+	--hat-menu-overlay: rgba(16, 20, 14, 0.58);
+	--hat-menu-toggle-shadow: rgba(24, 46, 18, 0.2);
+	--hat-menu-toggle-hover-shadow: rgba(24, 46, 18, 0.28);
+	--hat-menu-focus-outline: rgba(255, 255, 255, 0.7);
+	--hat-menu-count-bg: rgba(255, 255, 255, 0.16);
+	--hat-menu-panel-border: rgba(255, 255, 255, 0.42);
+	--hat-menu-panel-bg-start: rgba(255, 252, 245, 0.98);
+	--hat-menu-panel-bg-end: rgba(248, 239, 220, 0.98);
+	--hat-menu-header-text: var(--dark-green);
+	--hat-menu-subtitle-text: rgba(37, 64, 33, 0.72);
+	--hat-menu-close-bg: rgba(37, 64, 33, 0.1);
+	--hat-menu-close-hover-bg: rgba(37, 64, 33, 0.16);
+	--hat-menu-surface-bg: rgba(37, 64, 33, 0.06);
+	--hat-menu-error-bg: rgba(199, 64, 53, 0.1);
+	--hat-menu-error-text: #9f2c24;
+	--hat-menu-item-border: rgba(37, 64, 33, 0.12);
+	--hat-menu-item-bg: rgba(255, 255, 255, 0.8);
+	--hat-menu-item-shadow: rgba(34, 27, 14, 0.08);
+	--hat-menu-item-hover-border: rgba(37, 64, 33, 0.24);
+	--hat-menu-item-hover-shadow: rgba(34, 27, 14, 0.14);
+	--hat-menu-item-active-border: rgba(69, 109, 59, 0.9);
+	--hat-menu-item-active-ring: rgba(69, 109, 59, 0.14);
+	--hat-menu-item-badge-bg: rgba(69, 109, 59, 0.12);
+	--hat-menu-preview-bg-start: rgba(255, 255, 255, 0.95);
+	--hat-menu-preview-bg-end: rgba(246, 232, 200, 0.7);
+	--hat-menu-skeleton-start: rgba(223, 207, 171, 0.65);
+	--hat-menu-skeleton-mid: rgba(255, 255, 255, 0.65);
 
 	--radius: 28px;
 
@@ -25,9 +57,9 @@
 
 	font: 18px/145% var(--cherryBomb);
 	letter-spacing: 0.18px;
-	color-scheme: light dark;
+	color-scheme: light;
 	color: var(--text);
-	background: var(--darker-cream);
+	background: var(--bg);
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
@@ -40,6 +72,57 @@
 	}
 
 	overflow-x: hidden; /* Hide horizontal scrollbar */
+}
+
+:root[data-theme="dark"] {
+	--cream: #242424;
+	--dark-cream: #333333;
+	--darker-cream: #181818;
+
+	--dark-green: #9fca8f;
+	--forest: #b7ddb0;
+	--moss: #7fa86e;
+
+	--light-bark: #f4dfc4;
+	--bark: #f8f5f0;
+	--dark-bark: #fff8ec;
+
+	--black-text: #f8f5f0;
+	--white-text: #181818;
+	--text: #f8f5f0;
+	--bg: #181818;
+	--nav-active: #f8f5f0;
+	--nav-inactive: #8f8f8f;
+	--page-bg-overlay: rgba(0, 0, 0, 0.42);
+	--hat-menu-overlay: rgba(6, 10, 7, 0.7);
+	--hat-menu-toggle-shadow: rgba(0, 0, 0, 0.28);
+	--hat-menu-toggle-hover-shadow: rgba(0, 0, 0, 0.36);
+	--hat-menu-focus-outline: rgba(233, 242, 225, 0.78);
+	--hat-menu-count-bg: rgba(255, 255, 255, 0.1);
+	--hat-menu-panel-border: rgba(233, 242, 225, 0.22);
+	--hat-menu-panel-bg-start: rgba(35, 39, 31, 0.98);
+	--hat-menu-panel-bg-end: rgba(24, 27, 21, 0.98);
+	--hat-menu-header-text: var(--forest);
+	--hat-menu-subtitle-text: rgba(232, 240, 224, 0.72);
+	--hat-menu-close-bg: rgba(232, 240, 224, 0.1);
+	--hat-menu-close-hover-bg: rgba(232, 240, 224, 0.16);
+	--hat-menu-surface-bg: rgba(232, 240, 224, 0.08);
+	--hat-menu-error-bg: rgba(214, 95, 82, 0.16);
+	--hat-menu-error-text: #ffb3aa;
+	--hat-menu-item-border: rgba(233, 242, 225, 0.16);
+	--hat-menu-item-bg: rgba(255, 255, 255, 0.06);
+	--hat-menu-item-shadow: rgba(0, 0, 0, 0.24);
+	--hat-menu-item-hover-border: rgba(159, 202, 143, 0.35);
+	--hat-menu-item-hover-shadow: rgba(0, 0, 0, 0.3);
+	--hat-menu-item-active-border: rgba(159, 202, 143, 0.9);
+	--hat-menu-item-active-ring: rgba(159, 202, 143, 0.16);
+	--hat-menu-item-badge-bg: rgba(159, 202, 143, 0.14);
+	--hat-menu-preview-bg-start: rgba(255, 255, 255, 0.08);
+	--hat-menu-preview-bg-end: rgba(159, 202, 143, 0.12);
+	--hat-menu-skeleton-start: rgba(255, 255, 255, 0.08);
+	--hat-menu-skeleton-mid: rgba(255, 255, 255, 0.18);
+
+	color-scheme: dark;
 }
 
 #root {
@@ -56,7 +139,7 @@
 	box-sizing: border-box;
 
 	top: 0;
-	background: var(--darker-cream);
+	background: var(--bg);
 }
 
 #map {
@@ -69,12 +152,15 @@
 
 body {
 	margin: 0;
+	background: var(--bg);
+	color: var(--text);
 }
 
 h1 {
 	font-size: 56px;
 	letter-spacing: -1.68px;
 	margin: 32px 0;
+	color: var(--forest);
 	@media (max-width: 1024px) {
 		font-size: 36px;
 		margin: 20px 0;
@@ -86,9 +172,14 @@ h2 {
 	line-height: 118%;
 	letter-spacing: -0.24px;
 	margin: 0 0 8px;
+	color: var(--forest);
 	@media (max-width: 1024px) {
 		font-size: 20px;
 	}
+}
+
+h3 {
+	color: var(--forest);
 }
 
 p {

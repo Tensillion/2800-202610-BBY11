@@ -57,6 +57,15 @@
 	cursor: grab;
 }
 
+.lp-carousel::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: var(--page-bg-overlay);
+	pointer-events: none;
+	z-index: 1;
+}
+
 .lp-carousel:active {
 	cursor: grabbing;
 }
@@ -67,6 +76,7 @@
 	inset: 0;
 	background-size: cover;
 	background-position: center;
+	z-index: 0;
 	opacity: 0;
 	transition: opacity var(--dur) ease;
 	pointer-events: none;
@@ -88,7 +98,7 @@
 	inset: 0;
 	background: linear-gradient(to bottom, transparent 55%, rgba(20, 30, 15, 0.55) 100%);
 	pointer-events: none;
-	z-index: 1;
+	z-index: 2;
 }
 
 .lp-slide-label {
@@ -102,7 +112,7 @@
 	font-weight: 400;
 	letter-spacing: 0.03em;
 	color: rgba(255, 255, 255, 0.85);
-	z-index: 2;
+	z-index: 3;
 	padding: 0 24px;
 	transition: opacity var(--dur) ease;
 }

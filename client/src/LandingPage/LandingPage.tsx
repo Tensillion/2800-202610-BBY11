@@ -4,20 +4,17 @@ import "./LandingPage.css";
 
 const SLIDES = [
 	{
-		bg: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=1200&q=80",
-		label: "Forage for wild edibles in Vancouver",
-	},
-	{
-		bg: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80",
+		bg: "/assets/bg/landing-page-image1.png",
 		label: "Scan plants with our plant identifier to find out if they're edible",
 	},
 	{
-		bg: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1200&q=80",
-		label: "Feed your pet with your finds and watch them grow",
+		bg: "/assets/bg/landing-page-image2.png",
+		label: "Forage for wild edibles in Vancouver and share your finds with the community",
 	},
+
 	{
-		bg: "https://s1.zerochan.net/Seele.%28Honkai.Star.Rail%29.600.3949005.jpg",
-		label: "Share your finds with the community",
+		bg: "/assets/bg/landing-page-image3.png",
+		label: "Feed your pet with your finds and watch them grow",
 	},
 ];
 

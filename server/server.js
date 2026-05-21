@@ -9,6 +9,8 @@ const axios = require("axios");
 const express = require("express");
 const rateLimit = require("express-rate-limit");
 const Joi = require("joi");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const { MongoClient, ObjectId } = require("mongodb");
 
@@ -48,6 +50,7 @@ const userCollection = database.db(MONGO_USERS_DB).collection("users");
 const markerCollection = database.db(MONGO_USERS_DB).collection("markers");
 const plantCollection = database.db(MONGO_PLANTS_DB).collection("plants");
 const petCollection = database.db(MONGO_USERS_DB).collection("pets");
+const hatCollection = database.db(MONGO_USERS_DB).collection("hats");
 
 const corsOptions = {
   origin: ["http://localhost:5173"],
@@ -168,9 +171,9 @@ app.post("/plants/search", async (req, res) => {
 });
 
 app.get("/plants/search", async (req, res) => {
-  try {
-    const q = req.query.q?.trim();
-    if (!q) return res.json([]);
+	try {
+		const q = req.query.q?.trim();
+		if (!q) return res.json([]);
 
     const results = await plantCollection
       .find({
@@ -190,11 +193,11 @@ app.get("/plants/search", async (req, res) => {
       })
       .toArray();
 
-    res.json(results);
-  } catch (err) {
-    console.error("Plant autocomplete error:", err);
-    res.status(500).json({ error: "Failed to search plants" });
-  }
+		res.json(results);
+	} catch (err) {
+		console.error("Plant autocomplete error:", err);
+		res.status(500).json({ error: "Failed to search plants" });
+	}
 });
 
 // accept a single image file upload (field name: "image")
@@ -294,6 +297,87 @@ app.post("/users/getUserData", authRequired, async (req, res) => {
   });
 });
 
+app.patch("/users/profile/username", authRequired, async (req, res) => {
+	const schema = Joi.object({
+		username: Joi.string().alphanum().min(3).max(30).required(),
+	});
+	const { error, value } = schema.validate(req.body);
+
+	if (await userCollection.findOne({ username: value.username })) {
+		return res.status(400).json({ error: "Username already taken" });
+	}
+
+	if (error) {
+		return res.status(400).json({ error: error.details[0].message });
+	}
+
+	const result = await userCollection.findOneAndUpdate(
+		{ _id: new ObjectId(req.user.userId) },
+		{ $set: { username: value.username } },
+		{ returnDocument: "after", projection: { password: 0 } }
+	);
+
+	if (!result) {
+		return res.status(404).json({ error: "User not found" });
+	}
+
+	const token = jwt.sign(
+		{
+			userId: result._id.toString(),
+			username: result.username,
+			email: result.email,
+			userType: result.user_type,
+			plants: result.plants ?? [],
+		},
+		JWT_SECRET,
+		{ expiresIn: "7d" }
+	);
+
+	return res.json({
+		message: "Username updated",
+		token,
+		user: {
+			username: result.username,
+			email: result.email,
+			userType: result.user_type,
+		},
+	});
+});
+
+app.patch("/users/profile/password", authRequired, async (req, res) => {
+	const schema = Joi.object({
+		currentPassword: Joi.string().min(6).required(),
+		newPassword: Joi.string().min(6).required(),
+	});
+	const { error, value } = schema.validate(req.body);
+
+	if (error) {
+		return res.status(400).json({ error: error.details[0].message });
+	}
+
+	const user = await userCollection.findOne({ _id: new ObjectId(req.user.userId) });
+
+	if (!user) {
+		return res.status(404).json({ error: "User not found" });
+	}
+
+	const isMatch = await bcrypt.compare(value.currentPassword, user.password);
+
+	if (!isMatch) {
+		return res.status(401).json({ error: "Current password is incorrect" });
+	}
+
+	const salt = await bcrypt.genSalt(12);
+	const hashedPassword = await bcrypt.hash(value.newPassword, salt);
+
+	await userCollection.updateOne(
+		{ _id: new ObjectId(req.user.userId) },
+		{ $set: { password: hashedPassword } }
+	);
+
+	return res.json({ message: "Password updated" });
+});
+
 app.post("/users/addPlant", authRequired, async (req, res) => {
   const { scientificNameWithoutAuthor } = req.body;
 
@@ -330,6 +414,17 @@ app.post("/users/addPlant", authRequired, async (req, res) => {
 //---------------Pet Endpoints------------------
 
 const petTypes = ["Acorn", "Mushroom", "Berry"];
+const petTitles = [
+	"Captain",
+	"Super",
+	"The Great",
+	"The Goat",
+	"Master",
+	"Forest Guardian",
+	"Ancient",
+	"Massive",
+	"Tiny Tyrant",
+];
 
 app.get("/petAPI/hasPet", authRequired, async (req, res) => {
   const pet = await petCollection.findOne({
@@ -373,17 +468,18 @@ app.post("/petAPI/addPet", authRequired, async (req, res) => {
     return res.status(400).json({ error: "User already has a pet" });
   }
 
-  const pet = {
-    name,
-    type,
-    xp: 0,
-    level: 1,
-    happiness: 100,
-    food: 5,
-    lastupdate: Date.now() / 1000,
-    decayrate: 0.001,
-    ownerId: req.user.userId,
-  };
+	const pet = {
+		name,
+		type,
+		xp: 0,
+		level: 1,
+		happiness: 100,
+		food: 5,
+		hat: null,
+		lastupdate: Date.now() / 1000,
+		decayrate: 0.001,
+		ownerId: req.user.userId,
+	};
 
   await petCollection.insertOne(pet);
 
@@ -413,34 +509,66 @@ app.post("/petAPI/updatePet", authRequired, async (req, res) => {
   let finalHappiness = decayedHappiness + happiness;
   finalHappiness = Math.max(0, Math.min(finalHappiness, 100));
 
-  let newXP = pet.xp + xp;
-  let newLevel = pet.level;
+	let newXP = pet.xp + xp;
+	let newLevel = pet.level;
+	let hasNewHat = false;
 
-  //To ensure that food is always added, even if pet.food is undefined / NaN
-  let newFood;
-  if (pet.food) {
-    newFood = pet.food + food;
-  } else {
-    newFood = 5 + food;
-  }
+	//To ensure that food is always added, even if pet.food is undefined / NaN
+	let newFood;
+	if (pet.food !== null && !isNaN(pet.food)) {
+		newFood = pet.food + food;
+	}
 
-  if (newXP >= 100) {
-    newLevel += Math.floor(newXP / 100);
-    newXP = newXP % 100;
-  }
+	if (newXP >= 100) {
+		newLevel += Math.floor(newXP / 100);
+		newXP = newXP % 100;
 
-  await petCollection.updateOne(
-    { _id: pet._id },
-    {
-      $set: {
-        happiness: finalHappiness,
-        xp: newXP,
-        level: newLevel,
-        lastupdate: now,
-        food: newFood,
-      },
-    },
-  );
+		// For every 5 levels gained, give the user a new hat (random)
+
+		if (newLevel % 5 === 0) {
+			console.log("Congratulations! Your pet leveled up and you received a new hat!");
+			const hatTypes = ["cap", "kankan", "rain", "top"];
+			const randomHat = hatTypes[Math.floor(Math.random() * hatTypes.length)];
+			const randomHue = Math.floor(Math.random() * 361);
+
+			const newHat = {
+				type: randomHat,
+				hue: randomHue,
+				ownerId: req.user.userId,
+			};
+
+			hasNewHat = true;
+			await hatCollection.insertOne(newHat);
+		}
+	}
+
+	await petCollection.updateOne(
+		{ _id: pet._id },
+		{
+			$set: {
+				happiness: finalHappiness,
+				xp: newXP,
+				level: newLevel,
+				lastupdate: now,
+				food: newFood,
+			},
+		}
+	);
+
+	if (hasNewHat) {
+		return res.json({
+			message: "Pet updated successfully and you received a new hat!",
+			newHat: true,
+			pet: {
+				...pet,
+				happiness: finalHappiness,
+				xp: newXP,
+				level: newLevel,
+				lastupdate: now,
+				food: newFood,
+			},
+		});
+	}
 
   return res.json({
     message: "Pet updated successfully",
@@ -455,21 +583,165 @@ app.post("/petAPI/updatePet", authRequired, async (req, res) => {
   });
 });
 
+app.post("/petAPI/setHat", authRequired, async (req, res) => {
+	const hatTypes = ["cap", "kankan", "rain", "top"];
+	const { hat } = req.body;
+
+	if (hat !== null && (!hat || !hatTypes.includes(hat.type))) {
+		return res.status(400).json({ error: "Invalid hat type" });
+	}
+
+	const pet = await petCollection.findOne({
+		ownerId: req.user.userId,
+	});
+
+	if (!pet) {
+		return res.status(404).json({ error: "Pet not found" });
+	}
+
+	await petCollection.updateOne(
+		{ _id: pet._id },
+		{
+			$set: {
+				hat,
+			},
+		}
+	);
+
+	return res.json({
+		message: "Pet hat updated successfully",
+		pet: {
+			...pet,
+			hat,
+		},
+	});
+});
+
+//Hats Sub-Endpoints
+
+// Get all hats owned by the user
+async function getOwnedHats(req, res) {
+	const hat = await hatCollection
+		.find({
+			ownerId: req.user.userId,
+		})
+		.sort({ _id: -1 })
+		.toArray();
+	return res.json({ hat });
+}
+
+app.get("/petAPI/hat/getHats", authRequired, getOwnedHats);
+app.post("/petAPI/hat/getHats", authRequired, getOwnedHats);
+
+// Add a new hat to the user's collection
+app.post("/petAPI/hat/add", authRequired, async (req, res) => {
+	const { hatType, hue } = req.body;
+	const hatTypes = ["cap", "kankan", "rain", "top"];
+
+	if (!hatType || !hatTypes.includes(hatType)) {
+		return res.status(400).json({ error: "Invalid hat type" });
+	}
+
+	if (hue !== undefined && (typeof hue !== "number" || hue < 0 || hue > 360)) {
+		return res.status(400).json({ error: "Hue must be a number between 0 and 360" });
+	}
+
+	const newHat = {
+		type: hatType,
+		hue: hue !== undefined ? hue : 0,
+		ownerId: req.user.userId,
+	};
+
+	await hatCollection.insertOne(newHat);
+	return res.json({ message: "Hat added successfully", hat: newHat });
+});
+
+app.post("/petAPI/easterEgg", authRequired, async (req, res) => {
+	try {
+		const pet = await petCollection.findOne({
+			ownerId: req.user.userId,
+		});
+
+		if (!pet) {
+			return res.status(404).json({
+				error: "Pet not found",
+			});
+		}
+
+		if (pet.easterEggFound) {
+			return res.status(400).json({
+				error: "You already found this secret!",
+			});
+		}
+
+		const randomTitle = petTitles[Math.floor(Math.random() * petTitles.length)];
+
+		const updatedName = `${randomTitle} ${pet.name}`;
+
+		await petCollection.updateOne(
+			{ _id: pet._id },
+			{
+				$set: {
+					name: updatedName,
+					easterEggFound: true,
+				},
+			}
+		);
+
+		res.json({
+			message: "Secret discovered!",
+			newName: updatedName,
+		});
+	} catch (err) {
+		console.error(err);
+
+		res.status(500).json({
+			error: "Failed to activate easter egg",
+		});
+	}
+});
+
 //---------------- Markers Endpoints ----------------
+
 app.get("/markers", async (req, res) => {
-  try {
-    const markers = await markerCollection.find({}).toArray();
-    res.json(markers);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Failed to load markers" });
-  }
+	try {
+		const markers = await markerCollection.find({}).toArray();
+		const enriched = await Promise.all(
+			markers.map(async m => {
+				if (m.plantName || !m.plantId) return m;
+				try {
+					const plant = await plantCollection.findOne(
+						{ _id: new ObjectId(m.plantId) },
+						{ projection: { common_names: 1 } }
+					);
+					return { ...m, plantName: plant?.common_names?.[0] ?? null };
+				} catch {
+					return m;
+				}
+			})
+		);
+
+		res.json(enriched);
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ error: "Failed to load markers" });
+	}
+});
+
+app.get("/markers/mine", authRequired, async (req, res) => {
+	try {
+		const markers = await markerCollection.find({ userId: req.user.userId.toString() }).toArray();
+		res.json(markers);
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ error: "Failed to load your markers" });
+	}
 });
 
 app.post("/markers", authRequired, async (req, res) => {
-  try {
-    const { lat, lng, plantName, plantId, edible } = req.body;
-    const userId = req.user.userId.toString();
+	try {
+		const { lat, lng, plantName, plantId, edible } = req.body;
+		const userId = req.user.userId.toString();
 
     if (lat == null || lng == null) {
       return res.status(400).json({ error: "lat and lng required" });
@@ -498,28 +770,26 @@ app.post("/markers", authRequired, async (req, res) => {
 });
 
 app.delete("/markers/:id", authRequired, async (req, res) => {
-  try {
-    const id = req.params.id;
-    const requestingUserId = req.user.userId;
+	try {
+		const id = req.params.id;
+		const requestingUserId = req.user.userId;
 
-    const marker = await markerCollection.findOne({ _id: new ObjectId(id) });
+		const marker = await markerCollection.findOne({ _id: new ObjectId(id) });
 
-    if (!marker) {
-      return res.status(404).json({ error: "Marker not found" });
-    }
+		if (!marker) {
+			return res.status(404).json({ error: "Marker not found" });
+		}
 
-    if (marker.userId !== requestingUserId.toString()) {
-      return res
-        .status(403)
-        .json({ error: "Not authorized to delete this marker" });
-    }
+		if (marker.userId !== requestingUserId.toString()) {
+			return res.status(403).json({ error: "Not authorized to delete this marker" });
+		}
 
-    await markerCollection.deleteOne({ _id: new ObjectId(id) });
-    res.json({ message: "Marker deleted" });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Failed to delete marker" });
-  }
+		await markerCollection.deleteOne({ _id: new ObjectId(id) });
+		res.json({ message: "Marker deleted" });
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ error: "Failed to delete marker" });
+	}
 });
 
 //used specifically for backend.

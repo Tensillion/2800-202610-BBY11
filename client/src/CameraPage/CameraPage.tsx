@@ -12,13 +12,6 @@ const guideSteps = [
 		message: "This is where you can take a photo of the plant you want to identify.",
 	},
 	{
-		x: "70%",
-		y: "70vh",
-		title: "Use Your Photos!",
-		message:
-			"Open your photo library to view and manage the photos you've taken. You can use these photos to identify plants and add them to your collection!",
-	},
-	{
 		x: "50%",
 		y: "50%",
 		title: "View Your Results!",

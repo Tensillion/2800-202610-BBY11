@@ -62,7 +62,7 @@ function CataloguePage() {
   };
 
   return (
-    <>
+    <section id="catalogue-page">
       <PopUp
         title="Welcome to the Catalogue Page!"
         message="View all the plants you've identified and collected here."
@@ -78,7 +78,7 @@ function CataloguePage() {
       </div>
       <FoodList foods={foods} />
       <Footer />
-    </>
+    </section>
   );
 }
 export default CataloguePage;
