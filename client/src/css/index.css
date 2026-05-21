@@ -15,6 +15,10 @@
 
 	--black-text: #1c1c1c;
 	--white-text: #f8f5f0;
+	--text: var(--black-text);
+	--bg: var(--darker-cream);
+	--nav-active: #111111;
+	--nav-inactive: #9ca3af;
 
 	--radius: 28px;
 
@@ -25,9 +29,9 @@
 
 	font: 18px/145% var(--cherryBomb);
 	letter-spacing: 0.18px;
-	color-scheme: light dark;
+	color-scheme: light;
 	color: var(--text);
-	background: var(--darker-cream);
+	background: var(--bg);
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
@@ -40,6 +44,29 @@
 	}
 
 	overflow-x: hidden; /* Hide horizontal scrollbar */
+}
+
+:root[data-theme="dark"] {
+	--cream: #242424;
+	--dark-cream: #333333;
+	--darker-cream: #181818;
+
+	--dark-green: #9fca8f;
+	--forest: #b7ddb0;
+	--moss: #7fa86e;
+
+	--light-bark: #f4dfc4;
+	--bark: #f8f5f0;
+	--dark-bark: #fff8ec;
+
+	--black-text: #f8f5f0;
+	--white-text: #181818;
+	--text: #f8f5f0;
+	--bg: #181818;
+	--nav-active: #f8f5f0;
+	--nav-inactive: #8f8f8f;
+
+	color-scheme: dark;
 }
 
 #root {
@@ -56,7 +83,7 @@
 	box-sizing: border-box;
 
 	top: 0;
-	background: var(--darker-cream);
+	background: var(--bg);
 }
 
 #map {
@@ -69,12 +96,15 @@
 
 body {
 	margin: 0;
+	background: var(--bg);
+	color: var(--text);
 }
 
 h1 {
 	font-size: 56px;
 	letter-spacing: -1.68px;
 	margin: 32px 0;
+	color: var(--forest);
 	@media (max-width: 1024px) {
 		font-size: 36px;
 		margin: 20px 0;
@@ -86,9 +116,14 @@ h2 {
 	line-height: 118%;
 	letter-spacing: -0.24px;
 	margin: 0 0 8px;
+	color: var(--forest);
 	@media (max-width: 1024px) {
 		font-size: 20px;
 	}
+}
+
+h3 {
+	color: var(--forest);
 }
 
 p {

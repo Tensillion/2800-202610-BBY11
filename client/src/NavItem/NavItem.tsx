@@ -19,7 +19,7 @@ function NavItem(props: {
 	const location = useLocation();
 	const isActive =
 		location.pathname === props.link || location.pathname.startsWith(`${props.link}/`);
-	const resolvedColor = isActive ? '#111111' : '#9ca3af';
+	const resolvedColor = isActive ? "var(--nav-active)" : "var(--nav-inactive)";
 
 	return (
 		<div className="nav-item-container">

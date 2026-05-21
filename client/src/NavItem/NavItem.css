@@ -40,9 +40,9 @@
 }
 
 .nav-item-label.active {
-	color: #111111;
+	color: var(--nav-active);
 }
 
 .nav-item-label.inactive {
-	color: #9ca3af;
+	color: var(--nav-inactive);
 }
