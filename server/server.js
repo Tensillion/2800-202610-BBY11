@@ -354,6 +354,17 @@ app.post("/users/addPlant", authRequired, async (req, res) => {
 //---------------Pet Endpoints------------------
 
 const petTypes = ["Acorn", "Mushroom", "Berry"];
+const petTitles = [
+	"Captain",
+	"Super",
+	"The Great",
+	"The Goat",
+	"Master",
+	"Forest Guardian",
+	"Ancient",
+	"Massive",
+	"Tiny Tyrant",
+];
 
 app.get("/petAPI/hasPet", authRequired, async (req, res) => {
 	const pet = await petCollection.findOne({
@@ -479,11 +490,76 @@ app.post("/petAPI/updatePet", authRequired, async (req, res) => {
 	});
 });
 
+
+app.post("/petAPI/easterEgg", authRequired, async (req, res) => {
+	try {
+		const pet = await petCollection.findOne({
+			ownerId: req.user.userId,
+		});
+
+		if (!pet) {
+			return res.status(404).json({
+				error: "Pet not found",
+			});
+		}
+
+		if (pet.easterEggFound) {
+			return res.status(400).json({
+				error: "You already found this secret!",
+			});
+		}
+
+		const randomTitle =
+			petTitles[Math.floor(Math.random() * petTitles.length)];
+
+		const updatedName = `${randomTitle} ${pet.name}`;
+
+		await petCollection.updateOne(
+			{ _id: pet._id },
+			{
+				$set: {
+					name: updatedName,
+					easterEggFound: true,
+				},
+			}
+		);
+
+		res.json({
+			message: "Secret discovered!",
+			newName: updatedName,
+		});
+
+	} catch (err) {
+		console.error(err);
+
+		res.status(500).json({
+			error: "Failed to activate easter egg",
+		});
+	}
+});
+
+
 //---------------- Markers Endpoints ----------------
+
 app.get("/markers", async (req, res) => {
 	try {
 		const markers = await markerCollection.find({}).toArray();
-		res.json(markers);
+		const enriched = await Promise.all(
+			markers.map(async (m) => {
+				if (m.plantName || !m.plantId) return m;
+				try {
+					const plant = await plantCollection.findOne(
+						{ _id: new ObjectId(m.plantId) },
+						{ projection: { common_names: 1 } }
+					);
+					return { ...m, plantName: plant?.common_names?.[0] ?? null };
+				} catch {
+					return m;
+				}
+			})
+		);
+
+		res.json(enriched);
 	} catch (err) {
 		console.error(err);
 		res.status(500).json({ error: "Failed to load markers" });
