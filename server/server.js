@@ -9,6 +9,8 @@ const axios = require("axios");
 const express = require("express");
 const rateLimit = require("express-rate-limit");
 const Joi = require("joi");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const { MongoClient, ObjectId } = require("mongodb");
 
@@ -243,6 +245,83 @@ app.post("/users/getUserData", authRequired, async (req, res) => {
 	});
 });
 
+app.patch("/users/profile/username", authRequired, async (req, res) => {
+	const schema = Joi.object({
+		username: Joi.string().alphanum().min(3).max(30).required(),
+	});
+	const { error, value } = schema.validate(req.body);
+
+	if (error) {
+		return res.status(400).json({ error: error.details[0].message });
+	}
+
+	const result = await userCollection.findOneAndUpdate(
+		{ _id: new ObjectId(req.user.userId) },
+		{ $set: { username: value.username } },
+		{ returnDocument: "after", projection: { password: 0 } }
+	);
+
+	if (!result) {
+		return res.status(404).json({ error: "User not found" });
+	}
+
+	const token = jwt.sign(
+		{
+			userId: result._id.toString(),
+			username: result.username,
+			email: result.email,
+			userType: result.user_type,
+			plants: result.plants ?? [],
+		},
+		JWT_SECRET,
+		{ expiresIn: "7d" }
+	);
+
+	return res.json({
+		message: "Username updated",
+		token,
+		user: {
+			username: result.username,
+			email: result.email,
+			userType: result.user_type,
+		},
+	});
+});
+
+app.patch("/users/profile/password", authRequired, async (req, res) => {
+	const schema = Joi.object({
+		currentPassword: Joi.string().min(6).required(),
+		newPassword: Joi.string().min(6).required(),
+	});
+	const { error, value } = schema.validate(req.body);
+
+	if (error) {
+		return res.status(400).json({ error: error.details[0].message });
+	}
+
+	const user = await userCollection.findOne({ _id: new ObjectId(req.user.userId) });
+
+	if (!user) {
+		return res.status(404).json({ error: "User not found" });
+	}
+
+	const isMatch = await bcrypt.compare(value.currentPassword, user.password);
+
+	if (!isMatch) {
+		return res.status(401).json({ error: "Current password is incorrect" });
+	}
+
+	const salt = await bcrypt.genSalt(12);
+	const hashedPassword = await bcrypt.hash(value.newPassword, salt);
+
+	await userCollection.updateOne(
+		{ _id: new ObjectId(req.user.userId) },
+		{ $set: { password: hashedPassword } }
+	);
+
+	return res.json({ message: "Password updated" });
+});
+
 app.post("/users/addPlant", authRequired, async (req, res) => {
 	const { scientificNameWithoutAuthor } = req.body;
 
@@ -408,6 +487,16 @@ app.get("/markers", async (req, res) => {
 	} catch (err) {
 		console.error(err);
 		res.status(500).json({ error: "Failed to load markers" });
+	}
+});
+
+app.get("/markers/mine", authRequired, async (req, res) => {
+	try {
+		const markers = await markerCollection.find({ userId: req.user.userId.toString() }).toArray();
+		res.json(markers);
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ error: "Failed to load your markers" });
 	}
 });
 

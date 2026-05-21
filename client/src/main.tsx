@@ -21,6 +21,9 @@ import ProtectedRoute from "./components/ProtectedRoute.tsx";
 
 import { AuthProvider } from "./context/AuthProvider.tsx";
 
+document.documentElement.dataset.theme =
+	localStorage.getItem("profileDarkMode") === "true" ? "dark" : "light";
+
 createRoot(document.getElementById("root")!).render(
 	<StrictMode>
 		<AuthProvider>
