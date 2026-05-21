@@ -1,14 +1,86 @@
-@import "tailwindcss";
-
 #catalogue-page {
-  background-image:
-    linear-gradient(var(--page-bg-overlay), var(--page-bg-overlay)),
-    url("/assets/bg/catalogue-bg.JPG") !important;
-  background-size: cover, cover;
-  background-position: center, center;
-  background-repeat: no-repeat, no-repeat;
+	background-image:
+		linear-gradient(var(--page-bg-overlay), var(--page-bg-overlay)),
+		url("/assets/bg/catalogue-bg.jpg") !important;
+	background-size: cover, cover;
+	background-position: center, center;
+	background-repeat: no-repeat, no-repeat;
+	background-color: var(--cream);
 
-  position: fixed;
-  inset: 0;
-  overflow: hidden;
+	height: 100dvh;
+	width: 100%;
+	padding: 20px 14px 96px;
+	box-sizing: border-box;
+	overflow: hidden;
+	color: var(--text);
+	display: flex;
+}
+
+.catalogue-content {
+	width: min(1100px, 100%);
+	margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+
+	flex: 1;
+	min-height: 0;
+
+	gap: 18px;
+}
+
+.catalogue-search {
+	width: 100%;
+}
+
+.catalogue-list {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	width: 100%;
+	flex: 1;
+	min-height: 0;
+	overflow-y: auto;
+}
+
+.catalogue-card {
+	background: var(--cream);
+	border: 1px solid var(--dark-cream);
+	border-radius: calc(var(--radius) - 8px);
+	padding: 16px;
+	box-shadow: 0 6px 16px rgba(34, 27, 14, 0.08);
+	cursor: pointer;
+
+	text-align: left;
+
+	transition:
+		transform 0.18s ease,
+		box-shadow 0.18s ease,
+		border-color 0.18s ease;
+}
+
+.catalogue-card:hover {
+	border-color: var(--moss);
+	box-shadow: 0 12px 24px rgba(45, 74, 45, 0.14);
+	transform: translateY(-2px);
+}
+
+.catalogue-card h3 {
+	margin: 0 0 10px;
+	color: var(--forest);
+	background: var(--dark-cream);
+	padding: 4px 10px;
+	border-radius: var(--radius);
+	box-shadow: 0 2px 4px rgba(34, 27, 14, 0.1);
+	font-size: 1.1rem;
+}
+
+.catalogue-card p {
+	margin: 6px 0;
+	color: var(--text);
+	line-height: 1.4;
+}
+
+.catalogue-card b {
+	color: var(--bark);
+	font-weight: 600;
 }

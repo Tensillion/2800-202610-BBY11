@@ -1,1 +1,64 @@
-@import "tailwindcss";
+.search-container {
+	position: relative;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+
+.search-bar {
+	margin: 1.5rem auto 0;
+	margin-inline: auto;
+	width: min(720px, 100%);
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	padding: 0.5rem;
+	background-color: var(--dark-cream);
+	border-radius: var(--radius);
+	border: 1px solid var(--dark-cream);
+	box-shadow: 0 8px 18px rgba(45, 74, 45, 0.08);
+	gap: 8px;
+}
+
+.search-input {
+	flex: 1;
+	min-width: 0;
+	padding: 0.6rem 0.9rem;
+	border: 1px solid var(--dark-cream);
+	border-radius: 999px;
+	font-size: 1rem;
+	color: var(--text);
+	background-color: var(--cream);
+	outline: none;
+}
+
+.search-button {
+	border-radius: 999px;
+	padding: 0.55rem 1.1rem;
+	border: none;
+	background-color: var(--forest);
+	cursor: pointer;
+	transition:
+		transform 0.12s ease,
+		box-shadow 0.12s ease,
+		background-color 0.12s ease;
+}
+
+.search-icon {
+	aspect-ratio: 1 / 1;
+	height: 1rem;
+	filter: brightness(0) invert(1);
+}
+
+.search-bar:focus-within {
+	border-color: var(--moss);
+	box-shadow: 0 0 0 3px rgba(90, 122, 74, 0.22);
+}
+
+.search-button:hover {
+	background-color: var(--moss);
+	box-shadow: 0 6px 14px rgba(45, 74, 45, 0.18);
+	transform: translateY(-1px);
+}
