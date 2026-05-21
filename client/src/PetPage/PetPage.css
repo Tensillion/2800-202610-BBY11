@@ -10,10 +10,15 @@
 	 * and tiles horizontally on wide screens via repeat-x.
 	 * center keeps the rock centered when tiling.
 	 */
-	background-image: url("/assets/bg/pet-bg.png");
-	background-repeat: repeat-x;
-	background-size: auto 100%;
-	background-position: center top;
+	background-image:
+		linear-gradient(var(--page-bg-overlay), var(--page-bg-overlay)), url("/assets/bg/pet-bg.png");
+	background-repeat: no-repeat, repeat-x;
+	background-size:
+		cover,
+		auto 100%;
+	background-position:
+		center,
+		center top;
 	background-color: var(--cream);
 }
 

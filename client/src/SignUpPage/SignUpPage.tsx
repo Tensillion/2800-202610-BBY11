@@ -42,7 +42,7 @@ function SignUpPage() {
 	}
 
 	return (
-		<>
+		<section id="signup-page">
 			<div className="authentication-header">
 				<img className="logo" src="../public/Logo.png" alt="Logo" />
 				<Link className="nav-link" to="/login">
@@ -92,7 +92,7 @@ function SignUpPage() {
 					<a href="/privacy">Privacy Policy</a>.
 				</p>
 			</div>
-		</>
+		</section>
 	);
 }
 export default SignUpPage;

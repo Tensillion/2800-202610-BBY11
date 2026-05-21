@@ -1,5 +1,6 @@
 import PopUp from "../PopUp/PopUp";
 import AskAIPopUp from "./AskAIPopUp/AskAIPopUp";
+import "./CollectionPage.css";
 
 const guideSteps = [
 	{
@@ -21,7 +22,7 @@ function CollectionPage() {
 	};
 
 	return (
-		<>
+		<section id="collection-page">
 			<PopUp
 				title="Welcome to the Catalogue Page!"
 				message="View all the plants you've identified and collected here."
@@ -33,7 +34,7 @@ function CollectionPage() {
 			{/* Example usage of AskAIPopUp with demo plant info.
 			Please put this into the actual plant item page where you can pass the DB plant info. */}
 			<AskAIPopUp plantInfo={demoPlantInfo} />
-		</>
+		</section>
 	);
 }
 export default CollectionPage;
