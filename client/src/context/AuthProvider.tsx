@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import type { User } from "./AuthContext";
 import { AuthContext } from "./AuthContext";
 
-const BACKEND_URL = "http://localhost:3000";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
 
 /**
  * Provider for managing authentication state

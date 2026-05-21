@@ -12,7 +12,7 @@ import markerShadow from "leaflet/dist/images/marker-shadow.png";
 
 import Footer from "../Footer/Footer";
 
-const BACKEND_URL = "http://localhost:3000";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
 
 type PlantMarker = Marker & {
 	dbId?: string;
@@ -97,8 +97,8 @@ function MapPage() {
 	const [pendingLatLng, setPendingLatLng] = useState<LatLng | null>(null);
 	const [filterOpen, setFilterOpen] = useState(false);
 
-	const [plantName,     setPlantName]     = useState("");
-	const [suggestions,   setSuggestions]   = useState<Plant[]>([]);
+	const [plantName, setPlantName] = useState("");
+	const [suggestions, setSuggestions] = useState<Plant[]>([]);
 	const [selectedPlant, setSelectedPlant] = useState<Plant | null>(null);
 	const [showDropdown, setShowDropdown] = useState(false);
 
@@ -202,7 +202,7 @@ function MapPage() {
 			marker.dbId = savedMarker._id;
 			marker.edible = savedMarker.edible;
 			marker.markerUserId = savedMarker.userId;
-			marker.plantName    = savedMarker.plantName;
+			marker.plantName = savedMarker.plantName;
 			markersRef.current.push(marker);
 			addPopup(marker, savedMarker._id, savedMarker.userId, savedMarker.plantName);
 
@@ -227,36 +227,52 @@ function MapPage() {
 
 		const edibleStatus = (marker as PlantMarker).edible;
 		const edibleBadge =
-			edibleStatus === true
-				? `<span class="popup-badge popup-badge--edible">Edible</span>`
-				: edibleStatus === false
-				? `<span class="popup-badge popup-badge--not-edible">Not Edible</span>`
-				: "";
+			edibleStatus === true ? `<span class="popup-badge popup-badge--edible">Edible</span>`
+			: edibleStatus === false ?
+				`<span class="popup-badge popup-badge--not-edible">Not Edible</span>`
+			:	"";
 
-		marker.bindPopup(`
+		marker.bindPopup(
+			`
 			<div class="marker-popup">
-				${plantDisplayName
-					? `<div class="popup-plant-name">
+				${
+					plantDisplayName ?
+						`<div class="popup-plant-name">
 							${plantDisplayName}
 							${edibleBadge}
 						</div>`
-					: ""}
+					:	""
+				}
 				<div class="popup-actions">
 					<button class="popup-btn popup-btn--open" id="open-btn-${markerId}">Open Item</button>
-					${isOwner
-						? `<button class="popup-btn popup-btn--delete" id="delete-btn-${markerId}">Delete</button>`
-						: ""}
+					${
+						isOwner ?
+							`<button class="popup-btn popup-btn--delete" id="delete-btn-${markerId}">Delete</button>`
+						:	""
+					}
 				</div>
 			</div>
-		`, { closeButton: false, autoClose: false });
+		`,
+			{ closeButton: false, autoClose: false }
+		);
 
 		// Per-marker timer so mouse can travel from marker → popup without it closing
 		let closeTimer: ReturnType<typeof setTimeout> | null = null;
-		const scheduleClose = () => { closeTimer = setTimeout(() => marker.closePopup(), 200); };
-		const cancelClose   = () => { if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; } };
+		const scheduleClose = () => {
+			closeTimer = setTimeout(() => marker.closePopup(), 200);
+		};
+		const cancelClose = () => {
+			if (closeTimer) {
+				clearTimeout(closeTimer);
+				closeTimer = null;
+			}
+		};
 
-		marker.on("mouseover", () => { cancelClose(); marker.openPopup(); });
-		marker.on("mouseout",  scheduleClose);
+		marker.on("mouseover", () => {
+			cancelClose();
+			marker.openPopup();
+		});
+		marker.on("mouseout", scheduleClose);
 
 		marker.on("popupopen", () => {
 			// Keep popup open while hovering over it
@@ -266,7 +282,7 @@ function MapPage() {
 				popupEl.addEventListener("mouseleave", scheduleClose);
 			}
 
-			const openBtn   = document.getElementById(`open-btn-${markerId}`);
+			const openBtn = document.getElementById(`open-btn-${markerId}`);
 			const deleteBtn = document.getElementById(`delete-btn-${markerId}`);
 
 			openBtn?.addEventListener("click", () => {
@@ -301,7 +317,7 @@ function MapPage() {
 			doubleClickZoom: false,
 			maxBounds: vancouverBounds,
 			maxBoundsViscosity: 1.0,
-			minZoom:            12,
+			minZoom: 12,
 		}).setView([49.2827, -123.1207], 14);
 
 		mapRef.current = map;
@@ -317,47 +333,48 @@ function MapPage() {
 			popupAnchor: [0, -20],
 		});
 
-		const easterEggMarker = L.marker(
-			[49.2052, -123.2634],
-			{
-				icon: easterEggIcon,
-			}
-		).addTo(map);
+		const easterEggMarker = L.marker([49.2052, -123.2634], {
+			icon: easterEggIcon,
+		}).addTo(map);
 
 		easterEggMarker.on("click", async () => {
 			try {
-				const response = await fetch(
-					`${BACKEND_URL}/petAPI/easterEgg`,
-					{
-						method: "POST",
-						headers: {
-							Authorization: `Bearer ${localStorage.getItem("token")}`,
-							"Content-Type": "application/json",
-						},
-					}
-				);
+				const response = await fetch(`${BACKEND_URL}/petAPI/easterEgg`, {
+					method: "POST",
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem("token")}`,
+						"Content-Type": "application/json",
+					},
+				});
 
 				const data = await response.json();
 
 				if (!response.ok) {
-					easterEggMarker.bindPopup(`
+					easterEggMarker
+						.bindPopup(
+							`
 						<div class="marker-popup">
 							<h3>Secret Already Found</h3>
 							<p>${data.error}</p>
 						</div>
-					`).openPopup();
+					`
+						)
+						.openPopup();
 
 					return;
 				}
 
-				easterEggMarker.bindPopup(`
+				easterEggMarker
+					.bindPopup(
+						`
 					<div class="marker-popup">
 						<h3>Hidden Discovery!</h3>
 						<p>Your pet earned a legendary title</p>
 						<p>Checkout your pet's new title in the pet page</p>
 					</div>
-				`).openPopup();
-
+				`
+					)
+					.openPopup();
 			} catch (err) {
 				console.error(err);
 			}
@@ -368,29 +385,32 @@ function MapPage() {
 				if (!res.ok) throw new Error(`HTTP error: ${res.status}`);
 				return res.json();
 			})
-			.then((savedMarkers: {
-				_id: string;
-				lat: number;
-				lng: number;
-				userId: string;
-				edible?: boolean | null;
-				plantName?: string;
-			}[]) => {
-				if (cancelled) return;
-				savedMarkers.forEach(savedMarker => {
-					const marker = L.marker(
-						[savedMarker.lat, savedMarker.lng],
-						{ icon: customIcon }
-					).addTo(map) as PlantMarker;
+			.then(
+				(
+					savedMarkers: {
+						_id: string;
+						lat: number;
+						lng: number;
+						userId: string;
+						edible?: boolean | null;
+						plantName?: string;
+					}[]
+				) => {
+					if (cancelled) return;
+					savedMarkers.forEach(savedMarker => {
+						const marker = L.marker([savedMarker.lat, savedMarker.lng], { icon: customIcon }).addTo(
+							map
+						) as PlantMarker;
 
-					marker.dbId         = savedMarker._id;
-					marker.edible       = savedMarker.edible;
-					marker.markerUserId = savedMarker.userId;
-					marker.plantName    = savedMarker.plantName;
-					markersRef.current.push(marker);
-					addPopup(marker, savedMarker._id, savedMarker.userId, savedMarker.plantName);
-				});
-			})
+						marker.dbId = savedMarker._id;
+						marker.edible = savedMarker.edible;
+						marker.markerUserId = savedMarker.userId;
+						marker.plantName = savedMarker.plantName;
+						markersRef.current.push(marker);
+						addPopup(marker, savedMarker._id, savedMarker.userId, savedMarker.plantName);
+					});
+				}
+			)
 			.catch(err => console.error("Failed to load markers:", err));
 
 		map.on("dblclick", e => {

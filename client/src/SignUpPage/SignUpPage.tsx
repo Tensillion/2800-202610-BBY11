@@ -4,7 +4,7 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import "../css/auth.css";
 
-const BACKEND_URL = "http://localhost:3000";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
 
 /**
  * Authentication page for users to sign up for a new account
@@ -96,4 +96,3 @@ function SignUpPage() {
 	);
 }
 export default SignUpPage;
-	
