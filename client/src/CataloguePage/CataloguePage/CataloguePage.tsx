@@ -5,6 +5,8 @@ import Search from "../Search";
 import { useEffect, useState } from "react";
 import type { Plant } from "../PlantData";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
+
 const guideSteps = [
 	{
 		x: "50%",
@@ -18,7 +20,7 @@ function CataloguePage() {
 	const [foods, setFoods] = useState<Plant[]>([]);
 	useEffect(() => {
 		async function loadFoods() {
-			const res = await fetch("/api/catalogue");
+			const res = await fetch(`${BACKEND_URL}/api/catalogue`);
 			const data = await res.json();
 			setFoods(data);
 		}
@@ -28,12 +30,12 @@ function CataloguePage() {
 
 	async function handleSearch(query: string) {
 		if (!query.trim()) {
-			const res = await fetch("/api/catalogue");
+			const res = await fetch(`${BACKEND_URL}/api/catalogue`);
 			const data = await res.json();
 			setFoods(data);
 			return;
 		}
-		const res = await fetch(`/plants/search?q=${encodeURIComponent(query)}`);
+		const res = await fetch(`${BACKEND_URL}/plants/search?q=${encodeURIComponent(query)}`);
 		const data = await res.json();
 
 		setFoods(data);

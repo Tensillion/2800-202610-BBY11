@@ -45,10 +45,10 @@ L.Icon.Default.mergeOptions({
 });
 
 const customIcon = L.icon({
-  iconUrl: "/leaf.png",
-  iconSize: [55, 55],
-  iconAnchor: [20, 40],
-  popupAnchor: [0, -40],
+	iconUrl: "/leaf.PNG",
+	iconSize: [55, 55],
+	iconAnchor: [20, 40],
+	popupAnchor: [0, -40],
 });
 
 const guideSteps = [

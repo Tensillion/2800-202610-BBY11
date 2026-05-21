@@ -5,7 +5,7 @@
 	"scripts": {
 		"start": "node server/server.js",
 		"frontend-build": "cd client && npm install && npm run build",
-		"backend-build": "cd server && cnpm install",
+		"backend-build": "cd server && npm install",
 		"build": "npm run frontend-build && npm run backend-build",
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"dev": "concurrently \"npm --prefix server run dev\" \"npm --prefix client run dev\""
