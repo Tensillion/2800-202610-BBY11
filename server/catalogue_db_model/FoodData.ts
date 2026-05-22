@@ -9,7 +9,7 @@ export interface FoodData extends Document {
   parts: string[];
 }
 
-const FoodSchema = new Schema<FoodData>({
+const Plantschema = new Schema<FoodData>({
   warnings: { type: String, required: true },
   scientific_name: { type: String, required: true },
   common_names: { type: [String], required: true },
@@ -18,4 +18,4 @@ const FoodSchema = new Schema<FoodData>({
 });
 
 export default mongoose.models.Food ||
-  mongoose.model<FoodData>("Food", FoodSchema);
+  mongoose.model<FoodData>("Food", Plantschema);
