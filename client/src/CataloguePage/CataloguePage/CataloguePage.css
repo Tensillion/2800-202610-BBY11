@@ -16,6 +16,7 @@
 	display: flex;
 }
 
+/* Everything below was coded with alot of help and inspiration from chatgpt. */
 .catalogue-content {
 	width: min(1100px, 100%);
 	margin: 0 auto;

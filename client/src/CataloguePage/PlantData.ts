@@ -1,3 +1,8 @@
+/**
+ * Defines the type Plant, centralizing the logic to be called in required functions.
+ *
+ * @author Umanga Bajgai
+ */
 export type Plant = {
   _id: string;
   warnings: string;
