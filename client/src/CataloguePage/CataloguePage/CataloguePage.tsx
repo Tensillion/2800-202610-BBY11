@@ -1,7 +1,7 @@
 import PopUp from "../../PopUp/PopUp";
 import "./CataloguePage.css";
 import PlantList from "../PlantList/PlantList";
-import Search from "../Search";
+import Search from "../Search/Search";
 import { useEffect, useState } from "react";
 import type { Plant } from "../PlantData";
 
