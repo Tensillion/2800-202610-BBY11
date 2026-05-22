@@ -4,6 +4,8 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import "../css/auth.css";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
+
 /**
  * Authentication page for users to sign up for a new account
  *
@@ -18,11 +20,15 @@ function SignUpPage() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
+	/**
+	 *
+	 * @param e
+	 */
 	async function handleSubmit(e: SyntheticEvent<HTMLFormElement>) {
 		e.preventDefault();
 
 		//CHANGE URL FOR PRODUCTION
-		const response = await fetch("http://localhost:3000/authentication/signup", {
+		const response = await fetch(`${BACKEND_URL}/authentication/signup`, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({ username, email, password }),
@@ -40,9 +46,9 @@ function SignUpPage() {
 	}
 
 	return (
-		<>
+		<section id="signup-page">
 			<div className="authentication-header">
-				<img className="logo" src="../public/Logo.png" alt="Logo" />
+				<img className="logo" src="/Logo.png" alt="Logo" />
 				<Link className="nav-link" to="/login">
 					<button className="other-page-btn">Log in</button>
 				</Link>
@@ -90,7 +96,7 @@ function SignUpPage() {
 					<a href="/privacy">Privacy Policy</a>.
 				</p>
 			</div>
-		</>
+		</section>
 	);
 }
 export default SignUpPage;

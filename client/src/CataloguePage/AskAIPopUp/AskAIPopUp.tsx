@@ -1,16 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import "./AskAIPopUp.css";
-
-type PlantInfo = {
-	name: string;
-	edible?: boolean;
-	parts?: string[];
-	warnings?: string;
-	sources?: string[];
-};
+import type { Plant } from "../PlantData";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
 
 type AskAIPopUpProps = {
-	plantInfo: PlantInfo;
+	plantInfo: Plant;
 };
 
 const PRESET_QUESTIONS = [
@@ -114,7 +108,7 @@ export default function AskAIPopUp({ plantInfo }: AskAIPopUpProps) {
 
 		try {
 			//Change the URL here
-			const response = await fetch("http://localhost:3000/ask-gemini", {
+			const response = await fetch(`${BACKEND_URL}/ask-gemini`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",

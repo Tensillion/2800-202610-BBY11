@@ -5,22 +5,29 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./css/index.css";
 import Footer from "./Footer/Footer.tsx";
 import LandingPage from "./LandingPage/LandingPage.tsx";
-import CollectionPage from "./CollectionPage/CollectionPage.tsx";
+import CataloguePage from "./CataloguePage/CataloguePage/CataloguePage.tsx";
 import CameraPage from "./CameraPage/CameraPage.tsx";
 import MapPage from "./MapPage/MapPage.tsx";
 import ProfilePage from "./ProfilePage/ProfilePage.tsx";
 import LoginPage from "./LoginPage/LoginPage.tsx";
 import SignUpPage from "./SignUpPage/SignUpPage.tsx";
 import PetPage from "./PetPage/PetPage.tsx";
-import SettingsPage from "./SettingsPage/SettingsPage.tsx";
-import ItemPage from "./ItemPage/ItemPage.tsx";
 import CameraResultPage from "./CameraPage/ResultPage/CameraResultPage.tsx";
-
+import PlantPage from "./PlantPage/PlantPage.tsx";
 import GuestRoute from "./components/GuestRoute.tsx";
 import ProtectedRoute from "./components/ProtectedRoute.tsx";
 
 import { AuthProvider } from "./context/AuthProvider.tsx";
 
+document.documentElement.dataset.theme =
+	localStorage.getItem("profileDarkMode") === "true" ? "dark" : "light";
+
+/**
+ * This is the main entry point of the application. It sets up the routing and renders the appropriate pages based on the URL and authentication state.
+ * - The `AuthProvider` component provides authentication context to the entire app.
+ * - `GuestRoute` and `ProtectedRoute` components are used to restrict access to certain routes based on whether the user is authenticated.
+ * - Each route renders a specific page component, and the `Footer` is included on protected pages for consistent navigation.
+ */
 createRoot(document.getElementById("root")!).render(
 	<StrictMode>
 		<AuthProvider>
@@ -83,28 +90,19 @@ createRoot(document.getElementById("root")!).render(
 						}
 					/>
 					<Route
-						path="/collection"
+						path="/catalogue"
 						element={
 							<ProtectedRoute>
-								<CollectionPage />
+								<CataloguePage />
 								<Footer />
 							</ProtectedRoute>
 						}
 					/>
 					<Route
-						path="/settings"
+						path="/plants/:id"
 						element={
 							<ProtectedRoute>
-								<SettingsPage />
-								<Footer />
-							</ProtectedRoute>
-						}
-					/>
-					<Route
-						path="/item"
-						element={
-							<ProtectedRoute>
-								<ItemPage />
+								<PlantPage />
 								<Footer />
 							</ProtectedRoute>
 						}

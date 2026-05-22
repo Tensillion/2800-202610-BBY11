@@ -1,8 +1,13 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import "./Pet.css";
 import { HeartExplosion } from "./HeartExplosion";
 
-export default function Pet({ imageUrl }: { imageUrl: string }) {
+type PetProps = {
+	imageUrl: string;
+	overlay?: ReactNode;
+};
+
+export default function Pet({ imageUrl, overlay }: PetProps) {
 	const [explosions, setExplosions] = useState<{ id: number; x: number; y: number }[]>([]);
 	const [cooldown, setCooldown] = useState(false);
 	const [nextId, setNextId] = useState(0);
@@ -29,7 +34,8 @@ export default function Pet({ imageUrl }: { imageUrl: string }) {
 	}
 
 	return (
-		<div style={{ position: "relative", display: "inline-block" }}>
+		<div className="pet-figure">
+			{overlay}
 			<img src={imageUrl} id="pet-image" onClick={clickEffect} alt="Pet" />
 
 			{explosions.map(ex => (

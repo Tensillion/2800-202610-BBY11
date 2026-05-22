@@ -8,13 +8,18 @@
  * height is viewport-relative so the pet scales naturally with screen size.
  * clamp(min, preferred, max) keeps it from being too small or too large.
  */
+.pet-figure {
+	position: relative;
+	display: inline-block;
+	--pet-size: clamp(120px, 26vh, 240px);
+}
+
 #pet-image {
 	display: block;
-	height: clamp(120px, 26vh, 240px);
+	height: var(--pet-size);
 	width: auto;
 
 	/* Prevents accidental drag on desktop */
-	-webkit-user-drag: none;
 	-webkit-user-select: none;
 	user-select: none;
 	pointer-events: auto;

@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import type { User } from "./AuthContext";
 import { AuthContext } from "./AuthContext";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
+
 /**
  * Provider for managing authentication state
  *	Generated from Copilot, modified by Tyson Nguyen
@@ -13,6 +15,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const [user, setUser] = useState<User | null>(null);
 	const [loading, setLoading] = useState(true);
 
+	// On initial load, validate the token and fetch user information if valid
 	useEffect(() => {
 		async function validate() {
 			if (!token) {
@@ -22,7 +25,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 			try {
 				//CHANGE URL FOR PRODUCTION
-				const res = await fetch("http://localhost:3000/authentication/status", {
+				const res = await fetch(`${BACKEND_URL}/authentication/status`, {
 					headers: { Authorization: `Bearer ${token}` },
 				});
 
@@ -46,13 +49,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 		validate();
 	}, [token]);
 
+	/**
+	 * Logs the user in and sets the authentication token.
+	 *
+	 * @param nextToken the new token to set in localStorage and state
+	 */
 	function login(nextToken: string) {
 		localStorage.setItem("token", nextToken);
 		setToken(nextToken);
 	}
 
+	/**
+	 * Removes the authentication token and clears user state to log the user out.
+	 * Also clears sessionStorage to remove any session-specific data.
+	 */
 	function logout() {
 		localStorage.removeItem("token");
+		sessionStorage.clear();
 		setToken(null);
 		setUser(null);
 	}

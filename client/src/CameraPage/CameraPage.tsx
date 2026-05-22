@@ -1,5 +1,5 @@
 import Webcam from "react-webcam";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./CameraPage.css";
 import PopUp from "../PopUp/PopUp";
@@ -10,13 +10,6 @@ const guideSteps = [
 		y: "70vh",
 		title: "Take a Photo!",
 		message: "This is where you can take a photo of the plant you want to identify.",
-	},
-	{
-		x: "70%",
-		y: "70vh",
-		title: "Use Your Photos!",
-		message:
-			"Open your photo library to view and manage the photos you've taken. You can use these photos to identify plants and add them to your collection!",
 	},
 	{
 		x: "50%",
@@ -59,6 +52,11 @@ function CameraPage() {
 			state: { imageBlob: blob },
 		});
 	};
+
+	useEffect(() => {
+		const cached = sessionStorage.getItem("plantIdentificationResult");
+		if (cached) navigate("/camera/result");
+	}, [navigate]);
 
 	return (
 		<>

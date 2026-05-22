@@ -8,12 +8,13 @@
 
 	justify-self: center;
 
-	position: absolute;
+	position: fixed;
 
 	background: var(--cream);
 	padding-top: clamp(8px, 1vw, 12px);
 
 	bottom: 0;
+	left: 0;
 
 	width: 100%;
 	height: auto;

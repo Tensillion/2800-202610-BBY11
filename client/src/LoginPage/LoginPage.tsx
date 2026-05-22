@@ -4,6 +4,8 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import "../css/auth.css";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
+
 /**
  * Authentication page for users to log in to their account
  *
@@ -17,11 +19,17 @@ function LoginPage() {
 	const { login } = useContext(AuthContext);
 
 	const navigate = useNavigate();
+
+	/**
+	 * Handles the form submission for logging in. It sends a POST request to the backend
+	 *
+	 * @param e the form submission event
+	 */
 	async function handleSubmit(e: SyntheticEvent<HTMLFormElement>) {
 		e.preventDefault();
 
 		//CHANGE URL FOR PRODUCTION
-		const response = await fetch("http://localhost:3000/authentication/login", {
+		const response = await fetch(`${BACKEND_URL}/authentication/login`, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({ email, password }),
@@ -39,9 +47,9 @@ function LoginPage() {
 	}
 
 	return (
-		<>
+		<section id="login-page">
 			<div className="authentication-header">
-				<img className="logo" src="../public/Logo.png" alt="Logo" />
+				<img className="logo" src="/Logo.png" alt="Logo" />
 				<Link className="nav-link" to="/signup">
 					<button className="other-page-btn">Sign up</button>
 				</Link>
@@ -73,7 +81,7 @@ function LoginPage() {
 					<a href="/resetPassword">Forgot Password? </a>.
 				</p>
 			</div>
-		</>
+		</section>
 	);
 }
 export default LoginPage;
