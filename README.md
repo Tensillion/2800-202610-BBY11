@@ -1,16 +1,36 @@
-# WHAT IS FORAGE FRIENDS
+<p align="center">
+  <img src="https://i.postimg.cc/zvd6Z54L/Logo.png" width="180">
+</p>
 
-Forage Friends is an **_mobile-focused_** web application for the citizens of the city of Vancouver, for help foraging food local to Vancouver!
+<p align="center">
+  Forage Friends is a <strong><em>mobile‑focused</em></strong> web application built for the citizens of Vancouver to help them forage local plants safely and confidently.
+</p>
 
-Discover native plants around Vancouver and identify them with a simple snapshot!
+<br/>
 
-Build a relationship with your forage pet! Forage more to level it up!
+<p align="center"><strong>Discover native plants around Vancouver and identify them with a simple snapshot.</strong></p>
 
-View a catalogue of plants to find the information you need!
+<p align="center">
+  <img src="https://i.postimg.cc/QtymDbj0/landing-page-image1.png" width="220">
+</p>
 
-Share your finds with our map to and create new Forage Friends!
+<br/>
 
-# WHO WE ARE
+<p align="center"><strong>Build a relationship with your forage pet. Forage more to level it up.</strong></p>
+
+<p align="center">
+  <img src="https://i.postimg.cc/mD5j4wTS/landing-page-image3.png" width="220">
+</p>
+
+<br/>
+
+<p align="center"><strong>Browse a catalogue of plants, learn what’s edible, and share your discoveries with others.</strong></p>
+
+<p align="center">
+  <img src="https://i.postimg.cc/4dSPG5X8/landing-page-image2.png" width="220">
+</p>
+
+# Who ***We*** Are
 
 - Angelica: Art Designer, Background + Pet Art
 - Arjun: Game Systems Designer
@@ -18,26 +38,79 @@ Share your finds with our map to and create new Forage Friends!
 - Tyson: UI/UX Designer + Database Developer
 - Umanga: Team Coordinator
 
-# OUR TECH STACK
+<br/>
+
+# Our Tech Stack
 
 We're using the MERN-stack
 
-Front-End: React, TypeScript, React Router, CSS, HTML
-Back-End: Node.js, Express.js
-Database: MongoDB, Mongoose
-Development Tools: Git, GitHub, VS Code, Node Package Manager (npm)
-Deployment/Hosting: Render, Vercel
-Collaboration/Project Management: Discord, Figma, Trello
+- **Front-End**: React, TypeScript, React Router, CSS, HTML
+- **Back-End**: Node.js, Express.js
+- **Database**: MongoDB, Mongoose
+- **Development** Tools: Git, GitHub, VS Code, Node Package Manager (npm)
+- **Deployment/Hosting**: Render, Vercel
+- **Collaboration/Project Management**: Discord, Figma, Trello
 
-# HOW TO USE OUR APPLICATION.
+<br/>
 
-You run npm i in the root directory,
-then go into the server directory and run npm i,
-and then go back into root, and into the client directory and run npm i.
+# Project Structure
 
-You can run npm run dev from root to view!
+Curated overview of the key folders and entry points:
 
-# Attributes
+```
+package.json               # Root metadata and scripts
+client/                    # Vite + React + TypeScript front-end
+  public/assets/           # App images (backgrounds, pets, etc.)
+  src/main.tsx             # App entry point
+  src/components/          # Shared UI and routing helpers
+  src/context/             # Auth context and provider
+  src/css/                 # Global styles
+  src/LandingPage/         # Landing page UI
+  src/MapPage/             # Map UI
+  src/PlantPage/           # Plant details UI
+  src/PetPage/             # Forage pet UI and onboarding
+  src/CameraPage/          # Camera and results UI
+  src/CataloguePage/       # Catalogue UI, search, and data helpers
+  src/PopUp/               # Reusable modal and guide popups
+server/                    # Node/Express back-end
+  server.js                # Server entry point
+  authentication/          # Login/signup routes, controllers, services
+  gemini/                  # Foraging assistant routes and services
+  catalogue_db_model/      # Shared data types for catalogue content
+  Middleware/              # Auth and route guards
+  uploads/                 # Uploaded assets storage
+```
+
+<br/>
+
+# How to run our app locally
+
+To use locally follow these steps:
+
+1. Install git on your system
+2. Clone the respository on to your own system.
+3. In both the client and server directories, create an ENV file following both the sample.env files format and variable names with your own values
+4. Open your terminal and from the root change your directory into the server folder and run the command ```npm install```, then run ```npm run dev```. Do not close this terminal
+5. Open a new second terminal and change to the client folder and repeat step 3. Do both  ```npm install```, and ```npm run dev```.
+6. Inside the terminal running the client folder click the link ```localhost:5137``` within the terminal and that would start the application
+
+<br/>
+
+# How to use our app
+
+1. Log/Sign up into an account
+2. Adopt your first Plant Pet and give it a name
+3. Scan plants to identify them with the Camera feature
+4. Share and find plant locations with other users with our map
+5. Check out the catalogue page for additional information about plants
+6. Keep on foraging to ensure your plant pet stays happy!
+
+<br/>
+
+# Attributes and AI Use
+
+- Pl@ntNet API for the camera page, the core to identifying plants
+  https://my.plantnet.org/
 
 - Session + MongoDB code from COMP2537 Assignments / Lectures
   https://www.bcit.ca/outlines/20261087580/
@@ -59,3 +132,8 @@ You can run npm run dev from root to view!
 - CataloguePage, Search, and PlantPage css.
   UI elements were styled with heavy help from chatpgt.
   https://chatgpt.com/
+
+# Contact
+
+You can contact us with these emails for any inquries and questions:
+- Tyson Nguyen / Tensillion: nguyentyson03@gmail.com
