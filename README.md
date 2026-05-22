@@ -1,6 +1,6 @@
 # WHAT IS FORAGE FRIENDS
 
-Forage Friends is an **_mobile-focused_** web application for the citizens of the city of Vancouver!
+Forage Friends is an **_mobile-focused_** web application for the citizens of the city of Vancouver, for help foraging food local to Vancouver!
 
 Discover native plants around Vancouver and identify them with a simple snapshot!
 
@@ -22,9 +22,20 @@ Share your finds with our map to and create new Forage Friends!
 
 We're using the MERN-stack
 
-- Front-End: React, Typescript
-- Back-End: Node.js, Express
-- Database: MongoDB
+Front-End: React, TypeScript, React Router, CSS, HTML
+Back-End: Node.js, Express.js
+Database: MongoDB, Mongoose
+Development Tools: Git, GitHub, VS Code, Node Package Manager (npm)
+Deployment/Hosting: Render, Vercel
+Collaboration/Project Management: Discord, Figma, Trello
+
+# HOW TO USE OUR APPLICATION.
+
+You run npm i in the root directory,
+then go into the server directory and run npm i,
+and then go back into root, and into the client directory and run npm i.
+
+You can run npm run dev from root to view!
 
 # Attributes
 

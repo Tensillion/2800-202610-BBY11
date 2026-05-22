@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import type { Plant } from "./PlantData";
+import type { Plant } from "../PlantData";
 
 /**
  * Creates a Plant card based on information from the Plant input.
