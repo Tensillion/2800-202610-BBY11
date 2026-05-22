@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import './PopUp.css';
-import GuidePopUp from './GuidePopUp/GuidePopUp';
+import { useState } from "react";
+import "./PopUp.css";
+import GuidePopUp from "./GuidePopUp/GuidePopUp";
 
 type Step = {
 	x: string | number; // using string to allow for percentage values like "50%"
@@ -22,31 +22,33 @@ type PopUpProps = {
  *
  * @author Tyson Nguyen
  */
-export default function PopUp({
-	title,
-	message,
-	steps = [], // default value ensures safe usage
-}: PopUpProps) {
-	const storageKey = 'popup-dismissed?' + title + message.substring(0, 10); // unique key for this pop-up based on title and message
+export default function PopUp({ title, message, steps = [] }: PopUpProps) {
+	const storageKey = "popup-dismissed?" + title + message.substring(0, 10); // unique key for this pop-up based on title and message
 
 	const [wantTutorial, setWantTutorial] = useState(true);
 
+	/**
+	 * Initializes the pop-up's open state based on sessionStorage. If the user has previously closed this pop-up
+	 */
 	const [isOpen, setIsOpen] = useState(() => {
-		if (typeof window === 'undefined') return true;
-		return sessionStorage.getItem(storageKey) !== 'true';
+		if (typeof window === "undefined") return true;
+		return sessionStorage.getItem(storageKey) !== "true";
 	});
 
+	//Stores the pop up's key into the session storage upon closing the pop up
+	//Then it will show the Tutorial pop ups
 	const handleClose = () => {
 		setIsOpen(false);
-		sessionStorage.setItem(storageKey, 'true');
+		sessionStorage.setItem(storageKey, "true");
 	};
 
+	//This will skip both
 	const handleCloseNoTutorial = () => {
 		setIsOpen(false);
-		sessionStorage.setItem(storageKey, 'true');
+		sessionStorage.setItem(storageKey, "true");
 		sessionStorage.setItem(
-			'popup-dismissed?' + steps[0]?.title + steps[0]?.message.substring(0, 10),
-			'true'
+			"popup-dismissed?" + steps[0]?.title + steps[0]?.message.substring(0, 10),
+			"true"
 		);
 		setWantTutorial(false);
 	};

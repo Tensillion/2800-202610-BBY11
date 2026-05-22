@@ -56,12 +56,12 @@ interface PetUpdatePayload {
  * This page receives the image blob from the camera page,
  * sends it to the backend for plant identification, and displays the result.
  *
- * @author Tyson Nguyen
- *
  * @returns The Result page of the scan
  *
  * @version 1.1 - Added results page designs, and edibility lookup integration with temp JSON DB.
  * @version 1.0 - Initial implementation with plant identification result display.
+ *
+ * @author Tyson Nguyen
  */
 export default function CameraResultPage() {
 	const { token } = useContext(AuthContext);
@@ -71,6 +71,7 @@ export default function CameraResultPage() {
 	const [newResult, setNewResult] = useState(false);
 	const [hasPet, setHasPet] = useState<boolean | null>(null);
 
+	//Memoized function to get authentication headers for API requests
 	const getAuthHeaders = useCallback(
 		() => ({
 			"Content-Type": "application/json",
@@ -84,15 +85,20 @@ export default function CameraResultPage() {
 		const cached = sessionStorage.getItem("plantIdentificationResult");
 		return cached ? (JSON.parse(cached) as PlantIdentificationResult) : null;
 	});
+
+	//Stores the edibility lookup data fetched from the server, keyed by plant name for quick access
 	const [edibilityLookup, setEdibilityLookup] = useState<EdibilityLookup>({});
 
+	//Loading state
 	const [loading, setLoading] = useState(() => {
 		return !sessionStorage.getItem("plantIdentificationResult");
 	});
 
+	//error state for any issues during fetch or processing
 	const [error, setError] = useState<string | null>(null);
 	//END OF STATE DEFINITIONS
 
+	//FUnctions to load user plants, determine reward state, update pet stats, and gain rewards based on plant identification results
 	const loadUserPlants = useCallback(async () => {
 		const response = await fetch(`${BACKEND_URL}/users/getUserData`, {
 			method: "POST",
@@ -107,12 +113,26 @@ export default function CameraResultPage() {
 		return (data?.user?.plants ?? data?.plants ?? []) as string[];
 	}, [getAuthHeaders]);
 
+	/**
+	 * Helper function to extract the identified plant name from the plant identification result.
+	 *
+	 * @param plantResult - The plant identification result.
+	 *
+	 * @returns The identified plant name or null if not found.
+	 */
 	const getIdentifiedPlantName = useCallback(
 		(plantResult: PlantIdentificationResult | null) =>
 			plantResult?.results[0]?.species.scientificNameWithoutAuthor ?? null,
 		[]
 	);
 
+	/**
+	 * Synchronizes the reward state by checking if the identified plant is new to the user's collection.
+	 *
+	 * @param plantResult - The plant identification result to check.
+	 *
+	 * @returns An object containing the identified plant name and whether it is new, or null if no plant was identified.
+	 */
 	const syncRewardState = useCallback(
 		async (plantResult: PlantIdentificationResult | null) => {
 			const identifiedPlantName = getIdentifiedPlantName(plantResult);
@@ -130,6 +150,13 @@ export default function CameraResultPage() {
 		[getIdentifiedPlantName, loadUserPlants]
 	);
 
+	/**
+	 * Updates the pet's stats by sending a request to the backend with the specified updates.
+	 *
+	 * @param updates - An object containing the stats to update (e.g., xp, happiness, food).
+	 *
+	 * @throws Will throw an error if the request fails or the server returns an error response.
+	 */
 	const updatePetStats = useCallback(
 		async (updates: PetUpdatePayload = {}) => {
 			const response = await fetch(`${BACKEND_URL}/petAPI/updatePet`, {
@@ -152,6 +179,17 @@ export default function CameraResultPage() {
 		[getAuthHeaders]
 	);
 
+	/**
+	 * Handles the reward logic after identifying a plant. It checks if the identified plant is new to the user's collection
+	 * and updates the pet's stats accordingly. If the plant is new, it adds the plant to the user's collection and gives a larger reward.
+	 * If the plant has been identified before, it gives a smaller reward. If rewards are not allowed (e.g., user has no pet),
+	 *  it simply resets the new result state.
+	 *
+	 * @param plantResult - The plant identification result to process for rewards.
+	 * @param allowReward - A boolean indicating whether rewards should be processed (default is true). If false, it will skip reward processing and just reset the new result state.
+	 *
+	 * @throws Will throw an error if adding a new plant to the collection or updating pet stats fails.
+	 */
 	const gainReward = useCallback(
 		async (plantResult?: PlantIdentificationResult | null, allowReward = true) => {
 			if (!allowReward) {
@@ -192,6 +230,14 @@ export default function CameraResultPage() {
 		[result, getAuthHeaders, syncRewardState, updatePetStats]
 	);
 
+	/**
+	 * Refreshes the pet status by checking with the backend if the user currently has a pet.
+	 *  This is used to determine whether to allow rewards for plant identification.
+	 *
+	 * @return A boolean indicating whether the user has a pet.
+	 *
+	 * @throws Server errors from trying to check pet statuses failing
+	 */
 	const refreshPetStatus = useCallback(async () => {
 		try {
 			const response = await fetch(`${BACKEND_URL}/petAPI/hasPet`, {
@@ -214,7 +260,11 @@ export default function CameraResultPage() {
 		}
 	}, [getAuthHeaders]);
 
-	//Merge plant identification results with edibility data from server
+	/**
+	 * Helper function to merge the plant identification results with the edibility lookup data.
+	 *
+	 * @returns An array of results that includes both the plant identification data and the corresponding edibility information (if available).
+	 */
 	const mergedResults = useMemo<ResultWithLookup[]>(() => {
 		const scannedResults = result?.results ?? [];
 
@@ -231,12 +281,15 @@ export default function CameraResultPage() {
 				...item,
 				lookupKey: null,
 				edibility: null,
-				_searchCandidates: candidates, // temporary property for server search
+				_searchCandidates: candidates,
 			};
 		});
 	}, [result]);
 
-	//Gets the plant identification result from the backend with Pl@ntNet API
+	/**
+	 * The main effect that handles the plant identification process.
+	 * If a result is already present (e.g., from sessionStorage), it will synchronize the reward state and refresh the pet status.
+	 */
 	useEffect(() => {
 		if (result) {
 			void (async () => {
@@ -267,7 +320,6 @@ export default function CameraResultPage() {
 				const formData = new FormData();
 				formData.append("image", imageBlob);
 
-				//Replace URL with backend endpoint when ready idk what its gonna be but this is for testing
 				const res = await fetch(`${BACKEND_URL}/plantIdentification`, {
 					method: "POST",
 					body: formData,
@@ -303,7 +355,14 @@ export default function CameraResultPage() {
 		return () => controller.abort();
 	}, [imageBlob, navigate, gainReward, refreshPetStatus, result, syncRewardState]);
 
-	//Fetch edibility data from server using plant search endpoint
+	/**
+	 * Effect to load edibility data for the identified plants.
+	 * It collects all candidate names from the identification results and sends a single request to the server to fetch edibility information in bulk.
+	 *
+	 * @returns Updates the edibility lookup state with the fetched data, allowing the results to display edibility information alongside the plant identification data.
+	 *
+	 * @throws Will log an error and set the edibility lookup to an empty object if the fetch fails.
+	 */
 	useEffect(() => {
 		let cancelled = false;
 
@@ -383,7 +442,11 @@ export default function CameraResultPage() {
 		};
 	}, [mergedResults]);
 
-	//Match results with edibility data (already sorted by server)
+	/**
+	 * Formats the final results by merging the plant identification data with the corresponding edibility information from the lookup.
+	 *
+	 * @returns An array of results that includes both the plant identification data and the corresponding edibility information (if available).
+	 */
 	const finalResults = useMemo<ResultWithLookup[]>(() => {
 		return mergedResults.map(item => {
 			const candidates = item._searchCandidates;

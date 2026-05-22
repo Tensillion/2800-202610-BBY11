@@ -6,6 +6,9 @@
  * @param r - Red component (0–255)
  * @param g - Green component (0–255)
  * @param b - Blue component (0–255)
+ *
+ * @author Tyson Nguyen
+ *
  * @returns An array of HSL values (h: 0–359, s: 0–1, l: 0–1)
  */
 function rgbToHsl(r: number, g: number, b: number): [number, number, number] {
@@ -42,6 +45,9 @@ function rgbToHsl(r: number, g: number, b: number): [number, number, number] {
  * @param h - Hue in degrees 0–359
  * @param s - Saturation 0–1
  * @param l - Lightness 0–1
+ *
+ * @author Tyson Nguyen
+ *
  * @returns An array of RGB values (0–255)
  */
 function hslToRgb(h: number, s: number, l: number): [number, number, number] {
@@ -72,9 +78,12 @@ function hslToRgb(h: number, s: number, l: number): [number, number, number] {
  * Recolors a loaded HTMLImageElement to a target hue.
  * Skips near-neutral pixels (black bands, grays) to preserve hat details.
  *
+ * @author Tyson Nguyen
+ *
  * @param img         - The source image element (must be CORS-safe or same-origin)
  * @param targetHue   - Hue in degrees 0–359 to shift colored pixels toward
  * @param satThreshold - Pixels below this saturation are left untouched (default 0.12)
+ *
  * @returns           - A data URL of the recolored image (PNG)
  */
 export function recolorImage(
@@ -94,16 +103,16 @@ export function recolorImage(
 
 	for (let i = 0; i < data.length; i += 4) {
 		const alpha = data[i + 3];
-		if (alpha < 10) continue; // skip fully transparent
+		if (alpha < 10) continue;
 
+		// skip neutrals (black bands, shadows, grays)
 		const [, s, l] = rgbToHsl(data[i], data[i + 1], data[i + 2]);
-		if (s < satThreshold) continue; // skip neutrals (black bands, shadows, grays)
+		if (s < satThreshold) continue;
 
 		const [nr, ng, nb] = hslToRgb(targetHue, s, l);
 		data[i] = nr;
 		data[i + 1] = ng;
 		data[i + 2] = nb;
-		// alpha is preserved untouched
 	}
 
 	ctx.putImageData(imageData, 0, 0);
