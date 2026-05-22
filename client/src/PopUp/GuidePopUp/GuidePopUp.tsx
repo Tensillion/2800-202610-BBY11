@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import './GuidePopUp.css';
+import { useState } from "react";
+import "./GuidePopUp.css";
 
 /**
  * This is a moving component that will have
@@ -7,19 +7,21 @@ import './GuidePopUp.css';
  * this will guide the user through the app and show them how to use it.
  * It will parse the given JSON file and display the text accordingly.
  *
- * @returns
+ * @returns a guide pop-up component that can show the user around the screens and explain how to use the app.
+ *
+ * @author Tyson Nguyen
  */
 export default function GuidePopUp(props: {
 	steps: { x: string | number; y: string | number; title: string; message: string }[];
 }) {
 	const storageKey =
-		'popup-dismissed?' + props.steps[0]?.title + props.steps[0]?.message.substring(0, 10);
+		"popup-dismissed?" + props.steps[0]?.title + props.steps[0]?.message.substring(0, 10);
 
 	const [index, setIndex] = useState(0);
 
 	const [isOpen, setIsOpen] = useState(() => {
-		if (typeof window === 'undefined') return true;
-		return sessionStorage.getItem(storageKey) !== 'true';
+		if (typeof window === "undefined") return true;
+		return sessionStorage.getItem(storageKey) !== "true";
 	});
 
 	const handleNext = () => {
@@ -27,7 +29,7 @@ export default function GuidePopUp(props: {
 			setIndex(index + 1);
 		} else {
 			setIsOpen(false);
-			sessionStorage.setItem(storageKey, 'true');
+			sessionStorage.setItem(storageKey, "true");
 		}
 	};
 

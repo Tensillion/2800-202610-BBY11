@@ -7,6 +7,7 @@ import { AuthContext } from "../context/AuthContext";
  *  otherwise redirects to the pet page
  *
  * @param children The component(s) to render if not authenticated
+ *
  * @returns The children if not authenticated, otherwise a redirect to the pet page
  *
  * @author Tyson Nguyen

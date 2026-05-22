@@ -20,108 +20,114 @@ import ProtectedRoute from "./components/ProtectedRoute.tsx";
 import { AuthProvider } from "./context/AuthProvider.tsx";
 
 document.documentElement.dataset.theme =
-  localStorage.getItem("profileDarkMode") === "true" ? "dark" : "light";
+	localStorage.getItem("profileDarkMode") === "true" ? "dark" : "light";
 
+/**
+ * This is the main entry point of the application. It sets up the routing and renders the appropriate pages based on the URL and authentication state.
+ * - The `AuthProvider` component provides authentication context to the entire app.
+ * - `GuestRoute` and `ProtectedRoute` components are used to restrict access to certain routes based on whether the user is authenticated.
+ * - Each route renders a specific page component, and the `Footer` is included on protected pages for consistent navigation.
+ */
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          {/* Guest-only */}
-          <Route
-            path="/"
-            element={
-              <GuestRoute>
-                <LandingPage />
-              </GuestRoute>
-            }
-          />
+	<StrictMode>
+		<AuthProvider>
+			<BrowserRouter>
+				<Routes>
+					{/* Guest-only */}
+					<Route
+						path="/"
+						element={
+							<GuestRoute>
+								<LandingPage />
+							</GuestRoute>
+						}
+					/>
 
-          <Route
-            path="/signup"
-            element={
-              <GuestRoute>
-                <SignUpPage />
-              </GuestRoute>
-            }
-          />
-          <Route
-            path="/login"
-            element={
-              <GuestRoute>
-                <LoginPage />
-              </GuestRoute>
-            }
-          />
+					<Route
+						path="/signup"
+						element={
+							<GuestRoute>
+								<SignUpPage />
+							</GuestRoute>
+						}
+					/>
+					<Route
+						path="/login"
+						element={
+							<GuestRoute>
+								<LoginPage />
+							</GuestRoute>
+						}
+					/>
 
-          {/* Protected */}
+					{/* Protected */}
 
-          <Route
-            path="/profile"
-            element={
-              <ProtectedRoute>
-                <ProfilePage />
-                <Footer />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/map"
-            element={
-              <ProtectedRoute>
-                <MapPage />
-                <Footer />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/pet"
-            element={
-              <ProtectedRoute>
-                <PetPage />
-                <Footer />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/catalogue"
-            element={
-              <ProtectedRoute>
-                <CataloguePage />
-                <Footer />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/plants/:id"
-            element={
-              <ProtectedRoute>
-                <PlantPage />
-                <Footer />
-              </ProtectedRoute>
-            }
-          />
+					<Route
+						path="/profile"
+						element={
+							<ProtectedRoute>
+								<ProfilePage />
+								<Footer />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path="/map"
+						element={
+							<ProtectedRoute>
+								<MapPage />
+								<Footer />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path="/pet"
+						element={
+							<ProtectedRoute>
+								<PetPage />
+								<Footer />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path="/catalogue"
+						element={
+							<ProtectedRoute>
+								<CataloguePage />
+								<Footer />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path="/plants/:id"
+						element={
+							<ProtectedRoute>
+								<PlantPage />
+								<Footer />
+							</ProtectedRoute>
+						}
+					/>
 
-          <Route
-            path="/camera"
-            element={
-              <ProtectedRoute>
-                <CameraPage />
-                <Footer />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/camera/result"
-            element={
-              <ProtectedRoute>
-                <CameraResultPage />
-                <Footer />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
-  </StrictMode>,
+					<Route
+						path="/camera"
+						element={
+							<ProtectedRoute>
+								<CameraPage />
+								<Footer />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path="/camera/result"
+						element={
+							<ProtectedRoute>
+								<CameraResultPage />
+								<Footer />
+							</ProtectedRoute>
+						}
+					/>
+				</Routes>
+			</BrowserRouter>
+		</AuthProvider>
+	</StrictMode>
 );

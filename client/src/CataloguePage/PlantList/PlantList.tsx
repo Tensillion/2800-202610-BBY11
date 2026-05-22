@@ -1,4 +1,4 @@
-import PlantCard from "../PlantCard";
+import PlantCard from "../PlantCard/PlantCard";
 import type { Plant } from "../PlantData";
 
 /**

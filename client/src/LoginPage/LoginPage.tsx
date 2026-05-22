@@ -19,6 +19,12 @@ function LoginPage() {
 	const { login } = useContext(AuthContext);
 
 	const navigate = useNavigate();
+
+	/**
+	 * Handles the form submission for logging in. It sends a POST request to the backend
+	 *
+	 * @param e the form submission event
+	 */
 	async function handleSubmit(e: SyntheticEvent<HTMLFormElement>) {
 		e.preventDefault();
 
