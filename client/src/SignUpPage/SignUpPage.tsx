@@ -20,6 +20,10 @@ function SignUpPage() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
+	/**
+	 *
+	 * @param e
+	 */
 	async function handleSubmit(e: SyntheticEvent<HTMLFormElement>) {
 		e.preventDefault();
 

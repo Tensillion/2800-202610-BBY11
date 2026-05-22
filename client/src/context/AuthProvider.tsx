@@ -15,6 +15,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const [user, setUser] = useState<User | null>(null);
 	const [loading, setLoading] = useState(true);
 
+	// On initial load, validate the token and fetch user information if valid
 	useEffect(() => {
 		async function validate() {
 			if (!token) {
@@ -48,11 +49,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 		validate();
 	}, [token]);
 
+	/**
+	 * Logs the user in and sets the authentication token.
+	 *
+	 * @param nextToken the new token to set in localStorage and state
+	 */
 	function login(nextToken: string) {
 		localStorage.setItem("token", nextToken);
 		setToken(nextToken);
 	}
 
+	/**
+	 * Removes the authentication token and clears user state to log the user out.
+	 * Also clears sessionStorage to remove any session-specific data.
+	 */
 	function logout() {
 		localStorage.removeItem("token");
 		sessionStorage.clear();
