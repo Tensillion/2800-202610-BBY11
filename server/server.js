@@ -88,11 +88,13 @@ app.get("/api", (req, res) => {
 });
 
 //Plant Data Endpoint
+/*
 app.get("/plantData", async (req, res) => {
   let results = await plantCollection.find({}).toArray();
 
   res.json(results);
 });
+*/
 
 //Plant Search Endpoint, reusable for search bar and plant identification results
 app.post("/plants/search", async (req, res) => {
@@ -273,8 +275,10 @@ const authRequired = require("./Middleware/authMiddleware");
 async function registerAuthenticationRoutes() {
   const { default: signUpRouter } =
     await import("./authentication/signUpRoute.mjs");
+
   const { default: loginRouter } =
     await import("./authentication/loginRoute.mjs");
+
   app.use(signUpRouter);
   app.use(loginRouter);
 }
