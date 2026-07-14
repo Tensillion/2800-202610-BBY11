@@ -49,6 +49,13 @@ export default function ProfilePage() {
 	const [formMessage, setFormMessage] = useState("");
 	const [isSaving, setIsSaving] = useState(false);
 	const displayName = user?.username ?? "User";
+	const [tutorialsEnabled, setTutorialsEnabled] = useState(
+    () => localStorage.getItem("tutorialsEnabled") !== "false"
+);
+
+	useEffect(() => {
+    	localStorage.setItem("tutorialsEnabled", String(tutorialsEnabled));
+	}, [tutorialsEnabled]);
 
 	useEffect(() => {
 		localStorage.setItem("profileDarkMode", String(darkMode));
@@ -217,6 +224,21 @@ export default function ProfilePage() {
 								<span />
 							</button>
 						</div>
+
+						<div className={styles.settingRow}>
+							<span>Show Tutorial Popups</span>
+							<button
+								className={styles.toggle}
+								type="button"
+								role="switch"
+								aria-checked={tutorialsEnabled}
+								aria-label="Show tutorial popups"
+								onClick={() => setTutorialsEnabled(current => !current)}
+							>
+								<span />
+							</button>
+						</div>
+
 					</section>
 				: currentView === "locations" ?
 					<section className={styles.panel} aria-label="Uploaded plant locations">

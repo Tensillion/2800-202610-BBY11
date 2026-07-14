@@ -729,6 +729,30 @@ app.post("/petAPI/easterEgg", authRequired, async (req, res) => {
   }
 });
 
+app.post("/petAPI/addFood", authRequired, async (req, res) => {
+  const { amount = 5 } = req.body;
+
+  const pet = await petCollection.findOne({
+    ownerId: req.user.userId,
+  });
+
+  if (!pet) {
+    return res.status(404).json({ error: "Pet not found" });
+  }
+
+  const newFood = (pet.food || 0) + amount;
+
+  await petCollection.updateOne(
+    { _id: pet._id },
+    { $set: { food: newFood } }
+  );
+
+  res.json({
+    message: `Added ${amount} food!`,
+    food: newFood,
+  });
+});
+
 //---------------- Markers Endpoints ----------------
 
 app.get("/markers", async (req, res) => {

@@ -193,6 +193,17 @@ function MapPage() {
 
 			const savedMarker = await response.json();
 
+			await fetch(`${BACKEND_URL}/petAPI/addFood`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+			},
+			body: JSON.stringify({ amount: 2 }),
+			});
+
+			alert("You placed a marker and earned 2 pet food");
+
 			pendingMarkerRef.current?.remove();
 			pendingMarkerRef.current = null;
 
