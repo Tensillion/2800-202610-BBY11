@@ -1,7 +1,6 @@
 import AskAIPopUp from "../CataloguePage/AskAIPopUp/AskAIPopUp";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import type { Plant } from "../CataloguePage/PlantData";
 import "./PlantPage.css";
 
@@ -9,12 +8,15 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
 
 function PlantPage() {
   const { id } = useParams();
+  const navigate = useNavigate();
+
   const [food, setFood] = useState<Plant | null>(null);
   const [loading, setLoading] = useState(true);
   const [images, setImages] = useState<
-    { url: string; creator?: string; license?: string }[]
+    { url: string; attribution?: string; license?: string }[]
   >([]);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
   useEffect(() => {
     async function loadPlant() {
       try {
@@ -35,19 +37,6 @@ function PlantPage() {
 
     loadPlant();
   }, [id]);
-	const { id } = useParams();
-	const [food, setFood] = useState<Plant | null>(null);
-	const [loading, setLoading] = useState(true);
-	const navigate = useNavigate();
-
-	useEffect(() => {
-		fetch(`${BACKEND_URL}/plants/${id}`)
-			.then(res => res.json())
-			.then(data => {
-				setFood(data);
-				setLoading(false);
-			});
-	}, [id]);
 
   if (loading) {
     return <div className="loading-state">Loading...</div>;
@@ -57,7 +46,6 @@ function PlantPage() {
     return <div className="error-state">Plant not found.</div>;
   }
 
-  console.log(food);
   const parts = food.parts ?? [];
   const commonNames = food.common_names ?? [];
 
@@ -90,9 +78,10 @@ function PlantPage() {
 
           <div className="plant-section">
             <span className="plant-label">Edibility</span>
-
             <span
-              className={`plant-value ${food.edible ? "edible-yes" : "edible-no"}`}
+              className={`plant-value ${
+                food.edible ? "edible-yes" : "edible-no"
+              }`}
             >
               {food.edible ? "Edible" : "Not Edible"}
             </span>
@@ -100,59 +89,48 @@ function PlantPage() {
 
           <div className="plant-section">
             <span className="plant-label">Edible Parts</span>
-
             <span className="plant-value">
               {parts.length ? parts.join(", ") : "None listed"}
             </span>
           </div>
+
           <div className="warning-box">
             <div className="plant-label">Warnings</div>
-
             <div className="plant-value">
               {food.warnings || "None in database."}
             </div>
           </div>
-          {selectedImage && (
-            <div className="image-modal" onClick={() => setSelectedImage(null)}>
-              <button
-                className="close-button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSelectedImage(null);
-                }}
-              >
-                ×
-              </button>
 
-              <img
-                src={selectedImage}
-                alt="Plant"
-                className="fullscreen-image"
-                onClick={(e) => e.stopPropagation()}
-              />
-            </div>
-          )}
           <AskAIPopUp plantInfo={food} />
         </div>
+
+        <div className="returnButton" onClick={() => navigate("/catalogue")}>
+          Return
+        </div>
       </div>
+
+      {selectedImage && (
+        <div className="image-modal" onClick={() => setSelectedImage(null)}>
+          <button
+            className="close-button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setSelectedImage(null);
+            }}
+          >
+            ×
+          </button>
+
+          <img
+            src={selectedImage}
+            alt="Plant"
+            className="fullscreen-image"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
     </div>
   );
-						<div className="plant-value">{food.warnings || "None in database."}</div>
-					</div>
-					
-					<AskAIPopUp plantInfo={food} />
-				</div>
-				{/*button to return back to catalogue page*/}
-				<div
-      				className="returnButton"
-      				onClick={() =>
-        				navigate(`/catalogue`, {
-          	
-        			})
-      				}> return</div>
-			</div>
-		</div>
-	);
 }
 
 export default PlantPage;
