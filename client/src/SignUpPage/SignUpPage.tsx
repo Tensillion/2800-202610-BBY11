@@ -19,6 +19,7 @@ function SignUpPage() {
 	const [username, setUsername] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [loading, setLoading] = useState(false);
 
 	/**
 	 *
@@ -26,7 +27,7 @@ function SignUpPage() {
 	 */
 	async function handleSubmit(e: SyntheticEvent<HTMLFormElement>) {
 		e.preventDefault();
-
+		setLoading(true);
 		//CHANGE URL FOR PRODUCTION
 		const response = await fetch(`${BACKEND_URL}/authentication/signup`, {
 			method: "POST",
@@ -43,10 +44,15 @@ function SignUpPage() {
 		} else {
 			alert(`Sign up failed: ${data.message}`);
 		}
+
+		  setLoading(false);
 	}
 
 	return (
 		<section id="signup-page">
+			<div className={loading? "loading" : "loading_hidden"}>
+				Loading<span className="dots"></span>
+			</div>
 			<div className="authentication-header">
 				<img className="logo" src="/Logo.png" alt="Logo" />
 				<Link className="nav-link" to="/login">

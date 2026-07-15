@@ -1,4 +1,5 @@
 import AskAIPopUp from "../CataloguePage/AskAIPopUp/AskAIPopUp";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import type { Plant } from "../CataloguePage/PlantData";
@@ -10,6 +11,7 @@ function PlantPage() {
 	const { id } = useParams();
 	const [food, setFood] = useState<Plant | null>(null);
 	const [loading, setLoading] = useState(true);
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		fetch(`${BACKEND_URL}/plants/${id}`)
@@ -61,8 +63,17 @@ function PlantPage() {
 
 						<div className="plant-value">{food.warnings || "None in database."}</div>
 					</div>
+					
 					<AskAIPopUp plantInfo={food} />
 				</div>
+				{/*button to return back to catalogue page*/}
+				<div
+      				className="returnButton"
+      				onClick={() =>
+        				navigate(`/catalogue`, {
+          	
+        			})
+      				}> return</div>
 			</div>
 		</div>
 	);

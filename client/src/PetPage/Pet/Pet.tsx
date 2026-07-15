@@ -37,11 +37,14 @@ export default function Pet({ imageUrl, overlay }: PetProps) {
 		}
 		if(count % 3 == 0)
 		{
+			// display randomly ordered message
 			setMsg(msgs[msgCount]);
+			// get random number from 0 to 13 inclusive
 			setMsgCount(Math.floor(Math.random() * 14));
 		
 			setMsgOn(true);
 
+			// appear and disappear animations for message box
 			setTimeout(() => {
       			setMsg("");
     		}, 2000);
@@ -70,10 +73,11 @@ export default function Pet({ imageUrl, overlay }: PetProps) {
 	return (
 		<div className="pet-figure">
 			{overlay}
+
+			{/*message box*/}
 			<div className={msgOn? "msgAppear" : "msgDisappear"}>{msg}
 				<div className="msgTail">
-				
-				</div>
+			</div>
 			</div>
 			<div className={jumping? "jump" : ""}> {/*This div is soley to perform the jump animation*/}
 				<img src={imageUrl} id="pet-image" onClick={clickEffect} alt="Pet" />
