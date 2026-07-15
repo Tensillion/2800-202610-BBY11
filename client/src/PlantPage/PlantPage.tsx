@@ -104,7 +104,7 @@ function PlantPage() {
           <AskAIPopUp plantInfo={food} />
         </div>
 
-        <div className="returnButton" onClick={() => navigate("/catalogue")}>
+        <div className="returnButton" onClick={() => navigate(-1)}>
           Return
         </div>
       </div>

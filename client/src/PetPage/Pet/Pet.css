@@ -9,94 +9,78 @@
  * clamp(min, preferred, max) keeps it from being too small or too large.
  */
 .pet-figure {
-	position: relative;
-	display: inline-block;
-	--pet-size: clamp(120px, 26vh, 240px);
-	
+  position: relative;
+  display: inline-block;
+  --pet-size: clamp(120px, 26vh, 240px);
 }
 
 #pet-image {
-	display: block;
-	height: var(--pet-size);
-	transform: translateY(30px);
-	width: auto;
+  display: block;
+  height: var(--pet-size);
+  transform: translateY(30px);
+  width: auto;
 
-	/* Prevents accidental drag on desktop */
-	-webkit-user-select: none;
-	user-select: none;
-	pointer-events: auto;
+  /* Prevents accidental drag on desktop */
+  -webkit-user-select: none;
+  user-select: none;
+  pointer-events: auto;
 
-	z-index: 1; /* Ensure pet is above the background */
-	transition: transform 0.2s ease-in-out; 
-	
+  z-index: 1; /* Ensure pet is above the background */
+  transition: transform 0.2s ease-in-out;
 }
-.msgAppear{
-	position: absolute;	
-	animation: appear 0.5s ease;
-	width: max-content;
-	
+.msgAppear,
+.msgDisappear {
+  position: absolute;
 
-	max-width: 200px;
+  bottom: calc(100% + 18px);
+  left: 35%;
 
-	bottom: 250px;
-	right: 100px;
+  transform: translateX(-100%);
 
-	padding: 12px;
-	background-color: #fff8ec;
-	border: 3px solid #3f3426;
-	border-radius: 20px;
-	transform: translateY(30px);
+  width: max-content;
+  max-width: min(280px, 65vw);
 
-	display: flex;
-  justify-content: center; /* horizontal center */
-  align-items: center;     /* vertical center */
+  padding: 12px;
 
+  background: #fff8ec;
+  border: 3px solid #3f3426;
+  border-radius: 20px;
 
-   z-index: 2; /* Ensure pet is above the background */
-}
-.msgDisappear
-{
-	position: absolute;	
-	animation: disappear 0.5s ease;
-	width: max-content;
-	max-width: 200px;
+  text-align: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
 
-	bottom: 250px;
-	right: 100px;
-
-	padding: 12px;
-	background-color: #fff8ec;
-	border: 3px solid #3f3426;
-	border-radius: 20px;
-	opacity: 0;
-	transform: translateY(30px);
-
-	display: flex;
-  justify-content: center; 
-  align-items: center;     
-  z-index: 2; 
+  z-index: 10;
 }
 
-.msgTail
-{
-	position: absolute;
-	width: 16px;
-	height: 16px;
-	background-color: #fff8ec;
-	z-index: 3; /* Ensure pet is above the background */
-	bottom: -3px;
-  	right: -2px;
-
-	
-	border-bottom: 3px solid #3f3426;
-	border-right: 3px solid #3f3426;
-	z-index: 3; /* Ensure pet is above the background */
-
+.msgAppear {
+  animation: appear 0.5s ease;
 }
 
+.msgDisappear {
+  animation: disappear 0.5s ease;
+  opacity: 0;
+}
+.msgTail {
+  position: absolute;
 
-.jump{
-	animation: jump 0.5s ease; /*performs the jump animation*/
+  right: 28px;
+  bottom: -11px;
+
+  width: 16px;
+  height: 16px;
+
+  background: #fff8ec;
+  border-bottom: 3px solid #3f3426;
+  border-right: 3px solid #3f3426;
+
+  transform: rotate(45deg);
+}
+
+.jump {
+  position: relative;
+  display: inline-block;
+  animation: jump 0.5s ease;
 }
 
 @keyframes jump {
@@ -112,32 +96,38 @@
   }
 }
 
-
 @keyframes appear {
   0% {
-
-	opacity:0;
+    opacity: 0;
   }
 
   100% {
-   	opacity: 1;
+    opacity: 1;
   }
 }
 
 @keyframes disappear {
   0% {
-
-	opacity:1;
+    opacity: 1;
   }
 
   100% {
-   	opacity: 0;
+    opacity: 0;
   }
 }
 
 .click-effect {
-	position: absolute;
-	border-radius: 50%;
-	background: rgba(255, 255, 255, 0.5);
-	animation: clickEffectAnim 0.6s ease-out forwards;
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  animation: clickEffectAnim 0.6s ease-out forwards;
+}
+
+@media (max-width: 600px) {
+  .msgAppear,
+  .msgDisappear {
+    max-width: 85vw;
+    font-size: 0.9rem;
+    padding: 10px;
+  }
 }
