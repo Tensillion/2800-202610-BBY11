@@ -4,11 +4,8 @@
  *
  * @author Umanga Bajgai
  */
-export type Plant = {
-  _id: string;
-  warnings: string;
-  scientific_name: string;
-  common_names: string[];
-  edible: boolean;
-  parts: string[];
+export type PlantImage = {
+  url: string;
+  creator?: string;
+  license?: string;
 };

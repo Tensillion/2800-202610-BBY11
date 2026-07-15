@@ -59,15 +59,6 @@ createRoot(document.getElementById("root")!).render(
               </GuestRoute>
             }
           />
-		  
-          <Route
-            path="/catalogue"
-            element={
-              <GuestRoute>
-                <CataloguePage />
-              </GuestRoute>
-            }
-          />
 
           {/* Protected */}
 
@@ -98,15 +89,15 @@ createRoot(document.getElementById("root")!).render(
               </ProtectedRoute>
             }
           />
-          {/* <Route
-						path="/catalogue"
-						element={
-							<ProtectedRoute>
-								<CataloguePage />
-								<Footer />
-							</ProtectedRoute>
-						}
-					/> */}
+          <Route
+            path="/catalogue"
+            element={
+              <ProtectedRoute>
+                <CataloguePage />
+                <Footer />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/plants/:id"
             element={

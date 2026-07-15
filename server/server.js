@@ -269,6 +269,80 @@ app.post(
   },
 );
 
+app.get("/plants/:id/images", async (req, res) => {
+  try {
+    let plant;
+
+    try {
+      plant = await plantCollection.findOne({
+        _id: new ObjectId(req.params.id),
+      });
+    } catch {
+      return res.status(400).json({ error: "Invalid plant id" });
+    }
+
+    if (!plant) {
+      return res.status(404).json({ error: "Plant not found" });
+    }
+
+    // Find the iNaturalist taxon
+    const taxaResponse = await axios.get(
+      "https://api.inaturalist.org/v1/taxa",
+      {
+        params: {
+          q: plant.scientific_name,
+          rank: "species",
+          per_page: 1,
+        },
+      },
+    );
+
+    const taxon = taxaResponse.data.results[0];
+
+    if (!taxon) {
+      return res.json([]);
+    }
+
+    // Fetch research-grade observations with photos
+    const observationsResponse = await axios.get(
+      "https://api.inaturalist.org/v1/observations",
+      {
+        params: {
+          taxon_id: taxon.id,
+          quality_grade: "research",
+          photos: true,
+          per_page: 20,
+        },
+      },
+    );
+
+    const images = [];
+
+    for (const observation of observationsResponse.data.results) {
+      if (!observation.photos) continue;
+
+      for (const photo of observation.photos) {
+        if (!photo.url) continue;
+
+        images.push({
+          url: photo.url.replace("square", "large"),
+          attribution: photo.attribution,
+          license: photo.license_code,
+        });
+
+        if (images.length === 5) break;
+      }
+
+      if (images.length === 5) break;
+    }
+
+    res.json(images);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to fetch images" });
+  }
+});
+
 //---------------Authentication Endpoints------------------
 const authRequired = require("./Middleware/authMiddleware");
 

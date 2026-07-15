@@ -2,7 +2,7 @@ import PopUp from "../../PopUp/PopUp";
 import "./CataloguePage.css";
 import PlantList from "../PlantList/PlantList";
 import Search from "../Search/Search";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { Plant } from "../PlantData";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
@@ -26,29 +26,21 @@ const guideSteps = [
  */
 function CataloguePage() {
   const [Plants, setPlants] = useState<Plant[]>([]);
-  useEffect(() => {
-    async function loadPlants() {
-      const res = await fetch(`${BACKEND_URL}/api/catalogue`);
-      const data = await res.json();
-      setPlants(data);
-    }
-
-    loadPlants();
-  }, []);
 
   /*
    * Defines the search handler, which will fetch the backend results,
    * by passing in the query url.
    */
   async function handleSearch(query: string) {
-    if (!query.trim()) {
-      const res = await fetch(`${BACKEND_URL}/api/catalogue`);
-      const data = await res.json();
-      setPlants(data);
+    const trimmedQuery = query.trim();
+
+    if (!trimmedQuery) {
+      setPlants([]);
       return;
     }
+
     const res = await fetch(
-      `${BACKEND_URL}/plants/search?q=${encodeURIComponent(query)}`,
+      `${BACKEND_URL}/plants/search?q=${encodeURIComponent(trimmedQuery)}`,
     );
     const data = await res.json();
 

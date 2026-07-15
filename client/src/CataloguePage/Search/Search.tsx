@@ -8,10 +8,10 @@ export type SearchProps = {
 /**
  * This is the search bar element, which renders the serach bar,
  * and uses event handlers to provide the functionality.
- * 
+ *
  * @param prop is a search string.
  * @returns Search Bar component.
- * 
+ *
  * @author Umanga Bajgai
  */
 function Search(props: SearchProps) {
@@ -19,15 +19,12 @@ function Search(props: SearchProps) {
   const [value, setValue] = useState("");
 
   const searchHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    const newValue = event.target.value;
-    setValue(newValue);
-    onSearch(newValue);
+    setValue(event.target.value);
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       onSearch(value);
-      console.log(value);
     }
   };
 
