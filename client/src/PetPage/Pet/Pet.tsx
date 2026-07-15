@@ -35,7 +35,7 @@ export default function Pet({ imageUrl, overlay }: PetProps) {
 		{
 			setCount(count +1);
 		}
-		if(count % 2 == 0)
+		if(count % 3 == 0)
 		{
 			setMsg(msgs[msgCount]);
 			setMsgCount(Math.floor(Math.random() * 14));
