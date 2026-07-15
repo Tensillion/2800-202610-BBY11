@@ -31,10 +31,15 @@
 	
 }
 .msgAppear{
-	position: relative;	
+	position: absolute;	
 	animation: appear 0.5s ease;
-	width: fit-content;
-	height: fit-content;
+	width: max-content;
+	
+
+	max-width: 200px;
+
+	bottom: 250px;
+	right: 100px;
 
 	padding: 12px;
 	background-color: #fff8ec;
@@ -45,14 +50,19 @@
 	display: flex;
   justify-content: center; /* horizontal center */
   align-items: center;     /* vertical center */
+
+
    z-index: 2; /* Ensure pet is above the background */
 }
 .msgDisappear
 {
-	position: relative;	
+	position: absolute;	
 	animation: disappear 0.5s ease;
-	width: fit-content;
-	height: fit-content;
+	width: max-content;
+	max-width: 200px;
+
+	bottom: 250px;
+	right: 100px;
 
 	padding: 12px;
 	background-color: #fff8ec;

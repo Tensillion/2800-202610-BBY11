@@ -1,6 +1,7 @@
 import { useState, type ReactNode } from "react";
 import "./Pet.css";
 import { HeartExplosion } from "./HeartExplosion";
+import msgs from "../../../public/assets/pet-msgs/pet-msgs.json";
 
 type PetProps = {
 	imageUrl: string;
@@ -15,6 +16,7 @@ export default function Pet({ imageUrl, overlay }: PetProps) {
 	const [msg, setMsg] = useState("");
 	const [msgOn, setMsgOn] = useState(false);
 	const [jumping, setJumping] = useState(false);
+	const [msgCount, setMsgCount] = useState(Math.floor(Math.random() * 14));
 
 
 	function clickEffect(e: React.MouseEvent<HTMLImageElement>) {
@@ -35,7 +37,9 @@ export default function Pet({ imageUrl, overlay }: PetProps) {
 		}
 		if(count % 2 == 0)
 		{
-			setMsg("hello");
+			setMsg(msgs[msgCount]);
+			setMsgCount(Math.floor(Math.random() * 14));
+		
 			setMsgOn(true);
 
 			setTimeout(() => {
