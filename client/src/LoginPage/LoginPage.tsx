@@ -17,6 +17,7 @@ function LoginPage() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const { login } = useContext(AuthContext);
+	const [loading, setLoading] = useState(false);
 
 	const navigate = useNavigate();
 
@@ -27,6 +28,7 @@ function LoginPage() {
 	 */
 	async function handleSubmit(e: SyntheticEvent<HTMLFormElement>) {
 		e.preventDefault();
+		setLoading(true);
 
 		//CHANGE URL FOR PRODUCTION
 		const response = await fetch(`${BACKEND_URL}/authentication/login`, {
@@ -44,10 +46,15 @@ function LoginPage() {
 		} else {
 			alert(`Login failed: ${data.message}`);
 		}
+		setLoading(false);
 	}
 
 	return (
 		<section id="login-page">
+
+			<div className={loading? "loading" : "loading_hidden"}>
+				Loading<span className="dots"></span>
+			</div>
 			<div className="authentication-header">
 				<img className="logo" src="/Logo.png" alt="Logo" />
 				<Link className="nav-link" to="/signup">

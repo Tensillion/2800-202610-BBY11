@@ -118,3 +118,49 @@ h1 {
 	text-decoration: underline;
 	font-weight: 600;
 }
+
+.loading_hidden
+{
+	opacity: 0;
+}
+
+.loading
+{
+	position: absolute;
+	width: 200px;
+	height: 100px;
+	background-color: #fdfaf5;
+	z-index: 6;
+
+	top: 50%;
+  	left: 50%;
+  	transform: translate(-50%, -50%);
+
+	display: flex;
+  	justify-content: center;
+  	align-items: center;    
+	border-radius: 20px;
+	border: 3px solid #f8edd7;
+}
+.dots::after{
+content: "";
+  animation: dotsLoading 1.0s steps(4, end) infinite;
+}
+
+@keyframes dotsLoading {
+   0% {
+    content: "";
+  }
+  25% {
+    content: ".";
+  }
+  50% {
+    content: "..";
+  }
+  75% {
+    content: "...";
+  }
+  100% {
+    content: "";
+  }
+}

@@ -118,6 +118,19 @@
   color: var(--text);
 }
 
+.returnButton{
+
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  width: fit-content;
+  height: fit-content;
+  padding: 10px;
+  background-color: #2d4a2d;
+  border-radius: 20px;
+  color: #fff9ed;
+}
+
 .plant-images {
   display: flex;
   gap: 12px;

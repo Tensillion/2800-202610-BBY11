@@ -235,6 +235,11 @@ function PetPage() {
 
 	return (
 		<section id="PetPage">
+			<div id="hills">
+				<div id="hill_1"/>
+				<div id="seperator"/>
+				<div id="hill_2"/>
+			</div>
 			<PopUp
 				title="Welcome to the Pet Page!"
 				message="Feed your pet and take care of it to keep it happy and healthy."

@@ -23,6 +23,7 @@ export default function PlantCard({ plant }: { plant: Plant }) {
         })
       }
     >
+        
       <h3>{commonNames.join(", ")}</h3>
       <p>
         <b>Scientific:</b> {plant.scientific_name}

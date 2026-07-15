@@ -22,6 +22,70 @@
 	background-color: var(--cream);
 }
 
+#hills
+{
+	position: fixed;
+
+
+	overflow: hidden;
+	flex-shrink: 0;
+	display: flex;
+  	justify-content: center; /* horizontal center */
+  	align-items: center;     /* vertical center */
+	top: 50%;
+  	left: 50%;
+  	transform: translate(-50%, -50%);
+
+}
+
+#hill_1
+{
+	
+	width: 2000px;
+	height: 100vh;
+	  left: 0;
+  	top: 100px;
+	overflow: hidden;
+	
+	
+	background-image:
+		 url("/assets/bg/Hill-left.png");
+	
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	background-position: left;
+}
+#hill_2
+{
+
+	width: 2000px;
+	height: 100vh;
+	  left: 0;
+  	top: 100px;
+	overflow: hidden;
+	
+	
+	background-image:
+		 url("/assets/bg/Hill-right.png");
+	
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	background-position: left;
+		
+}
+#seperator
+{
+
+	width: 30vw;
+	min-width: 45vh;
+	max-width: 540px;
+	height: 100vh;
+
+	overflow: hidden;
+	flex-shrink: 0;
+	
+}
+
 .pet-status-stack {
 	position: absolute;
 	top: 1rem;

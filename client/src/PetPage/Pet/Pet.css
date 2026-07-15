@@ -12,11 +12,13 @@
 	position: relative;
 	display: inline-block;
 	--pet-size: clamp(120px, 26vh, 240px);
+	
 }
 
 #pet-image {
 	display: block;
 	height: var(--pet-size);
+	transform: translateY(30px);
 	width: auto;
 
 	/* Prevents accidental drag on desktop */
@@ -25,8 +27,112 @@
 	pointer-events: auto;
 
 	z-index: 1; /* Ensure pet is above the background */
+	transition: transform 0.2s ease-in-out; 
+	
+}
+.msgAppear{
+	position: absolute;	
+	animation: appear 0.5s ease;
+	width: max-content;
+	
 
-	transition: transform 0.2s ease-in-out;
+	max-width: 200px;
+
+	bottom: 250px;
+	right: 100px;
+
+	padding: 12px;
+	background-color: #fff8ec;
+	border: 3px solid #3f3426;
+	border-radius: 20px;
+	transform: translateY(30px);
+
+	display: flex;
+  justify-content: center; /* horizontal center */
+  align-items: center;     /* vertical center */
+
+
+   z-index: 2; /* Ensure pet is above the background */
+}
+.msgDisappear
+{
+	position: absolute;	
+	animation: disappear 0.5s ease;
+	width: max-content;
+	max-width: 200px;
+
+	bottom: 250px;
+	right: 100px;
+
+	padding: 12px;
+	background-color: #fff8ec;
+	border: 3px solid #3f3426;
+	border-radius: 20px;
+	opacity: 0;
+	transform: translateY(30px);
+
+	display: flex;
+  justify-content: center; 
+  align-items: center;     
+  z-index: 2; 
+}
+
+.msgTail
+{
+	position: absolute;
+	width: 16px;
+	height: 16px;
+	background-color: #fff8ec;
+	z-index: 3; /* Ensure pet is above the background */
+	bottom: -3px;
+  	right: -2px;
+
+	
+	border-bottom: 3px solid #3f3426;
+	border-right: 3px solid #3f3426;
+	z-index: 3; /* Ensure pet is above the background */
+
+}
+
+
+.jump{
+	animation: jump 0.5s ease; /*performs the jump animation*/
+}
+
+@keyframes jump {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+
+@keyframes appear {
+  0% {
+
+	opacity:0;
+  }
+
+  100% {
+   	opacity: 1;
+  }
+}
+
+@keyframes disappear {
+  0% {
+
+	opacity:1;
+  }
+
+  100% {
+   	opacity: 0;
+  }
 }
 
 .click-effect {
