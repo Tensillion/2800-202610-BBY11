@@ -12,7 +12,7 @@ const userCollection = () => global.database.db(MONGO_USERS_DB).collection("user
  * @param {*} password the password
  * 
  * @returns if login is sucessful, returns an object with status 200 and a body containing a success message and JWT token.
- * /
+ */
 async function attemptLogin(email, password) {
 	const users = userCollection();
 	const user = await users.findOne({ email });

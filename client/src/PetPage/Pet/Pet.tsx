@@ -11,6 +11,11 @@ export default function Pet({ imageUrl, overlay }: PetProps) {
 	const [explosions, setExplosions] = useState<{ id: number; x: number; y: number }[]>([]);
 	const [cooldown, setCooldown] = useState(false);
 	const [nextId, setNextId] = useState(0);
+	const [count, setCount] = useState(0);
+	const [msg, setMsg] = useState("");
+	const [msgOn, setMsgOn] = useState(false);
+	const [jumping, setJumping] = useState(false);
+
 
 	function clickEffect(e: React.MouseEvent<HTMLImageElement>) {
 		if (cooldown) return;
@@ -24,20 +29,52 @@ export default function Pet({ imageUrl, overlay }: PetProps) {
 
 		const id = nextId;
 		setNextId(id + 1);
+		if(msg === "")
+		{
+			setCount(count +1);
+		}
+		if(count % 2 == 0)
+		{
+			setMsg("hello");
+			setMsgOn(true);
+
+			setTimeout(() => {
+      			setMsg("");
+    		}, 2000);
+			setTimeout(() => {
+				setMsgOn(false);
+    		}, 1600);
+		}
+
 
 		setExplosions(prev => [...prev, { id, x, y }]);
+
+		setJumping(true);
+
+		// reset jump after animation
+    	setTimeout(() => {
+      		setJumping(false);
+    	}, 500);
 
 		// remove after animation
 		setTimeout(() => {
 			setExplosions(prev => prev.filter(ex => ex.id !== id));
 		}, 1500);
+
 	}
 
 	return (
 		<div className="pet-figure">
 			{overlay}
-			<img src={imageUrl} id="pet-image" onClick={clickEffect} alt="Pet" />
-
+			<div className={msgOn? "msgAppear" : "msgDisappear"}>{msg}
+				<div className="msgTail">
+				
+				</div>
+			</div>
+			<div className={jumping? "jump" : ""}> {/*This div is soley to perform the jump animation*/}
+				<img src={imageUrl} id="pet-image" onClick={clickEffect} alt="Pet" />
+			</div>
+			
 			{explosions.map(ex => (
 				<HeartExplosion key={ex.id} x={ex.x} y={ex.y} />
 			))}
