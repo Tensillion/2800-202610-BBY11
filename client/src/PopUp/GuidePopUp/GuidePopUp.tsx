@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./GuidePopUp.css";
+import { tutorialsEnabled } from "../TutorialsEnabled";
 
 /**
  * This is a moving component that will have
@@ -21,6 +22,7 @@ export default function GuidePopUp(props: {
 
 	const [isOpen, setIsOpen] = useState(() => {
 		if (typeof window === "undefined") return true;
+		if (!tutorialsEnabled()) return false;
 		return sessionStorage.getItem(storageKey) !== "true";
 	});
 

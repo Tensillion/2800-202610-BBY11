@@ -1,6 +1,8 @@
 import { useState } from "react";
 import "./PopUp.css";
 import GuidePopUp from "./GuidePopUp/GuidePopUp";
+import { tutorialsEnabled } from "./TutorialsEnabled";
+
 
 type Step = {
 	x: string | number; // using string to allow for percentage values like "50%"
@@ -32,6 +34,7 @@ export default function PopUp({ title, message, steps = [] }: PopUpProps) {
 	 */
 	const [isOpen, setIsOpen] = useState(() => {
 		if (typeof window === "undefined") return true;
+		if (!tutorialsEnabled()) return false;
 		return sessionStorage.getItem(storageKey) !== "true";
 	});
 
@@ -68,7 +71,7 @@ export default function PopUp({ title, message, steps = [] }: PopUpProps) {
 					</button>
 				</div>
 			</div>
-		: wantTutorial && steps.length > 0 ? <GuidePopUp steps={steps} />
+		: wantTutorial && tutorialsEnabled() && steps.length > 0 ? <GuidePopUp steps={steps} />
 		: null
 	);
 }
