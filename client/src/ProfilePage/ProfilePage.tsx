@@ -1,11 +1,13 @@
 import type { FormEvent } from "react";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Accessibility, ArrowLeft, ChevronRight, Leaf, Lock, Settings, User } from "lucide-react";
+import { Accessibility, ArrowLeft, ChevronRight, Leaf, Lock, Settings, Trophy, User } from "lucide-react";
 import { AuthContext } from "../context/AuthContext";
 import styles from "./ProfilePage.module.css";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
+
+
 
 type ProfileView =
 	| "account"
@@ -14,7 +16,17 @@ type ProfileView =
 	| "accountSettings"
 	| "editUsername"
 	| "editPassword"
-	| "locations";
+	| "locations"
+	| "achievements";
+
+type Achievement = {
+	id: string;
+	title: string;
+	description: string;
+	foodReward: number;
+	target: number;
+	getProgress: (markerCount: number) => number;
+};
 
 interface PlantMarker {
 	_id: string;
@@ -50,8 +62,43 @@ export default function ProfilePage() {
 	const [isSaving, setIsSaving] = useState(false);
 	const displayName = user?.username ?? "User";
 	const [tutorialsEnabled, setTutorialsEnabled] = useState(
-    () => localStorage.getItem("tutorialsEnabled") !== "false"
-);
+    () => localStorage.getItem("tutorialsEnabled") !== "false");
+	const ACHIEVEMENTS: Achievement[] = [
+		{
+			id: "first-marker",
+			title: "First Steps",
+			description: "Place your first plant marker.",
+			foodReward: 3,
+			target: 1,
+			getProgress: count => count,
+		},
+		{
+			id: "five-markers",
+			title: "Budding Forager",
+			description: "Place 5 plant markers.",
+			foodReward: 5,
+			target: 5,
+			getProgress: count => count,
+		},
+		{
+			id: "twenty-markers",
+			title: "Plant Whisperer",
+			description: "Place 20 plant markers.",
+			foodReward: 15,
+			target: 20,
+			getProgress: count => count,
+		},
+	];
+
+	const [markerCount, setMarkerCount] = useState<number | null>(null);
+	const [claimedIds, setClaimedIds] = useState<string[]>(() => {
+		try {
+			return JSON.parse(localStorage.getItem("claimedAchievements") ?? "[]");
+		} catch {
+			return [];
+		}
+	});
+	const [claimingId, setClaimingId] = useState<string | null>(null);	
 
 	useEffect(() => {
     	localStorage.setItem("tutorialsEnabled", String(tutorialsEnabled));
@@ -84,6 +131,48 @@ export default function ProfilePage() {
 		setConfirmPassword("");
 		setFormMessage("");
 		setCurrentView("editPassword");
+	}
+
+	async function openAchievements() {
+	setCurrentView("achievements");
+
+	if (!token) return;
+
+	try {
+		const response = await fetch(`${BACKEND_URL}/markers/mine`, {
+			headers: { Authorization: `Bearer ${token}` },
+		});
+		if (!response.ok) throw new Error("Unable to load progress.");
+		const markerData = (await response.json()) as PlantMarker[];
+		setMarkerCount(markerData.length);
+	} catch {
+		setMarkerCount(null);
+	}
+}
+
+async function claimAchievement(achievement: Achievement) {
+		if (!token || claimedIds.includes(achievement.id)) return;
+
+		setClaimingId(achievement.id);
+		try {
+			const response = await fetch(`${BACKEND_URL}/petAPI/addFood`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				body: JSON.stringify({ amount: achievement.foodReward }),
+			});
+			if (!response.ok) throw new Error("Could not claim reward.");
+
+			const nextClaimed = [...claimedIds, achievement.id];
+			setClaimedIds(nextClaimed);
+			localStorage.setItem("claimedAchievements", JSON.stringify(nextClaimed));
+		} catch (err) {
+			console.error("Failed to claim achievement:", err);
+		} finally {
+			setClaimingId(null);
+		}
 	}
 
 	async function openLocations() {
@@ -270,6 +359,45 @@ export default function ProfilePage() {
 							}
 						</div>
 					</section>
+				: currentView === "achievements" ?
+					<section className={styles.panel} aria-label="Achievements">
+						<button
+							className={styles.panelTitle}
+							type="button"
+							onClick={() => setCurrentView("account")}
+							aria-label="Back to account"
+						>
+							<ArrowLeft size={20} strokeWidth={2} />
+							<span>Achievements</span>
+						</button>
+
+						<div className={styles.locationList}>
+							{ACHIEVEMENTS.map(achievement => {
+								const progress = markerCount != null ? achievement.getProgress(markerCount) : 0;
+								const isComplete = progress >= achievement.target;
+								const isClaimed = claimedIds.includes(achievement.id);
+
+								return (
+									<article className={styles.locationCard} key={achievement.id}>
+										<strong>{achievement.title}</strong>
+										<span>{achievement.description}</span>
+										<span>
+											{Math.min(progress, achievement.target)} / {achievement.target}
+											{" · "}
+											Reward: {achievement.foodReward} food
+										</span>
+										<button
+											type="button"
+											disabled={!isComplete || isClaimed || claimingId === achievement.id}
+											onClick={() => claimAchievement(achievement)}
+										>
+											{isClaimed ? "Claimed" : claimingId === achievement.id ? "Claiming..." : "Claim"}
+										</button>
+									</article>
+								);
+							})}
+						</div>
+					</section>
 				: currentView === "settings" ?
 					<section className={styles.panel} aria-label="Settings">
 						<button
@@ -392,6 +520,12 @@ export default function ProfilePage() {
 						<button className={styles.menuRow} type="button" onClick={openLocations}>
 							<Leaf size={22} strokeWidth={2} />
 							<span>Uploaded Plant Locations</span>
+							<ChevronRight size={20} strokeWidth={2} />
+						</button>
+
+						<button className={styles.menuRow} type="button" onClick={openAchievements}>
+							<Trophy size={22} strokeWidth={2} />
+							<span>Achievements</span>
 							<ChevronRight size={20} strokeWidth={2} />
 						</button>
 
